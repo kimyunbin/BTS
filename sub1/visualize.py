@@ -50,14 +50,14 @@ def show_store_categories_graph(dataframes, n=100):
     plt.show()
 
 
-def show_store_review_distribution_graph():
+def show_store_review_distribution_graph(dataframes):
     """
     Req. 1-3-1 전체 음식점의 리뷰 개수 분포를 그래프로 나타냅니다. 
     """
     raise NotImplementedError
 
 
-def show_store_average_ratings_graph():
+def show_store_average_ratings_graph(dataframes):
     """
     Req. 1-3-2 각 음식점의 평균 평점을 그래프로 나타냅니다.
     """
