@@ -11,8 +11,16 @@ def sort_stores_by_score(dataframes, n=20, min_reviews=30):
     stores_reviews = pd.merge(
         dataframes["stores"], dataframes["reviews"], left_on="id", right_on="store"
     )
+    
     scores_group = stores_reviews.groupby(["store", "store_name"])
+    
     scores = scores_group.mean()
+    print(scores)
+    scores.sort_values(by=["score"], ascending= False, inplace= True)
+    print(scores)
+    
+    print(scores.groupby(by=["store_name"], sort= True).size())
+    print(scores)
     return scores.head(n=n).reset_index()
 
 
