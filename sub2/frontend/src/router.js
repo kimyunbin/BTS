@@ -14,14 +14,12 @@ export default new Router({
       name: "home",
       component: Home
     },
-    
     {
       path: "/myinteresting",
       name: "myinteresting",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/MyInteresting.vue")
     },
-    
     {
       path: "/login",
       name: "login",
@@ -40,12 +38,24 @@ export default new Router({
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/SignUpQuestion.vue")
     },
-    
     {
       path: "*",
       name: "Error",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/Error.vue")
-    }
+    },
+    {
+      path: "/satisfactionmap",
+      name: "satisfactionmap",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/SatisfactionMap.vue")
+    },
+    {
+      path: "/satisfactionjeju",
+      name: "satisfactionjeju",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/satisfaction/Jeju.vue")
+    },
+
   ]
 });
