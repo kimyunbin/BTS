@@ -4,11 +4,15 @@ import App from './App.vue'
 import router from './router'
 import StoryblokVue from 'storyblok-vue'
 import VueAnalytics from 'vue-analytics'
-
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
 Vue.config.productionTip = false
 const isProd = process.env.NODE_ENV === "production"
 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 new Vue({
   router,
   render: h => h(App)
