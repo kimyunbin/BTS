@@ -1,13 +1,39 @@
 <template>
-  <v-container class="mt-5" fill-height>
-    <v-card-text class="text-center">
-      <p class="display-3 pa-2">🍜</p>
-      <p class="display-2 pa-5">코딩도 식후경</p>
-      <v-btn large color="blue lighten-1 white--text ma-5" rounded to="/search">검색하기</v-btn>
-    </v-card-text>
-  </v-container>
+  <v-layout column justify-center align-center class="mt-4 pt-2">
+    
+    <br>
+
+    
+    <br>
+    <v-flex xs12 sm6 md4 lg4 xl4>
+      <v-card flat color="transparent" max-width="500">
+        <v-card-title primary-title>
+          BTS
+        </v-card-title>
+
+        
+
+        
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-export default {};
+
+export default {
+  
+  components: {
+    
+  },
+  data() {
+    return {
+    
+    };
+  }
+};
 </script>
+<style>
+
+</style>
+
