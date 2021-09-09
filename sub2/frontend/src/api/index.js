@@ -1,11 +1,14 @@
 import axios from "axios";
 
-const apiUrl = "/api";
+function createInstance() {
+  const instance = axios.create({
+    baseURL: "localhost:8080",
 
-export default {
-  getStores(params) {
-    return axios.get(`${apiUrl}/stores`, {
-      params
-    });
-  }
-};
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+  return instance;
+}
+
+export { createInstance };
