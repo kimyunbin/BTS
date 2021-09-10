@@ -83,7 +83,7 @@ DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'ssafy_web_db',
-        'USER':'root',
+        'USER':'gosunjo',
         'PASSWORD':'root1234',
         'HOST':'localhost',
         'PORT':'3306',
