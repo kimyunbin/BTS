@@ -83,9 +83,9 @@ DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'ssafy_web_db',
-        'USER':'gosunjo',
+        'USER':'root',
         'PASSWORD':'root1234',
-        'HOST':'localhost',
+        'HOST':'127.0.0.1',
         'PORT':'3306',
     }
 }
@@ -127,7 +127,13 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+# STATICFILES_DIRS = [ 
+# 	# 직접 만든 static 폴더의 경로를 적습니다.
+# 	# ex1) BASE_DIR / '우리팀_static_폴더명'
+#     BASE_DIR / config / static
+# ]
 
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
