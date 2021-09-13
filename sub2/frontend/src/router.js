@@ -46,6 +46,24 @@ export default new Router({
       name: "Error",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/Error.vue")
+    },
+    {
+      path: "/placedetail",
+      name: "placedetail",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/PlaceDetail.vue")
+    },
+    {
+      path: "/keyword",
+      name: "keyword",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/Keyword.vue")
+    },
+    {
+      path: "/map",
+      name: "map",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/Map.vue")
     }
   ]
 });

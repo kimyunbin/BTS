@@ -43,6 +43,7 @@
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat to="/" active-class="blue--text headline"><b>메인</b></v-btn>
         <v-btn flat to="/myinteresting" active-class="blue--text headline"><b>관심지역</b></v-btn>
+        <v-btn flat to="/map" active-class="blue--text headline"><b>지도(임시)</b></v-btn>
         <v-btn flat to="/login" active-class="blue--text headline"><b>로그인</b></v-btn>
         <v-btn flat to="/signup" active-class="blue--text headline"><b>회원가입</b></v-btn>
       </v-toolbar-items>
