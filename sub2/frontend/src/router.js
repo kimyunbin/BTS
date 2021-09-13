@@ -45,16 +45,10 @@ export default new Router({
         import( /* webpackChunkName: "about" */ "./views/Error.vue")
     },
     {
-      path: "/satisfactionmap",
-      name: "satisfactionmap",
+      path: "/map",
+      name: "map",
       component: () =>
-        import( /* webpackChunkName: "about" */ "./views/SatisfactionMap.vue")
-    },
-    {
-      path: "/satisfactionjeju",
-      name: "satisfactionjeju",
-      component: () =>
-        import( /* webpackChunkName: "about" */ "./views/satisfaction/Jeju.vue")
+        import( /* webpackChunkName: "about" */ "./views/satisfaction/Map.vue")
     },
 
   ]

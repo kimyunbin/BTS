@@ -10,7 +10,7 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     is_login: false, // 로그인 여부
-    user_info: null, //현재 로그인된 유저정보
+    user_info: null, // 현재 로그인된 유저정보
     token: "",
   },
 
