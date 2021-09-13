@@ -98,9 +98,6 @@ export default {
       },
     };
   },
-  methods: {
-    
-  },
   computed: {
     nameErrors() {
       const errors = [];

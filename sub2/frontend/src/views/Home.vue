@@ -1,10 +1,21 @@
 <template>
   <div id="app">
     <br>
-    <br>
+    <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
+      <v-btn
+        :to="'/keyword'"
+        color="primary"
+        elevation="3"
+        large
+        class="justify-center"
+      >키워드검색&nbsp;<i class="fas fa-plus"></i>
+      </v-btn>
+    </v-layout>
+    <br><br><br>
     <h1><b>차범희님을 위한 추천 여행지역</b></h1>
     <br>
-    <section >
+    <section>
+      
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -13,20 +24,13 @@
         <template v-slot:nav-next>
           <div>👉</div>
         </template>
-
+        
         <template v-slot:default="{ item }">
-          <div class="item">
-            <img
-              :src="item.src"
-              width="200"
-              height="200"
-              object-fit: cover
-              style="cursor:pointer;"
-            />
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.content }}</p>
-          </div>
-        </template>
+          <PlaceComponent
+            :item="item"
+          />  
+        </template> 
+        
       </vue-horizontal-list>
     </section>
 
@@ -53,7 +57,7 @@
       
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
-          <div>👈</div>
+          <div><v-icon>arrow_back</v-icon></div>
         </template>
 
         <template v-slot:nav-next>
@@ -61,17 +65,9 @@
         </template>
 
         <template v-slot:default="{ item }">
-          <div class="item">
-            <img
-              :src="item.src"
-              width="200"
-              height="200"
-              object-fit: cover
-              style="cursor:pointer;"
-            />
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.content }}</p>
-          </div>
+          <PlaceComponent
+            :item="item"
+          />  
         </template>
       </vue-horizontal-list>
     </section>
@@ -91,17 +87,9 @@
         </template>
 
         <template v-slot:default="{ item }">
-          <div class="item">
-            <img
-              :src="item.src"
-              width="200"
-              height="200"
-              object-fit: cover
-              style="cursor:pointer;"
-            />
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.content }}</p>
-          </div>
+          <PlaceComponent
+            :item="item"
+          />
         </template>
       </vue-horizontal-list>
     </section>
@@ -121,17 +109,9 @@
         </template>
 
         <template v-slot:default="{ item }">
-          <div class="item">
-            <img
-              :src="item.src"
-              width="200"
-              height="200"
-              object-fit: cover
-              style="cursor:pointer;"
-            />
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.content }}</p>
-          </div>
+          <PlaceComponent
+            :item="item"
+          />
         </template>
       </vue-horizontal-list>
     </section>
@@ -140,11 +120,12 @@
 
 <script>
 import VueHorizontalList from "vue-horizontal-list";
-
+import PlaceComponent from "@/components/PlaceComponent";
 export default{
   name: "ServeDev",
   components: {
     VueHorizontalList,
+    PlaceComponent
   },
   data() {
     return {
@@ -175,25 +156,16 @@ export default{
         }
       },
       items: [
-        { title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
-        { title: "Item 1", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { title: "Item 2", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { title: "Item 3", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { title: "Item 4", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { title: "Item 5", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { title: "Item 6", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { title: "Item 7", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { title: "Item 8", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
+        { id:"1", title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
+        { id:"2", title: "Item 1", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
+        { id:"3", title: "Item 2", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
+        { id:"4", title: "Item 3", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
+        { id:"5", title: "Item 4", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
+        { id:"6", title: "Item 5", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
+        { id:"7", title: "Item 6", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
+        { id:"8", title: "Item 7", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
+        { id:"9", title: "Item 8", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
-
-      maps: [
-        { title: "map 0", content: "Content item with description", src: "https://i.ibb.co/y6M6JfT/map3.jpg"},
-        { title: "map 1", content: "Content item with description", src: "https://i.ibb.co/0Y8M9jV/1.png"},
-        { title: "map 2", content: "Content item with description", src: "https://i.ibb.co/PCqpd64/map4.jpg"},
-        { title: "map 3", content: "Content item with description", src: "https://i.ibb.co/8YWZzfn/map2.jpg"},
-      ],
-
-      
     };
   },
   methods: {
