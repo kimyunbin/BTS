@@ -1,27 +1,11 @@
 <template>
   <div id="map-wrapper" class="map-wrapper">
-    <div v-if="province" class="province-title text-left">
-      <h3 class="text-center">
-        {{province.SGG_2}}
-        <br />
-        <h4>
-          <!-- <template v-if="province.candidate">
-            <strong>
-            {{ partyList[province.candidate.party].name }}, {{ province.candidate.name }}
-            </strong>
-          </template> -->
-        </h4>
-      </h3>
-      <div v-if="!currentProvince">
-        <span v-html="findArea(province.SGG_Code)"></span>
-      </div>
-    </div>
 
   </div>
 </template>
 
 <script>
-import * as d3 from 'd3'
+import * as d3 from 'd3';
 
 const MAP_GEOJSON = require('./do.json'); // json 파일 입력시 해당지역 지도 출력
 
@@ -32,8 +16,7 @@ export default {
   },
   data() {
     return {
-      province: undefined,            // 마우스가 지역구 위에 있을 때 정보
-      currentProvince: undefined,     // 지역구를 클릭했을 때 정보
+      province: undefined, // 마우스가 지역구 위에 있을 때 정보
     }
   },
   computed: {
@@ -46,36 +29,14 @@ export default {
   },
 
   methods: {
-    // 지역구의 지역 정보 찾기
-    findArea(code) {
-      // console.log(code);
-      if(code in this.mapArea) {
-        return Array.isArray(this.mapArea[code]) && this.mapArea[code].length >= 2 ? this.mapArea[code][1] : "";
-      }
-      return "";
-    },
     // 선택된 지역구
     selectProvince(province) {
       if(province) {
         console.log(province);
-        // console.log(this.findCandidate(province.SGG_Code));
+        console.log(this.findCandidate(province.SGG_Code));
         province.candidate = this.findCandidate(province.SGG_Code);
       }
       this.province = province;
-    },
-
-    // 지역구 정보 열기
-    openInfo(province) {
-      // console.log(province);
-      if(province) {
-        province.candidate = this.findCandidate(province.SGG_Code);
-        // province.final = this.localSeatFinal[province.SGG_Code];
-      }
-      this.currentProvince = province;
-    },
-    // 지역구 정보 닫기
-    closeInfo() {
-      this.currentProvince = undefined;
     },
 
     partyColor(code) {
