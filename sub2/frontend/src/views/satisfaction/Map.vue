@@ -30,9 +30,6 @@ export default {
   methods: {
     // 선택된 지역구
     selectProvince(province) {
-      if(province) {
-        province.name = this.findCandidate(province.CTP_KOR_NM);
-      }
       this.province = province;
     },
     partyColor(code) {
