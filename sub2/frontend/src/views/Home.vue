@@ -18,11 +18,11 @@
       
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
-          <div>👈</div>
+          <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
 
         <template v-slot:nav-next>
-          <div>👉</div>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
         
         <template v-slot:default="{ item }">
@@ -57,11 +57,11 @@
       
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back</v-icon></div>
+          <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
 
         <template v-slot:nav-next>
-          <div>👉</div>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -79,11 +79,11 @@
     <section style="">
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
-          <div>👈</div>
+          <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
 
         <template v-slot:nav-next>
-          <div>👉</div>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -101,11 +101,11 @@
     <section style="">
       <vue-horizontal-list :items="items" :options="options" >
         <template v-slot:nav-prev>
-          <div>👈</div>
+          <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
 
         <template v-slot:nav-next>
-          <div>👉</div>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -156,15 +156,15 @@ export default{
         }
       },
       items: [
-        { id:"1", title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
-        { id:"2", title: "Item 1", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { id:"3", title: "Item 2", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { id:"4", title: "Item 3", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { id:"5", title: "Item 4", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { id:"6", title: "Item 5", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { id:"7", title: "Item 6", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { id:"8", title: "Item 7", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { id:"9", title: "Item 8", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
+        { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
+        { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
+        { id:"3", title: "서울", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
+        { id:"4", title: "여수", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
+        { id:"5", title: "의정부", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
+        { id:"6", title: "전주", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
+        { id:"7", title: "강원", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
+        { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
+        { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
     };
   },
@@ -180,8 +180,8 @@ export default{
 
 @media (min-width: 1200px) {
     #app {
-      padding-left: 120px;
-      padding-right: 120px;
+      padding-left: 0px;
+      padding-right: 0px;
     }
   }
   

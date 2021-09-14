@@ -1,37 +1,35 @@
 <template>
     <div>
         <div class="map_wrap">
-    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     
-    <div id="menu_wrap" class="bg_white">
-        <div class="option">
-            <div>
-                <form>
-                    <v-layout row wrap justify-center align-center>
-                    장소 : 
-                
-                    <v-text-field
-                        color="green"
-                        background-color="transparent"
-                        name="value"
-                        v-model=place
-                        label="장소입력"
-                        width="20px"
-                        @keydown.enter.prevent="searchPlaces()"
-                    ></v-text-field>
-                
-                    <v-btn dark small @click="searchPlaces()">검색</v-btn> 
-                    </v-layout>
-                </form>
+        <div id="menu_wrap" class="bg_white">
+            <div class="option">
+                <div>
+                    <form>
+                        <v-layout row wrap justify-center align-center>
+                        장소 : 
+                    
+                        <v-text-field
+                            color="green"
+                            background-color="transparent"
+                            name="value"
+                            v-model=place
+                            label="장소입력"
+                            width="20px"
+                            @keydown.enter.prevent="searchPlaces()"
+                        ></v-text-field>
+                    
+                        <v-btn dark small @click="searchPlaces()">검색</v-btn> 
+                        </v-layout>
+                    </form>
+                </div>
             </div>
+            <hr>
+            <ul id="placesList"></ul>
+            <div id="pagination"></div>
         </div>
-        <hr>
-        <ul id="placesList"></ul>
-        <div id="pagination"></div>
-    </div>
-    </div>
-
-        <!-- <div id="map" class="map"></div> -->
+        </div>
     </div>
 </template>
 
@@ -79,6 +77,8 @@ export default {
             this.ps = new kakao.maps.services.Places();  
             this.infowindow = new kakao.maps.InfoWindow({zIndex:1});
             //console.log(this.map);
+            this.map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);    
+
 
         },
         searchPlaces() {
@@ -118,6 +118,7 @@ export default {
             listStr = '';
             
             // 검색 결과 목록에 추가된 항목들을 제거합니다
+            this.removeAllChildNods(listEl);
 
             // 지도에 표시되고 있는 마커를 제거합니다
             this.removeMarker();
@@ -246,8 +247,11 @@ export default {
             }
             paginationEl.appendChild(fragment);
         },
-        
-
+        removeAllChildNods(el) {   
+            while (el.hasChildNodes()) {
+                el.removeChild (el.lastChild);
+            }
+        }
     }
 };
 </script>
