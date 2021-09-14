@@ -22,7 +22,6 @@ export default {
   computed: {
   },
   created() {
-    this.summarize();
   },
   mounted() {
     this.drawMap();
@@ -32,18 +31,14 @@ export default {
     // 선택된 지역구
     selectProvince(province) {
       if(province) {
-        console.log(province);
-        console.log(this.findCandidate(province.SGG_Code));
-        province.candidate = this.findCandidate(province.SGG_Code);
+        province.name = this.findCandidate(province.CTP_KOR_NM);
       }
       this.province = province;
     },
-
     partyColor(code) {
       let color = null;
       return color;
     },
-
     drawMap() {
       // 지도정보
       const geojson = MAP_GEOJSON;
@@ -104,8 +99,8 @@ export default {
       const _this = this;
       // Get province color
       function fillFn(d){
-        console.log(d, nameLength(d));
-        console.log(d.properties);
+        // console.log(d, nameLength(d));
+        // console.log(d.properties);
 
         const pcolor = _this.partyColor(d.properties.SGG_Code);
         if(pcolor) {
@@ -115,30 +110,16 @@ export default {
         return color(nameLength(d));
       }
 
-      function clicked(d) {
-        var x, y, k;
-
-        // Compute centroid of the selected path
-        if (d && centered !== d) {
-          var centroid = path.centroid(d);
-          x = centroid[0];
-          y = centroid[1];
-          k = 4;
-          centered = d;
-          _this.openInfo(d.properties);
-        } else {
-          x = width / 2;
-          y = height / 2;
-          k = 1;
-          centered = null;
-          _this.closeInfo();
-        }
+      function clicked(province) {
+        
+        console.log(province);
 
         // Highlight the clicked province
         mapLayer.selectAll('path')
           .style('fill', function(d){
             return centered && d===centered ? '#D5708B' : fillFn(d);
         });
+
       }
 
       function mouseover(d){
