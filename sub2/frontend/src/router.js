@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Meta from 'vue-meta'
-
+import { mapGetters } from "vuex";
 Vue.use(Router);
 Vue.use(Meta)
 
@@ -64,6 +64,18 @@ export default new Router({
       name: "map",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/Map.vue")
-    }
+    },
+    {
+      path: "/infodetail",
+      name: "infodetail",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/InfoDetail.vue")
+    },
+    {
+      path: "/reviewwrite",
+      name: "reviewwrite",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/ReviewWrite.vue")
+    },
   ]
 });
