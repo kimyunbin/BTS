@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <v-navigation-drawer v-model="drawer" absolute temporary app width="150" height="340">
+    <v-navigation-drawer v-model="drawer" absolute temporary app width="150" height="340">
       <v-list class="pt-4">
         <v-list-tile active-class="blue--text" to="/">
           <v-list-tile-content>
@@ -28,7 +28,7 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
     <v-toolbar flat dense color="transparent" scroll-off-screen>
       <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline">
