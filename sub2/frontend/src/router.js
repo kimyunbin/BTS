@@ -50,6 +50,12 @@ export default new Router({
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/satisfaction/Map.vue")
     },
+    {
+      path: "/jeju",
+      name: "jeju",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/satisfaction/Jeju.vue")
+    },
 
   ]
 });

@@ -7,7 +7,7 @@
 <script>
 import * as d3 from 'd3';
 
-const MAP_GEOJSON = require('./do.json'); // json 파일 입력시 해당지역 지도 출력
+const MAP_GEOJSON = require('./jeju.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
   components: {
@@ -156,14 +156,13 @@ export default {
       mapLayer
         .selectAll('path')
         .data(geojson.features)
-        .enter().append('path')
+        .enter().append('path') 
         .attr('d', path)
         .attr('vector-effect', 'non-scaling-stroke')
         .style('fill', fillFn)
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
-        // function() {window.open("./jeju")}
 
     }
   }
