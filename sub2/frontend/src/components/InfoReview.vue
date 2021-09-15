@@ -13,7 +13,7 @@
         </div>
         
         <h6>작성일: {{review.write_date}}</h6>
-        <h7>이 리뷰는 {{review.userid}}님의 개인 의견이며 저희 서비스 의견과 무관합니다.</h7>
+        <h6>이 리뷰는 {{review.userid}}님의 개인 의견이며 저희 서비스 의견과 무관합니다.</h6>
       </div>
     </v-card-title>
     <br>
@@ -34,7 +34,6 @@ export default {
     }
   },
   created() {
-    console.log(this.review.evaluate);
     this.rating=this.review.evaluate;
   },
   data() {
