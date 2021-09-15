@@ -29,7 +29,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar flat dense color="transparent" scroll-off-screen>
+    <v-toolbar flat dense color="transparent">
       <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline">
         <span class="font-weight-bold"><b>Best Trip Service</b></span>
