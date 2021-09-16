@@ -85,7 +85,7 @@ DATABASES = {
         'NAME':'ssafy_web_db',
         'USER':'root',
         'PASSWORD':'root1234',
-        'HOST':'j5c203.p.ssafy.io',
+        'HOST':'127.0.0.1',
         'PORT':'3306',
     }
 }
