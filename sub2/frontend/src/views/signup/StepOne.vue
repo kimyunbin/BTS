@@ -53,22 +53,23 @@
         <div class="field">
             <v-text-field
             :type="'password'"
-            name="passwordConfirm"
+            name="age"
             color="blue"
             background-color="transparent"
-            v-model="password_confirm"
+            v-model="age"
             label="나이"
             ></v-text-field>
         </div>
         <div class="field">
-            <v-text-field
-            :type="'password'"
-            name="passwordConfirm"
-            color="blue"
-            background-color="transparent"
-            v-model="password_confirm"
+            <v-select
+            v-model="gender"
+            :items="gender"
+            :error-messages="selectErrors"
             label="성별"
-            ></v-text-field>
+            required
+            @change="$v.select.$touch()"
+            @blur="$v.select.$touch()"
+            ></v-select>
         </div>
         <v-btn @click="clear">초기화</v-btn>
         </form>
@@ -89,13 +90,18 @@
         mixins: [validationMixin],
         data() {
             return {
-            name: "",
-            email: "",
-            password: "",
-            password_confirm:"",
-            error: {
-                password_confirm: false,
-            },
+                name: "",
+                email: "",
+                password: "",
+                password_confirm:"",
+                error: {
+                    password_confirm: false,
+                },
+                gender: [
+                    '남성',
+                    '여성',
+                ],
+                age: "",
             };
         },
         validations: {
@@ -119,8 +125,8 @@
             },
             clickedNext(val) {
                 console.log(val);
-                if(val === true) {
-                    this.$v.form.$touch();
+                if(val === true | false) {
+                    this.$v.data.$touch();
                 }
             },
             password_confirm: function(v){

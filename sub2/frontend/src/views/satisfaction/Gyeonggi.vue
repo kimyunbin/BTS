@@ -7,7 +7,7 @@
 <script>
 import * as d3 from 'd3';
 
-const MAP_GEOJSON = require('./jeju.json'); // json 파일 입력시 해당지역 지도 출력
+const MAP_GEOJSON = require('./gyeonggi.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
   components: {
@@ -108,7 +108,7 @@ export default {
       function clicked(d) {
         
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
-        name = "제주특별자치도 " + name
+        name = "경기도 " + name
           console.log(name)
       }
 

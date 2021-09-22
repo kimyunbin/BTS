@@ -35,8 +35,8 @@
                     {
                         icon: 'mail',
                         name: 'first',
-                        title: 'Sample title 1',
-                        subtitle: 'Subtitle sample',
+                        title: '회원가입',
+                        subtitle: '기본정보',
                         component: StepOne,
                         completed: false
 
@@ -44,19 +44,51 @@
                     {
                         icon: 'report_problem',
                         name: 'second',
-                        title: 'Sample title 2',
-                        subtitle: 'Subtitle sample',
+                        title: '경비',
+                        subtitle: '당신의 여행지갑은?',
                         component: StepTwo,
                         completed: false
                     },
                     {
                         icon: 'announcement',
                         name: 'third',
-                        title: 'Sample title 3',
-                        subtitle: 'Subtitle sample',
+                        title: '여행인원',
+                        subtitle: '몇명이서 즐기는?',
                         component: StepOne,
                         completed: false
-                    }
+                    },
+                    {
+                        icon: 'announcement',
+                        name: 'fourth',
+                        title: '동반자',
+                        subtitle: '누구랑 즐기는?',
+                        component: StepOne,
+                        completed: false
+                    },
+                    {
+                        icon: 'announcement',
+                        name: 'fifth',
+                        title: '교통수단',
+                        subtitle: '여행지 교통',
+                        component: StepOne,
+                        completed: false
+                    },
+                    {
+                        icon: 'announcement',
+                        name: 'sixth',
+                        title: '여행지 선택이유',
+                        subtitle: '왜 하필 그곳?',
+                        component: StepOne,
+                        completed: false
+                    },
+                    {
+                        icon: 'announcement',
+                        name: 'seventh',
+                        title: '여행활동',
+                        subtitle: '무엇을 즐기나요?',
+                        component: StepOne,
+                        completed: false
+                    },
                 ],
                 activeStep: 0
             }

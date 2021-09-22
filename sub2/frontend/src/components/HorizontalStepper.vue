@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import translations from "../api/Translations.js";
+import translations from "../assets/js/Translations.js";
 
 export default {
   filters: {
@@ -235,7 +235,7 @@ export default {
 };
 </script>
 
-<style src="../api/HorizontalStepper.scss" scoped lang="scss">
+<style src="../assets/css/HorizontalStepper.scss" scoped lang="scss">
 
 </style>
 <style scoped>

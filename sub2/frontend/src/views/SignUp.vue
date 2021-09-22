@@ -57,11 +57,30 @@
           ></v-text-field>
           <div style="color:red" v-if="error.password_confirm">{{error.password_confirm}}</div>
 
+          <v-select
+            v-model="select"
+            :items="gender"
+            :rules="[v => !!v || '성별을 선택해 주세요']"
+            label="성별"
+            required
+            @change="$v.select.$touch()"
+            @blur="$v.select.$touch()"
+          ></v-select>
+
+          <v-text-field
+            type="number"
+            name="age"
+            color="blue"
+            background-color="transparent"
+            v-model="age"
+            label="나이"
+          ></v-text-field>
+
           <v-btn
             large flat to="/signupquestion"
             color="blue"
             class="white--text"
-            :disabled=" (name==''||email==''||password=='' || password !== password_confirm)"
+            :disabled=" (name=='' || email=='' || password=='' || password !== password_confirm || gender=='' || age=='')"
           >다음으로</v-btn>
           
           <v-btn @click="clear">초기화</v-btn>
@@ -85,7 +104,9 @@ export default {
   validations: {
     name: { required, maxLength: maxLength(8) },
     email: { required, email },
-    password: {required, minLength: minLength(8)}
+    password: { required, minLength: minLength(8) },
+    age: { required },
+    gender: { required },
   },
   data() {
     return {
@@ -96,6 +117,11 @@ export default {
       error: {
         password_confirm: false,
       },
+      gender: [
+        '남성',
+        '여성',
+      ],
+      age: "",
     };
   },
   methods: {
@@ -117,7 +143,6 @@ export default {
       !this.$v.email.required && errors.push("이메일을 입력해주세요.");
       return errors;
     },
-    
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
@@ -143,6 +168,8 @@ export default {
       this.body = "";
       this.password = "";
       this.password_confirm = "";
+      // this.gender = null;
+      this.age = "";
     },
     checkForm() {
       if (this.password !== this.password_confirm)

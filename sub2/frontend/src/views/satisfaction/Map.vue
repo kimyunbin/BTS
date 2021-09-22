@@ -28,7 +28,7 @@ export default {
   },
 
   methods: {
-    // 선택된 지역구
+    // 선택된 지역
     selectProvince(province) {
       this.province = province;
     },
@@ -69,7 +69,7 @@ export default {
       // 지도가 그려지는 그래픽 노드
       const mapLayer = g.append('g').classed('map-layer', true);
       // 아이콘이 그려지는 그래픽 노드
-      const iconsLayer = g.append('g').classed('icons-layer', true);
+      const labelLayer = g.append('g').classed('label-layer', true);
 
       // 지도의 출력 방법을 선택(메로카토르)
       let projection = d3.geoMercator()
@@ -96,8 +96,6 @@ export default {
       const _this = this;
       // Get province color
       function fillFn(d){
-        // console.log(d, nameLength(d));
-        // console.log(d.properties);
 
         const pcolor = _this.partyColor(d.properties.SGG_Code);
         if(pcolor) {
@@ -107,16 +105,62 @@ export default {
         return color(nameLength(d));
       }
 
-      function clicked(province) {
-        
-        console.log(province.path[0]);
-
-        // Highlight the clicked province
-        // mapLayer.selectAll('path')
-        //   .style('fill', function(d){
-        //     return centered && d===centered ? '#D5708B' : fillFn(d);
-        // });
-
+      function clicked(d) {
+        let name = d.path[0]["__data__"].properties["CTP_KOR_NM"];
+          console.log(name)
+          
+          if (name === "강원도") {
+            location.href ="http://localhost:8080/gangwon";
+          }
+          if (name === "경기도") {
+            location.href ="http://localhost:8080/gyeonggi";
+          }
+          if (name === "서울특별시") {
+            location.href ="http://localhost:8080/seoul";
+          }
+          if (name === "인천광역시") {
+            location.href ="http://localhost:8080/incheon";
+          }
+          if (name === "경상북도") {
+            location.href ="http://localhost:8080/gyeongbuk";
+          }
+          if (name === "충청북도") {
+            location.href ="http://localhost:8080/chungbuk";
+          }
+          if (name === "세종특별자치시") {
+            location.href ="http://localhost:8080/sejong";
+          }
+          if (name === "대전광역시") {
+            location.href ="http://localhost:8080/daejeon";
+          }
+          if (name === "충청남도") {
+            location.href ="http://localhost:8080/chungnam";
+          }
+          if (name === "대구광역시") {
+            location.href ="http://localhost:8080/daegu";
+          }
+          if (name === "울산광역시") {
+            location.href ="http://localhost:8080/ulsan";
+          }
+          if (name === "부산광역시") {
+            location.href ="http://localhost:8080/busan";
+          }
+          if (name === "경상남도") {
+            location.href ="http://localhost:8080/gyeongnam";
+          }
+          if (name === "전라북도") {
+            location.href ="http://localhost:8080/jeonbuk";
+          }
+          if (name === "광주광역시") {
+            location.href ="http://localhost:8080/gwangju";
+          }
+          if (name === "전라남도") {
+            location.href ="http://localhost:8080/jeonnam";
+          }
+          if (name === "제주특별자치도") {
+            location.href ="http://localhost:8080/jeju";
+          }
+          
       }
 
       function mouseover(d){
@@ -163,7 +207,6 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
-        // function() {window.open("./jeju")}
 
     }
   }
@@ -175,10 +218,6 @@ export default {
 .map-wrapper {
   position:relative;
   text-align: center;
-
-  // svg {
-  //   border: 1px solid #aaaaaa;
-  // }
 
   .province-title {
     position: absolute;
