@@ -1,6 +1,7 @@
 from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from .models import City
 
 User = get_user_model()
 
@@ -15,3 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         exclude = ('profile','authenticated')
         # fields = ('username', 'password','nickname')
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = '__all__'
