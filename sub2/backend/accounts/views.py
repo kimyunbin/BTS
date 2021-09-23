@@ -2,8 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import UserSerializer
-
-
+from .models import User
 
 
 @api_view(['POST'])
@@ -20,3 +19,11 @@ def signup(request):
         # print(user.password)
     # password는 직렬화 과정에는 포함 되지만 → 표현(response)할 때는 나타나지 않는다.
     return Response( {"status": "success"},status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def checkusername(request):
+    username = request.data['username']
+    if User.objects.filter(username=username):
+        return Response({"status":"fail"}, status = status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"status":"success"},status=status.HTTP_201_CREATED)
