@@ -16,7 +16,12 @@ class User(AbstractUser):
     sex = models.BooleanField(null=True)
     authenticated = models.BooleanField(null=True)
 
-    
+class City(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True)
+    state = models.CharField(max_length=10)
+    city = models.CharField(max_length=10)
+    satis = models.FloatField()
+    code = models.IntegerField()    
 
     
     
