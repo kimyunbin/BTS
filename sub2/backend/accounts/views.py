@@ -1,10 +1,15 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
-from .serializers import UserSerializer
-from .models import City
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserSerializer, CitySerializer
 from django.contrib.auth import get_user_model
-from .models import User
+from django.shortcuts import get_list_or_404, get_object_or_404
+from django.conf import settings
+from .models import User, City
+
+import jwt
 import os
 import joblib
 import pandas as pd
@@ -70,3 +75,17 @@ def checkusername(request):
         return Response({"status":"fail"}, status = status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"status":"success"},status=status.HTTP_201_CREATED)
+
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET','POST'])
+def recommendcity(request):
+    token = request.headers['Authorization'].split()[1]
+    SECRET_KEY = settings.SECRET_KEY
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    user = get_object_or_404(User, username=payload["username"])
+    print(user)
+    print(user.sex)
+    city = get_list_or_404(City.objects.order_by('-satis'),user=user.pk)
+    serializer = CitySerializer(city, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
