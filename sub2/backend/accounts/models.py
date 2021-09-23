@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     username = models.EmailField(max_length=255, unique=True)
-    nickname =  models.CharField(max_length=50)
+    nickname =  models.CharField(max_length=50, unique=True)
     budget = models.IntegerField(null=True)
     travelers = models.IntegerField(null=True)
     companion = models.BooleanField(null=True)
