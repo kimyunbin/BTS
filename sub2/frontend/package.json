@@ -10,11 +10,18 @@
   "dependencies": {
     "aos": "^2.3.4",
     "bootstrap-vue": "^2.21.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "core-js": "^2.6.9",
+    "d3": "^7.0.1",
     "dragger": "^1.3.3",
     "gsap": "^3.7.1",
     "jwt-decode": "^3.1.2",
     "marked": "^0.7.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10.2.0",
     "storyblok-js-client": "^1.0.32",
     "storyblok-vue": "^1.0.5",
     "vue": "^2.6.6",
@@ -26,10 +33,15 @@
     "vue-router": "^3.1.3",
     "vue-star": "0.0.4",
     "vue-star-rating": "^1.7.0",
+<<<<<<< HEAD
     "vue-stars": "^2.0.0",
+=======
+    "vueperslides": "^3.3.2",
+    "vue-sequential-entrance": "^1.1.3",
+    "vue-stepper": "^1.4.2",
+>>>>>>> df36d4534a74d97d68fbfd42ab05b11e517cd178
     "vue-typer": "^1.2.0",
     "vuelidate": "^0.7.4",
-    "vueperslides": "^3.3.2",
     "vuetify": "^1.5.18",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.0.0"
@@ -55,9 +67,11 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "@vue/standard"
+      "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

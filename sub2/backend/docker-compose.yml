@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: "2"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./static:/usr/src/app/staticfiles
+    ports:
+      - "8000:8000"

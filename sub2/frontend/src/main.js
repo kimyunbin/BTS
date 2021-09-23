@@ -9,6 +9,12 @@ import store from './store';
 import AOS from 'aos';
 import "aos/dist/aos.css";
 import VueStar from 'vue-star'
+import SequentialEntrance from 'vue-sequential-entrance'
+import 'vue-sequential-entrance/vue-sequential-entrance.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 Vue.config.productionTip = false
 const isProd = process.env.NODE_ENV === "production"
 
@@ -35,3 +41,8 @@ Vue.use(VueAnalytics, {
     sendHitTask: isProd
   }
 })
+Vue.use(SequentialEntrance);
+
+library.add(faUserSecret)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.config.productionTip = false
