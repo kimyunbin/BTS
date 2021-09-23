@@ -9,7 +9,7 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     is_login: false, // 로그인 여부
-    user_info: null, //현재 로그인된 유저정보
+    user_info: null, // 현재 로그인된 유저정보
     token: "",
     select_place: null, //선택 장소
     select_info: null , // 선택 정보(즐길거리, 숙소, 맛집)
