@@ -9,10 +9,13 @@ Vue.use(Meta)
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
   routes: [{
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
     
     {

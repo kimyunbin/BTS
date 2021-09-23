@@ -1,35 +1,49 @@
 <template>
     <div>
         <div class="map_wrap">
-        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-    
-        <div id="menu_wrap" class="bg_white">
-            <div class="option">
-                <div>
-                    <form>
-                        <v-layout row wrap justify-center align-center>
-                        장소 : 
-                    
-                        <v-text-field
-                            color="green"
-                            background-color="transparent"
-                            name="value"
-                            v-model=place
-                            label="장소입력"
-                            width="20px"
-                            @keydown.enter.prevent="searchPlaces()"
-                        ></v-text-field>
-                    
-                        <v-btn dark small @click="searchPlaces()">검색</v-btn> 
-                        </v-layout>
-                    </form>
+            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+            
+            <div id="menu_wrap" class="bg_white">
+                <div class="option">
+                    <div>
+                        <form>
+                            <v-layout row wrap justify-center align-center>
+                            장소 : 
+                        
+                            <v-text-field
+                                color="green"
+                                background-color="transparent"
+                                name="value"
+                                v-model=place
+                                label="장소입력"
+                                width="20px"
+                                @keydown.enter.prevent="searchPlaces()"
+                            ></v-text-field>
+                        
+                            <v-btn dark small @click="searchPlaces()">검색</v-btn> 
+                            </v-layout>
+                        </form>
+                    </div>
                 </div>
+                <hr>
+                <ul id="placesList"></ul>
+                <div id="pagination"></div>
             </div>
-            <hr>
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
         </div>
+
+        <div v-if="myRoad.length">
+            <v-flex
+                v-for="(road, idx) in this.myRoad"
+                :key="idx"
+                xs12 sm6 md4 lg3 xl3
+            >
+                <h3>{{road.title}}</h3>
+                <h3>{{road.lat}}</h3>
+                <h3>{{road.lng}}</h3>
+                <br>
+            </v-flex>
         </div>
+        <v-btn @click="makeLine()"></v-btn>
     </div>
 </template>
 
@@ -38,12 +52,16 @@ export default {
     created(){
         
     },
+    computed:{
+        
+    },
     mounted() {
         window.kakao && window.kakao.maps
         ? this.initMap()
         : this.addKakaoMapScript();
         this.searchPlaces();
 
+        
     },
     data() {
         return{
@@ -52,11 +70,31 @@ export default {
             ps : {},
             infowindow : {},
             place: "강남",
+            myRoad :[
+            
+            ],
         };
     },
     methods: {
+        makeLine(){
+            
+            var linePath = [];
+            
+            for(var i = 0; i< this.myRoad.length; i++){
+                linePath.push( new kakao.maps.LatLng(this.myRoad[i].lng,this.myRoad[i].lat));
+            }
+            
+            var polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 5, // 선의 두께 입니다
+                strokeColor: '#0000FF', // 선의 색깔입니다
+                strokeOpacity: 0.9, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid' // 선의 스타일입니다
+            });
+            polyline.setMap(this.map);  
+        },
         check(){
-            console.log(this.value2);
+            console.log(this.myRoad);
         },
         addKakaoMapScript() {
             const script = document.createElement("script");
@@ -76,6 +114,10 @@ export default {
             this.map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
             this.ps = new kakao.maps.services.Places();  
             this.infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+            // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+            
+
         },
         searchPlaces() {
             var keyword = this.place;
@@ -106,6 +148,29 @@ export default {
                 return;
             }
         },
+
+        displayInfowindow(title, infowindow, marker) {
+            var content = 
+                            '<div class="wrap">' + 
+                            '    <div class="info2">' + 
+                            '        <div class="title" style="padding:20px;z-index:1;">' + 
+                                            title      + 
+                            
+                            '        </div>' + 
+                            '        <div class="body">' + 
+                            '        </div>' + 
+                            '    </div>' +    
+                            '</div>';
+
+                        infowindow.setContent(content);
+                        infowindow.open(this.map, marker);
+
+
+            //console.log("추가되었습니다.");
+            //alert("추가되었습니다.");
+            //this.myRoad.push(title);
+        },
+        
         displayPlaces(places) {
             var listEl = document.getElementById('placesList'), 
             menuEl = document.getElementById('menu_wrap'),
@@ -118,9 +183,14 @@ export default {
 
             // 지도에 표시되고 있는 마커를 제거합니다
             this.removeMarker();
-            var infowindow =  new kakao.maps.InfoWindow({zIndex:1});
+            var infowindow =  new kakao.maps.InfoWindow({
+                zIndex:1,
+            });
+            
             var map = this.map;
-            for ( var i=0; i<places.length; i++ ) {
+            var func = this.displayInfowindow;
+            var addRoad = this.addMyRoad;
+            for ( var i=0; i < places.length; i++ ) {
                 
                 // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
@@ -133,41 +203,46 @@ export default {
 
                 // 마커와 검색결과 항목에 mouseover 했을때
                 // 해당 장소에 인포윈도우에 장소명을 표시합니다
-                // mouseout 했을 때는 인포윈도우를 닫습니다
-                
-                (function(marker, title) {
-                    
-                    kakao.maps.event.addListener(marker, 'mouseover', function() {
-                        var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-                        infowindow.setContent(content);
-                        infowindow.open(map, marker);
+                // mouseout 했을 때는   인포윈도우를 닫습니다
+                (function(marker, title, lat, lng) {
+                    kakao.maps.event.addListener(marker, 'mouseover', function(){
+                        func(title,infowindow,marker);
                     });
                     
-
+                    
                     kakao.maps.event.addListener(marker, 'mouseout', function() {
                         infowindow.close();
+                    });
+
+                    kakao.maps.event.addListener(marker, 'click',  function(){
+                        console.log(marker);
+                        addRoad(title,lat,lng);
                     });
 
                     itemEl.onmouseover =  function () {
                         var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
                         infowindow.setContent(content);
                         infowindow.open(map, marker);
+                        
                     };
+                    itemEl.onclick = function(){
+                        func(title, infowindow, marker);
+                    }
 
                     itemEl.onmouseout =  function () {
                         infowindow.close();
                     };
-                })(marker, places[i].place_name);
-
+                })(marker, places[i].place_name, places[i].x, places[i].y);
+                
                 fragment.appendChild(itemEl);
             }
-
             // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
             listEl.appendChild(fragment);
-            menuEl.scrollTop = 0;
+            menuEl.scrollTop  =0;
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             this.map.setBounds(bounds);
         },
+        
         getListItem(index, places) {
             var el = document.createElement('li'),
             itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
@@ -181,9 +256,8 @@ export default {
                 itemStr += '    <span>' +  places.address_name  + '</span>'; 
             }
                         
-            itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+            itemStr += '  <span class="tel">' + places.phone  + '</span>'+
                         '</div>';           
-
             el.innerHTML = itemStr;
             el.className = 'item';
 
@@ -247,7 +321,17 @@ export default {
             while (el.hasChildNodes()) {
                 el.removeChild (el.lastChild);
             }
-        }
+        },
+
+        addMyRoad(title2, lat2, lng2){
+            alert("추가되었습니다.");
+            const road ={
+                title:title2,
+                lat : lat2,
+                lng: lng2
+            }  
+            this.myRoad.push(road);
+        },
     }
 };
 </script>
@@ -289,4 +373,7 @@ export default {
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
+.info2 .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+
+
 </style>
