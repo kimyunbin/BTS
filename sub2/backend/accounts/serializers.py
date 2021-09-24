@@ -20,4 +20,4 @@ class UserSerializer(serializers.ModelSerializer):
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = '__all__'
+        fields = ('state','city','code','satis')
