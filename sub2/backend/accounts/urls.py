@@ -7,7 +7,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', obtain_jwt_token), # login jwt 토큰 발급
     path('check/',views.checkusername, name='checkusername'),
-    path('usertest/',views.usertest)
-    
+    path('recommendcity/',views.recommendcity),
+    path('usertest/',views.usertest),
 
 ]
