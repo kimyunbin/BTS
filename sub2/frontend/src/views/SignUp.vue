@@ -77,7 +77,7 @@
           ></v-text-field>
 
           <v-btn
-            large flat to="/signupquestion"
+            large flat to="/signup2"
             color="blue"
             class="white--text"
             :disabled=" (name=='' || email=='' || password=='' || password !== password_confirm || gender=='' || age=='')"
@@ -117,6 +117,7 @@ export default {
       error: {
         password_confirm: false,
       },
+      select: "",
       gender: [
         '남성',
         '여성',
