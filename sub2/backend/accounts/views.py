@@ -74,3 +74,8 @@ def checkusername(request):
         return Response({"status":"fail"}, status = status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"status":"success"},status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
+def usertest(request):
+    print(request.user)
+    return Response({'sttus':'ss'})
