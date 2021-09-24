@@ -185,6 +185,11 @@ export default new Router({
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/satisfaction/Jeonnam.vue")
     },
-
+    {
+      path: "/otherroad",
+      name: "otherroad",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/OtherRoad.vue")
+    },
   ]
 });

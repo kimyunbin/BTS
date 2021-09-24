@@ -12,7 +12,9 @@ export default new Vuex.Store({
     user_info: null, // 현재 로그인된 유저정보
     token: "",
     select_place: null, //선택 장소
-    select_info: null , // 선택 정보(즐길거리, 숙소, 맛집)
+    select_info: null, // 선택 정보(즐길거리, 숙소, 맛집)
+    other_road: [], // 다른 사람들의 경로
+    select_road: [], // Home.vue에서 선택된 경로
   },
 
   getters: {
@@ -27,6 +29,12 @@ export default new Vuex.Store({
     },
     select_info(state) {
       return state.select_info;
+    },
+    other_road(state) {
+      return state.other_road;
+    },
+    select_road(state) {
+      return state.select_road;
     },
   },
   mutations: {
@@ -50,6 +58,12 @@ export default new Vuex.Store({
     },
     SET_SELECT_INFO(state, data) {
       state.select_info = data;
+    },
+    SET_SELECT_ROAD(state, data) {
+      state.select_road = data;
+    },
+    CLEAR_OTHER_ROAD(state) {
+      state.other_road = [];
     },
   },
   actions: {
@@ -84,5 +98,13 @@ export default new Vuex.Store({
       this.state.select_info = {};
       context.commit("SET_SELECT_INFO", payload);
     },
+    SET_SELECT_ROAD(context, payload) {
+      this.select_road = [];
+      context.commit("SET_SELECT_ROAD", payload);
+    },
+    CLEAR_OTHER_ROAD(context) {
+      this.select_road = [];
+      context.commit("CLEAR_OTHER_ROAD");
+    }
   }
 });
