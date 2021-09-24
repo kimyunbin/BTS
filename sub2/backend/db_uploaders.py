@@ -102,7 +102,7 @@ def tourist_gwuanghun():
 from accounts.models import *
 from tour.models import *
 def review():
-    CSV_PATH = './review.csv'	# 3. csv 파일 경로
+    CSV_PATH = './review2.csv'	# 3. csv 파일 경로
     
     
     with open(CSV_PATH, newline='') as csvfile:	# 4. newline =''
@@ -141,7 +141,7 @@ def images():
                     Touristspot = Touristspot.objects.get(pk=row['Spot_pk']), 
                     images = row['ImgURL']
                 )
-tourist_youngje()
-tourist_gwuanghun()
-review()
+# tourist_youngje()
+# tourist_gwuanghun()
+# review()
 images()

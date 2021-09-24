@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from .models import Touristspot
-from .serializers import tourSerializer
+from .models import Review
+from .serializers import reviewSerializer, tourSerializer
 # Create your views here.
 from rest_framework.decorators import api_view
 
@@ -9,9 +10,9 @@ from rest_framework.decorators import api_view
 def tour_detail(request):
     '''
     지역코드를 path_variable로 받는다. 
-    광역시권은 2자리, 아닌곳은 5자리 code로 받는다.
+    부산광역시, 시흥시, 서울특별시등 xx시로 받는다.
     지역의 관광지,문화시설,레포츠,숙박,음식을 리뷰순으로 정렬하여 20개 반환한다. 
-    부산광역시, 시흥시, 서울특별시 
+    
     '''
     code = request.GET.get('code')
 
@@ -39,4 +40,15 @@ def tour_detail(request):
     }
     return Response(context)
 
+@api_view(('GET',))
+def tour_review(request, review_pk):
 
+    review = Review.objects.filter(Touristspot = review_pk)
+
+    serialer = reviewSerializer(data = review, many= True)
+    print(serialer.is_valid())
+
+    context ={
+        'review': serialer.data
+    }
+    return Response(context)
