@@ -1,6 +1,6 @@
 <template>
     <div style="padding: 2rem 3rem; text-align: left;">
-        <h5><b>당신이 선호하는 여행 인원 수는 얼마나 되나요?</b></h5>
+        <h5><b>당신이 선호하는 여행지 교통수단은 무엇인가요?</b></h5>
         <br>
         <div class="field">
             <sequential-entrance fromRight>
@@ -23,11 +23,11 @@
 <script>
     import {validationMixin} from 'vuelidate'
     import {required, email} from 'vuelidate/lib/validators'
-    import one from "@/assets/img/인원/1.png";
-    import two from "@/assets/img/인원/2.png";
-    import three from "@/assets/img/인원/3.png";
-    import four from "@/assets/img/인원/4.png";
-    import five from "@/assets/img/인원/5.png";
+    import one from "@/assets/img/교통수단/항공.jpeg";
+    import two from "@/assets/img/교통수단/지하철.jpeg";
+    import three from "@/assets/img/교통수단/관광버스.jpeg";
+    import four from "@/assets/img/교통수단/렌트카.jpeg";
+    import five from "@/assets/img/교통수단/기타.jpeg";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -37,22 +37,22 @@
                 img:[
                     one,
                     two,
-                    three,
                     four,
+                    three,
                     five,
                 ],
                 tooltip:[
-                    "혼자",
-                    "둘이서",
-                    "3명",
-                    "4명",
-                    "5명 이상",
+                    "항공",
+                    "지하철",
+                    "렌트카",
+                    "관광버스",
+                    "기타",
                 ],
-                travelers : '',
+                transportations : '',
             }
         },
         validations: {
-            travelers: {
+            transportations: {
                 required
             },
         },
@@ -93,25 +93,25 @@
                             if($(this).hasClass("filter")) {
                                 $(this).removeClass("filter");
                                 if($(".card").index(this) === 0) {
-                                    this.travelers = 1;
+                                    this.transportations = 1;
                                 }
                                 else if($(".card").index(this) === 1) {
-                                    this.travelers = 2;
+                                    this.transportations = 2;
                                 } 
                                 else if($(".card").index(this) === 2) {
-                                    this.travelers = 3;
+                                    this.transportations = 4;
                                 } 
                                 else if($(".card").index(this) === 3) {
-                                    this.travelers = 4;
+                                    this.transportations = 3;
                                 } 
                                 else {
-                                    this.travelers = 5;
+                                    this.transportations = 5;
                                 } 
-                                console.log(this.travelers);        
+                                console.log(this.transportations);       
                             } else {
                                 $(this).addClass("filter");
-                                this.travelers = '';
-                                console.log(this.travelers)        
+                                this.transportations = '';
+                                console.log(this.transportations)      
                             }
                         });
                     });

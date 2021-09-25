@@ -4,7 +4,7 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8 is-offset-2">
-                    <horizontal-stepper :steps="demoSteps" @completed-step="completeStep" :top-buttons="true"
+                    <horizontal-stepper :steps="demoSteps" @completed-step="completeStep" :top-buttons="false"
                                         @active-step="isStepActive" @stepper-finished="alert"></horizontal-stepper>
                 </div>
             </div>
@@ -18,6 +18,11 @@
 
     import StepOne from './StepOne.vue';
     import StepTwo from './StepTwo.vue';
+    import StepThree from './StepThree.vue';
+    import StepFour from './StepFour.vue';
+    import StepFive from './StepFive.vue';
+    import StepSix from './StepSix.vue';
+    // import StepTwo from './Stepexample.vue';
 
     const teamUrl = 'https://github.com/PygmySlowLoris';
     const repoUrl = 'https://github.com/PygmySlowLoris/vue-stepper';
@@ -45,7 +50,7 @@
                         name: 'second',
                         title: '여행인원',
                         subtitle: '',
-                        component: StepOne,
+                        component: StepTwo,
                         completed: false
                     },
                     {
@@ -53,7 +58,7 @@
                         name: 'third',
                         title: '동반자',
                         subtitle: '',
-                        component: StepOne,
+                        component: StepThree,
                         completed: false
                     },
                     {
@@ -61,7 +66,7 @@
                         name: 'fourth',
                         title: '교통수단',
                         subtitle: '',
-                        component: StepOne,
+                        component: StepFour,
                         completed: false
                     },
                     {
@@ -69,7 +74,7 @@
                         name: 'fifth',
                         title: '여행지 선택이유',
                         subtitle: '',
-                        component: StepOne,
+                        component: StepFive,
                         completed: false
                     },
                     {
@@ -77,7 +82,7 @@
                         name: 'sixth',
                         title: '여행활동',
                         subtitle: '',
-                        component: StepOne,
+                        component: StepSix,
                         completed: false
                     },
                 ],

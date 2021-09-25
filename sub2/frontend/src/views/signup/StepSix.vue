@@ -1,10 +1,10 @@
 <template>
     <div style="padding: 2rem 3rem; text-align: left;">
-        <h5><b>당신이 선호하는 여행 인원 수는 얼마나 되나요?</b></h5>
+        <h5><b>당신이 선호하는 여행활동은 무엇인가요?</b></h5>
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 11" :key="index" @click="onClick()">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -23,11 +23,17 @@
 <script>
     import {validationMixin} from 'vuelidate'
     import {required, email} from 'vuelidate/lib/validators'
-    import one from "@/assets/img/인원/1.png";
-    import two from "@/assets/img/인원/2.png";
-    import three from "@/assets/img/인원/3.png";
-    import four from "@/assets/img/인원/4.png";
-    import five from "@/assets/img/인원/5.png";
+    import one from "@/assets/img/활동/자연.png";
+    import two from "@/assets/img/활동/음식.png";
+    import three from "@/assets/img/활동/스포츠.png";
+    import four from "@/assets/img/활동/역사.png";
+    import five from "@/assets/img/활동/테마파크.png";
+    import six from "@/assets/img/활동/휴식.png";
+    import seven from "@/assets/img/활동/온천.png";
+    import eight from "@/assets/img/활동/쇼핑.png";
+    import nine from "@/assets/img/활동/문화.png";
+    import ten from "@/assets/img/활동/지역축제.png";
+    import eleven from "@/assets/img/활동/시티.png";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -40,19 +46,31 @@
                     three,
                     four,
                     five,
+                    six,
+                    seven,
+                    eight,
+                    nine,
+                    ten,
+                    eleven,
                 ],
                 tooltip:[
-                    "혼자",
-                    "둘이서",
-                    "3명",
-                    "4명",
-                    "5명 이상",
+                    "자연풍경",
+                    "음식",
+                    "레포츠",
+                    "역사유적지",
+                    "테마파크",
+                    "휴식",
+                    "온천",
+                    "쇼핑",
+                    "문화예술",
+                    "지역축제",
+                    "시티투어",
                 ],
-                travelers : '',
+                activity : '',
             }
         },
         validations: {
-            travelers: {
+            activity: {
                 required
             },
         },
@@ -93,25 +111,43 @@
                             if($(this).hasClass("filter")) {
                                 $(this).removeClass("filter");
                                 if($(".card").index(this) === 0) {
-                                    this.travelers = 1;
+                                    this.activity = 1;
                                 }
                                 else if($(".card").index(this) === 1) {
-                                    this.travelers = 2;
+                                    this.activity = 2;
                                 } 
                                 else if($(".card").index(this) === 2) {
-                                    this.travelers = 3;
+                                    this.activity = 3;
                                 } 
                                 else if($(".card").index(this) === 3) {
-                                    this.travelers = 4;
+                                    this.activity = 4;
+                                } 
+                                else if($(".card").index(this) === 4) {
+                                    this.activity = 5;
+                                } 
+                                else if($(".card").index(this) === 5) {
+                                    this.activity = 6;
+                                } 
+                                else if($(".card").index(this) === 6) {
+                                    this.activity = 7;
+                                } 
+                                else if($(".card").index(this) === 7) {
+                                    this.activity = 8;
+                                } 
+                                else if($(".card").index(this) === 8) {
+                                    this.activity = 9;
+                                } 
+                                else if($(".card").index(this) === 9) {
+                                    this.activity = 10;
                                 } 
                                 else {
-                                    this.travelers = 5;
+                                    this.activity = 11;
                                 } 
-                                console.log(this.travelers);        
+                                console.log(this.activity);        
                             } else {
                                 $(this).addClass("filter");
-                                this.travelers = '';
-                                console.log(this.travelers)        
+                                this.activity = '';
+                                console.log(this.activity)        
                             }
                         });
                     });
@@ -131,7 +167,7 @@
     border-radius: 10px;
     width: 160px;
     height: 100px;
-    margin: 1rem;
+    margin: 2rem 1rem;
 }
 .card {
     width: 160px;

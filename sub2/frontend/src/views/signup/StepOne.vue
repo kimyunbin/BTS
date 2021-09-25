@@ -74,7 +74,7 @@
             clickedNext(val) {
                 console.log(val);
                 if(val === true) {
-                    this.$v.form.$touch();
+                    this.$v.$touch();
                 }
             }
         },
@@ -82,7 +82,7 @@
             if(!this.$v.$invalid) {
                 this.$emit('can-continue', {value: true});
             } else {
-                this.$emit('can-continue', {value: false});
+                this.$emit('can-continue', {value: true});
             }
         },
         methods: {
@@ -90,15 +90,32 @@
                 $(".card").each(function ()
                     {
                         $(this).click(function () {                              
-                            if($(this).hasClass("filter")) {
-                                $(this).removeClass("filter");        
+                            if($(this).hasClass("filter") === true) {
+                                $(this).removeClass("filter");
+                                if($(".card").index(this) === 0) {
+                                    this.budget = 5;
+                                }
+                                else if($(".card").index(this) === 1) {
+                                    this.budget = 10;
+                                } 
+                                else if($(".card").index(this) === 2) {
+                                    this.budget = 20;
+                                } 
+                                else if($(".card").index(this) === 3) {
+                                    this.budget = 50;
+                                } 
+                                else {
+                                    this.budget = 100;
+                                } 
+                                // console.log(this.budget);
                             } else {
                                 $(this).addClass("filter");        
+                                this.budget = '';
+                                // console.log(this.budget)
                             }
                         });
                     });
-                // this.budget = 
-            }
+            },
         },
     }
 </script>

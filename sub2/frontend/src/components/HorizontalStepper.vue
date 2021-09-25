@@ -73,17 +73,41 @@ export default {
       default: function() {
         return [
           {
-            icon: "mail",
-            name: "first",
-            title: "Sample title 1",
-            subtitle: "Subtitle sample"
-          },
-          {
-            icon: "report_problem",
-            name: "second",
-            title: "Sample title 2",
-            subtitle: "Subtitle sample"
-          }
+                        icon: 'monetization_on',
+                        name: 'first',
+                        title: '경비',
+                        subtitle: '',
+                    },
+                    {
+                        icon: 'people',
+                        name: 'second',
+                        title: '여행인원',
+                        subtitle: '',
+                    },
+                    {
+                        icon: 'accessibility_new',
+                        name: 'third',
+                        title: '동반자',
+                        subtitle: '',
+                    },
+                    {
+                        icon: 'flight_land',
+                        name: 'fourth',
+                        title: '교통수단',
+                        subtitle: '',
+                    },
+                    {
+                        icon: 'search',
+                        name: 'fifth',
+                        title: '여행지 선택이유',
+                        subtitle: '',
+                    },
+                    {
+                        icon: 'flag',
+                        name: 'sixth',
+                        title: '여행활동',
+                        subtitle: '',
+                    }
         ];
       }
     },

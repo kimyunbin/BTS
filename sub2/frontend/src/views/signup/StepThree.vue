@@ -1,10 +1,10 @@
 <template>
     <div style="padding: 2rem 3rem; text-align: left;">
-        <h5><b>당신이 선호하는 여행 인원 수는 얼마나 되나요?</b></h5>
+        <h5><b>당신이 선호하는 여행 동반자는 누구인가요?</b></h5>
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="onClick()">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -23,11 +23,9 @@
 <script>
     import {validationMixin} from 'vuelidate'
     import {required, email} from 'vuelidate/lib/validators'
-    import one from "@/assets/img/인원/1.png";
-    import two from "@/assets/img/인원/2.png";
-    import three from "@/assets/img/인원/3.png";
-    import four from "@/assets/img/인원/4.png";
-    import five from "@/assets/img/인원/5.png";
+    import one from "@/assets/img/동반자/혼자.jpg";
+    import two from "@/assets/img/동반자/연인.jpg";
+    import three from "@/assets/img/동반자/가족.jpg";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -38,21 +36,17 @@
                     one,
                     two,
                     three,
-                    four,
-                    five,
                 ],
                 tooltip:[
-                    "혼자",
-                    "둘이서",
-                    "3명",
-                    "4명",
-                    "5명 이상",
+                    "혼자서",
+                    "연인이랑",
+                    "가족이랑",
                 ],
-                travelers : '',
+                companion : '',
             }
         },
         validations: {
-            travelers: {
+            companion: {
                 required
             },
         },
@@ -93,25 +87,19 @@
                             if($(this).hasClass("filter")) {
                                 $(this).removeClass("filter");
                                 if($(".card").index(this) === 0) {
-                                    this.travelers = 1;
+                                    this.companion = true;
                                 }
                                 else if($(".card").index(this) === 1) {
-                                    this.travelers = 2;
-                                } 
-                                else if($(".card").index(this) === 2) {
-                                    this.travelers = 3;
-                                } 
-                                else if($(".card").index(this) === 3) {
-                                    this.travelers = 4;
+                                    this.companion = false;
                                 } 
                                 else {
-                                    this.travelers = 5;
+                                    this.companion = null;
                                 } 
-                                console.log(this.travelers);        
+                                console.log(this.companion);        
                             } else {
                                 $(this).addClass("filter");
-                                this.travelers = '';
-                                console.log(this.travelers)        
+                                this.companion = '';
+                                console.log(this.companion)
                             }
                         });
                     });
@@ -131,7 +119,7 @@
     border-radius: 10px;
     width: 160px;
     height: 100px;
-    margin: 1rem;
+    margin: 1rem 3rem;
 }
 .card {
     width: 160px;
