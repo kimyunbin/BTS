@@ -5,7 +5,7 @@
             <div class="columns">
                 <div class="column is-8 is-offset-2">
                     <horizontal-stepper :steps="demoSteps" @completed-step="completeStep" :top-buttons="false"
-                                        @active-step="isStepActive" @stepper-finished="alert"></horizontal-stepper>
+                                        @active-step="isStepActive" @stepper-finished="check()"></horizontal-stepper>
                 </div>
             </div>
         </div>
@@ -22,6 +22,8 @@
     import StepFour from './StepFour.vue';
     import StepFive from './StepFive.vue';
     import StepSix from './StepSix.vue';
+    import { mapGetters } from "vuex";
+    import { mapState } from 'vuex';
     // import StepTwo from './Stepexample.vue';
 
     const teamUrl = 'https://github.com/PygmySlowLoris';
@@ -89,7 +91,12 @@
                 activeStep: 0
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                "select_budget", "select_travelers", "select_companion", "select_transportations", "select_selection", "select_activity", "select_user_signup"
+            ]),
+            ...mapState(["budget","travelers","companion","transportations","selection", "activity", "user_signup"]),
+        },
         methods: {
             completeStep(payload) {
                 this.demoSteps.forEach((step) => {
@@ -107,9 +114,11 @@
                     }
                 })
             },
-            alert(payload) {
-                alert('end')
-            }
+            check() {
+                this.$router.push("/signupresult")
+                // console.log(this.budget)
+            },
+
         }
     }
 </script>

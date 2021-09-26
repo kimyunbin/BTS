@@ -28,6 +28,7 @@
     import three from "@/assets/img/이유/가격.png";
     import four from "@/assets/img/이유/거리.png";
     import five from "@/assets/img/이유/숙박.png";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -72,7 +73,7 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // console.log(val);
                 if(val === true) {
                     this.$v.form.$touch();
                 }
@@ -84,6 +85,9 @@
             } else {
                 this.$emit('can-continue', {value: true});
             }
+        },
+        computed:{
+            ...mapGetters(["SET_SELECT_SELECTION"]),
         },
         methods: {
             onClick() {
@@ -107,16 +111,19 @@
                                 else {
                                     this.selection = 5;
                                 } 
-                                console.log(this.selection);        
+                                // console.log(this.selection);        
                             } else {
                                 $(this).addClass("filter");
                                 this.selection = '';
-                                console.log(this.selection)        
+                                // console.log(this.selection)        
                             }
                         });
                     });
-                // this.budget = 
-            }
+                    this.setSelection();
+            },
+            setSelection(){
+                this.$store.dispatch("SET_SELECT_SELECTION", this.selection);
+            },
         },
     }
 </script>

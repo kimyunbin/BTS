@@ -28,6 +28,7 @@
     import three from "@/assets/img/인원/3.png";
     import four from "@/assets/img/인원/4.png";
     import five from "@/assets/img/인원/5.png";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -72,7 +73,7 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // console.log(val);
                 if(val === true) {
                     this.$v.form.$touch();
                 }
@@ -84,6 +85,9 @@
             } else {
                 this.$emit('can-continue', {value: true});
             }
+        },
+        computed:{
+            ...mapGetters(["SET_SELECT_TRAVELERS"]),
         },
         methods: {
             onClick() {
@@ -107,16 +111,19 @@
                                 else {
                                     this.travelers = 5;
                                 } 
-                                console.log(this.travelers);        
+                                // console.log(this.travelers);        
                             } else {
                                 $(this).addClass("filter");
                                 this.travelers = '';
-                                console.log(this.travelers)        
+                                // console.log(this.travelers)        
                             }
                         });
                     });
-                // this.budget = 
-            }
+                    this.setTravelers();
+            },
+            setTravelers(){
+                this.$store.dispatch("SET_SELECT_TRAVELERS", this.travelers);
+            },
         },
     }
 </script>

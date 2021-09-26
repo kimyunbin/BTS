@@ -28,6 +28,7 @@
     import three from "@/assets/img/교통수단/관광버스.jpeg";
     import four from "@/assets/img/교통수단/렌트카.jpeg";
     import five from "@/assets/img/교통수단/기타.jpeg";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -72,7 +73,7 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // console.log(val);
                 if(val === true) {
                     this.$v.form.$touch();
                 }
@@ -84,6 +85,9 @@
             } else {
                 this.$emit('can-continue', {value: true});
             }
+        },
+        computed:{
+            ...mapGetters(["SET_SELECT_TRANSPORTATIONS"]),
         },
         methods: {
             onClick() {
@@ -107,16 +111,19 @@
                                 else {
                                     this.transportations = 5;
                                 } 
-                                console.log(this.transportations);       
+                                // console.log(this.transportations);       
                             } else {
                                 $(this).addClass("filter");
                                 this.transportations = '';
-                                console.log(this.transportations)      
+                                // console.log(this.transportations)      
                             }
                         });
                     });
-                // this.budget = 
-            }
+                    this.setTransportations();
+            },
+            setTransportations(){
+                this.$store.dispatch("SET_SELECT_TRANSPORTATIONS", this.transportations);
+            },
         },
     }
 </script>

@@ -34,6 +34,7 @@
     import nine from "@/assets/img/활동/문화.png";
     import ten from "@/assets/img/활동/지역축제.png";
     import eleven from "@/assets/img/활동/시티.png";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -90,9 +91,9 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // console.log(val);
                 if(val === true) {
-                    this.$v.form.$touch();
+                    this.$v.$touch();
                 }
             }
         },
@@ -102,6 +103,9 @@
             } else {
                 this.$emit('can-continue', {value: true});
             }
+        },
+        computed:{
+            ...mapGetters(["SET_SELECT_ACTIVITY"]),
         },
         methods: {
             onClick() {
@@ -143,16 +147,19 @@
                                 else {
                                     this.activity = 11;
                                 } 
-                                console.log(this.activity);        
+                                // console.log(this.activity);        
                             } else {
                                 $(this).addClass("filter");
                                 this.activity = '';
-                                console.log(this.activity)        
+                                // console.log(this.activity)        
                             }
                         });
                     });
-                // this.budget = 
-            }
+                    this.setActivity();
+            },
+            setActivity(){
+                this.$store.dispatch("SET_SELECT_ACTIVITY", this.activity);
+            },
         },
     }
 </script>

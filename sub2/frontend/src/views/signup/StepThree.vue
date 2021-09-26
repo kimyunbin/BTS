@@ -26,6 +26,7 @@
     import one from "@/assets/img/동반자/혼자.jpg";
     import two from "@/assets/img/동반자/연인.jpg";
     import three from "@/assets/img/동반자/가족.jpg";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -66,7 +67,7 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // console.log(val);
                 if(val === true) {
                     this.$v.form.$touch();
                 }
@@ -78,6 +79,9 @@
             } else {
                 this.$emit('can-continue', {value: true});
             }
+        },
+        computed:{
+            ...mapGetters(["SET_SELECT_COMPANION"]),
         },
         methods: {
             onClick() {
@@ -95,16 +99,19 @@
                                 else {
                                     this.companion = null;
                                 } 
-                                console.log(this.companion);        
+                                // console.log(this.companion);        
                             } else {
                                 $(this).addClass("filter");
                                 this.companion = '';
-                                console.log(this.companion)
+                                // console.log(this.companion)
                             }
                         });
                     });
-                // this.budget = 
-            }
+                    this.setCompanion();
+            },
+            setCompanion(){
+                this.$store.dispatch("SET_SELECT_COMPANION", this.companion);
+            },
         },
     }
 </script>

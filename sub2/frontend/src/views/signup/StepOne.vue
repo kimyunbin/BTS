@@ -10,6 +10,7 @@
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
                     </div>
             </sequential-entrance>
+            <v-btn @click="check()">d</v-btn>
             <!-- <label class="label">Username</label>
             <div class="control">
                 <input :class="['input', ($v.form.username.$error) ? 'is-danger' : '']" type="text" placeholder="Text input"
@@ -28,6 +29,7 @@
     import three from "@/assets/img/경비/오천.png";
     import four from "@/assets/img/경비/만.png";
     import five from "@/assets/img/경비/오만.png";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
@@ -72,7 +74,7 @@
             },
 
             clickedNext(val) {
-                console.log(val);
+                // alert(this.budget);
                 if(val === true) {
                     this.$v.$touch();
                 }
@@ -85,8 +87,13 @@
                 this.$emit('can-continue', {value: true});
             }
         },
+        computed:{
+            ...mapGetters(["SET_SELECT_BUDGET"]),
+        },
         methods: {
             onClick() {
+                var func = this.setBudget() 
+
                 $(".card").each(function ()
                     {
                         $(this).click(function () {                              
@@ -107,7 +114,8 @@
                                 else {
                                     this.budget = 100;
                                 } 
-                                // console.log(this.budget);
+                                console.log(this.budget)
+                                func(this.budget)
                             } else {
                                 $(this).addClass("filter");        
                                 this.budget = '';
@@ -115,6 +123,14 @@
                             }
                         });
                     });
+            },
+            setBudget(budget){
+
+                alert(budget)
+                this.$store.dispatch("SET_SELECT_BUDGET", budget);
+            },
+            check(){
+                console.log(this.budget)
             },
         },
     }
