@@ -1,10 +1,10 @@
 <template>
     <div style="padding: 2rem 3rem; text-align: left;">
-        <h5><b>당신이 선호하는 여행 인원 수는 얼마나 되나요?</b></h5>
+        <h5><b>당신이 선호하는 여행 동반자는 누구인가요?</b></h5>
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
+                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -23,11 +23,9 @@
 <script>
     import {validationMixin} from 'vuelidate'
     import {required, email} from 'vuelidate/lib/validators'
-    import one from "@/assets/img/인원/1.png";
-    import two from "@/assets/img/인원/2.png";
-    import three from "@/assets/img/인원/3.png";
-    import four from "@/assets/img/인원/4.png";
-    import five from "@/assets/img/인원/5.png";
+    import one from "@/assets/img/동반자/혼자.jpg";
+    import two from "@/assets/img/동반자/연인.jpg";
+    import three from "@/assets/img/동반자/가족.jpg";
     import { mapGetters } from "vuex";
 
     export default {
@@ -39,22 +37,18 @@
                     one,
                     two,
                     three,
-                    four,
-                    five,
                 ],
                 tooltip:[
-                    "혼자",
-                    "둘이서",
-                    "3명",
-                    "4명",
-                    "5명 이상",
+                    "혼자서",
+                    "연인이랑",
+                    "가족이랑",
                 ],
-                travelers : '',
+                companion : '',
             }
         },
         validations: {
-            travelers: {
-                required
+            companion: {
+                // required
             },
         },
         watch: {
@@ -87,27 +81,21 @@
             }
         },
         computed:{
-            ...mapGetters(["SET_SELECT_TRAVELERS"]),
+            ...mapGetters(["SET_SELECT_COMPANION"]),
         },
         methods: {
             onClick(index) {
                 // console.log("index " , index);
                 if(index === 1) {
-                    this.travelers = 1;
+                    this.companion = true;
                 }
                 if(index === 2) {
-                    this.travelers = 2;
+                    this.companion = false;
                 }
                 if(index === 3) {
-                    this.travelers = 3;
+                    this.companion = null;
                 }
-                if(index === 4) {
-                    this.travelers = 4;
-                }
-                if(index === 5) {
-                    this.travelers = 5;
-                }
-                this.setTravelers(this.travelers)
+                this.setCompanion(this.companion)
                 // console.log(this.budget)
             },
             filter() {
@@ -121,8 +109,8 @@
                     })
                 })
             },
-            setTravelers(travelers){
-                this.$store.dispatch("SET_SELECT_TRAVELERS", travelers);
+            setCompanion(companion){
+                this.$store.dispatch("SET_SELECT_COMPANION", companion);
             },
         },
     }
@@ -138,7 +126,7 @@
     border-radius: 10px;
     width: 160px;
     height: 100px;
-    margin: 1rem;
+    margin: 1rem 3rem;
 }
 .card {
     width: 160px;
