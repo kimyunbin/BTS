@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "rest_framework",
     "accounts",
     "tour",
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -86,7 +88,8 @@ DATABASES = {
         'NAME':'ssafy_web_db',
         'USER':'root',
         'PASSWORD':'root1234',
-        'HOST':'127.0.0.1',
+        # 'HOST':'127.0.0.1',
+        'HOST':'j5c203.p.ssafy.io',
         'PORT':'3306',
     }
 }
@@ -128,6 +131,7 @@ USE_TZ = True
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"(?:https?:\/\/)127.0.0.1:*",
     r"(?:https?:\/\/)localhost:*",
+
 ]
 
 # Static files (CSS, JavaScript, Images)
