@@ -27,3 +27,13 @@ class reviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('rating','content','created_at','user')
+
+class RouteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Route
+        fields = '__all__'
+    
+class RouteTouristspotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Route_Touristspot()
+        fields = '__all__'
