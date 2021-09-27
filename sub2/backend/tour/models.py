@@ -21,7 +21,7 @@ class Review(models.Model):
     Touristspot = models.ForeignKey(Touristspot, on_delete=models.CASCADE)
     rating = models.IntegerField()
     content = models.CharField(max_length=255)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class ToruistImg(models.Model):
     id = models.AutoField(primary_key=True)
