@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from .models import Touristspot
-from .models import Review, Route, Route_Touristspot, Routelike, Touristspot, Route_Touristspot
+from .models import Review, Route, RouteTouristspot, Routelike, Touristspot, RouteTouristspot
 from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
 from rest_framework.decorators import api_view
 from django.conf import settings
@@ -67,14 +67,15 @@ def tour_review(request, review_pk):
 @api_view(['GET','POST'])
 def route(request):
     user = finduser(request)
-    print(request.data)
-    print(request.data['spot'])
-    print(request.data['title'])
-    route = Route(title=request.data['title'], user=user)
-    route.save()
-    for s in request.data['spot']:
-        spot = get_object_or_404(Touristspot, title = s)
-        temp = Route_Touristspot(route=route, touristspot=spot)
-        temp.save()
-        # RouteTouristspotSerializer().save()
-    return Response({"status":"success"})
+    if request.method == 'POST':
+        route = Route(title=request.data['title'], user=user)
+        route.save()
+        for s in request.data['spot']:
+            spot = get_object_or_404(Touristspot, title = s)
+            temp = RouteTouristspot(route=route, touristspot=spot)
+            temp.save()
+        return Response({"status":"success"})
+    elif request.method == 'GET':
+        route = get_list_or_404(Route, user=user)
+
+        return Response(RouteSerializer(route, many=True).data)
