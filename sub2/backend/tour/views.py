@@ -1,10 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from .models import Touristspot
-from .models import Review
-from .serializers import reviewSerializer, tourSerializer
-# Create your views here.
+from .models import Review, Route, RouteTouristspot, Routelike, Touristspot, RouteTouristspot
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
 from rest_framework.decorators import api_view
+from django.conf import settings
+from django.contrib.auth import get_user_model
+import jwt
+
+# Create your views here.
+
+def finduser(request):
+    token = request.headers['Authorization'].split()[1]
+    SECRET_KEY = settings.SECRET_KEY
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    user = get_object_or_404(get_user_model(), username=payload["username"])
+    return user
 
 @api_view(('GET',))
 def tour_detail(request):
@@ -52,3 +63,19 @@ def tour_review(request, review_pk):
         'review': serialer.data
     }
     return Response(context)
+
+@api_view(['GET','POST'])
+def route(request):
+    user = finduser(request)
+    if request.method == 'POST':
+        route = Route(title=request.data['title'], user=user)
+        route.save()
+        for s in request.data['spot']:
+            spot = get_object_or_404(Touristspot, title = s)
+            temp = RouteTouristspot(route=route, touristspot=spot)
+            temp.save()
+        return Response({"status":"success"})
+    elif request.method == 'GET':
+        route = get_list_or_404(Route, user=user)
+
+        return Response(RouteSerializer(route, many=True).data)
