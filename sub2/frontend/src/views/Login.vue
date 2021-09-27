@@ -8,14 +8,13 @@
           <span>로그인</span>
         </h2>
 
-        <form >
+        
           <v-text-field
             type="email"
             color="blue"
             background-color="transparent"
             name="email"
-            v-model="email"
-            :error-messages="emailErrors"
+            v-model="member.username"
             label="E-mail"
             required
             @blur="$v.email.$touch()"
@@ -25,55 +24,87 @@
             name="password"
             color="blue"
             background-color="transparent"
-            v-model="password"
+            v-model="member.password"
             label="비밀번호"
           ></v-text-field>
           <v-btn
-            @click="submit"
+            @click="confirm"
             type="submit"
             color="blue"
             class="white--text"
-            :disabled="(email==''||password=='')"
+            :disabled="(member.username==''||member.password=='')"
           >로그인</v-btn>
           <v-btn @click="clear">초기화</v-btn>
-        </form>
+        
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
 import { validationMixin } from "vuelidate";
+import { createInstance } from "@/api/index.js";
+import { mapState } from "vuex";
 import {
   required,
   maxLength,
-  email,
-  minLength
+  username,
 } from "vuelidate/lib/validators";
 export default {
   
   mixins: [validationMixin],
   validations: {
     name: { required, maxLength: maxLength(8) },
-    email: { required, email },
+    username: { required, username },
+  },
+  computed:{
+    ...mapState(["user_info","is_login"]),
   },
   data() {
     return {
       name: "",
-      email: "",
-      password: "",
-    
+      member:{
+        username: "",
+        password: "",
+      }
     };
   },
   methods: {
     submit() {
-      this.$v.$touch();
+      
     },
     clear() {
       this.$v.$reset();
-      this.email = "";
-      this.password ="";
-    }
+      this.member.username = "";
+      this.member.password ="";
+    },
+    confirm() {
+      localStorage.setItem("token", "");
+      console.log(this.member.username);
+      console.log(this.member.password);
+      const instance = createInstance();
+      console.log(this.member);
+      instance.post("/accounts/login/", JSON.stringify(this.member))
+        .then(
+          (response) => {
+            console.log(response);
+            const decoded = jwt_decode(response.data.token);
+            //console.log(username);
+            let token = response.data["token"];
+            localStorage.setItem("token", token);
+            //this.$store.commit("SET_IS_LOGIN", true);
+            this.$store.commit("SET_TOKEN", token);
+            this.$store.commit("SET_USER_INFO", decoded.username);
+            this.$router.push("/");
+          }
+        )
+        .catch(() => {
+          alert("에러발생!");
+          //this.$router.push("/");
+        });
+      
+    },
   },
   computed: {
     emailErrors() {
@@ -83,6 +114,7 @@ export default {
       !this.$v.email.required && errors.push("이메일을 입력해주세요.");
       return errors;
     },
+    
   }
 };
 </script>

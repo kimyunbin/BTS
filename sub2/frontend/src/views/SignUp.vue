@@ -16,8 +16,7 @@
             name="name"
             color="blue"
             background-color="transparent"
-            v-model="name"
-            :error-messages="nameErrors"
+            v-model="nickname"
             label="닉네임"
             required
             @blur="$v.name.$touch()"
@@ -30,8 +29,7 @@
             color="blue"
             background-color="transparent"
             name="email"
-            v-model="email"
-            :error-messages="emailErrors"
+            v-model="username"
             label="E-mail"
             required
             @blur="$v.email.$touch()"
@@ -84,6 +82,7 @@
           >다음으로</v-btn>
           
           <v-btn @click="clear">초기화</v-btn>
+          <v-btn @click="fakeSignUp"></v-btn>
         </form>
       </v-flex>
     </v-layout>
@@ -92,6 +91,8 @@
 
 <script>
 import { validationMixin } from "vuelidate";
+import { createInstance } from "@/api/index.js";
+
 import {
   required,
   maxLength,
@@ -110,8 +111,8 @@ export default {
   },
   data() {
     return {
-      name: "",
-      email: "",
+      username: "",
+      nickname:"",
       password: "",
       password_confirm:"",
       error: {
@@ -123,6 +124,14 @@ export default {
         '여성',
       ],
       age: "",
+      budget:"200000",
+      travelers:"2",
+      comapanion:true,
+      transportation:"11000",
+      selection:11000,
+      age:26,
+      activity:"10101010101",
+      sex:true,
     };
   },
   computed: {
@@ -136,7 +145,7 @@ export default {
     },
     emailErrors() {
       const errors = [];
-      if (!this.$v.email.$dirty) return errors;
+      if (!this.$v.username.$dirty) return errors;
       !this.$v.email.email && errors.push("@ 이메일 형식으로 입력해주세요.");
       !this.$v.email.required && errors.push("이메일을 입력해주세요.");
       return errors;
@@ -183,6 +192,39 @@ export default {
     },
     authentic(){
 
+    },
+    fakeSignUp(){
+      const member={
+        username:this.username,
+        nickname: this.nickname,
+        password:this.password,
+        budget:this.budget,  
+        travelers:this.travelers, 
+        companion: true,
+        transportation :"11000", 
+        selection:"11000"  ,
+        age: "26",
+        activity : "10101010101",
+        sex :true
+      }
+      console.log(member);
+      const instance = createInstance();
+      instance.post("/accounts/signup/", JSON.stringify(member))
+        .then(
+          (response) => {
+            console.log(response);
+            if (response.data.status === "success") {
+              alert("회원가입 완료");
+              this.$router.push("/");
+            } else {
+              alert("회원가입 실패");
+            }
+          }
+        )
+        .catch(() => {
+          alert("에러발생!");
+          //this.$router.push("/");
+        });
     }
   }
 };
