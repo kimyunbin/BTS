@@ -45,7 +45,7 @@
         <v-icon v-if="goDark==true">fas fa-sun</v-icon>
         <v-icon v-else>fas fa-moon</v-icon>
       </v-btn>
-      <v-toolbar-items class="hidden-sm-and-down">
+      <v-toolbar-items class="hidden-sm-and-down"  v-if="is_login === false">
         <v-btn flat to="/" active-class="blue--text headline"><b>메인</b></v-btn>
         <v-btn flat to="/mypage" active-class="blue--text headline"><b>마이페이지</b></v-btn>
         <v-btn flat to="/myinteresting" active-class="blue--text headline"><b>관심지역</b></v-btn>
@@ -54,16 +54,32 @@
         <v-btn flat to="/login" active-class="blue--text headline"><b>로그인</b></v-btn>
         <v-btn flat to="/signup" active-class="blue--text headline"><b>회원가입</b></v-btn>
       </v-toolbar-items>
+
+      <v-toolbar-items class="hidden-sm-and-down"  v-else>
+        <v-btn flat to="/" active-class="blue--text headline"><b>메인</b></v-btn>
+        <v-btn flat to="/mypage" active-class="blue--text headline"><b>마이페이지</b></v-btn>
+        <v-btn flat to="/myinteresting" active-class="blue--text headline"><b>관심지역</b></v-btn>
+        <v-btn flat to="/map" active-class="blue--text headline"><b>지도(임시)</b></v-btn>
+        <v-btn flat to="/satisfactionmap" active-class="blue--text headline"><b>만족도(임시)</b></v-btn>
+        <v-btn flat to="/" @click.prevent="onClickLogout" active-class="blue--text headline"><b>로그아웃</b></v-btn>
+       
+      </v-toolbar-items>
+
     </v-toolbar>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   props: {
     goDark: {
       type: Boolean
     }
+  },
+  computed:{
+    ...mapState(["user_info", "is_login"])
   },
   data() {
     return {
@@ -73,6 +89,20 @@ export default {
   methods: {
     changeTheme() {
       this.$emit("changeTheme", this.goDark);
+    },
+    onClickLogout() {
+      let checkLogout = confirm("로그아웃 하시겠습니까?");
+      console.log(checkLogout);
+      if(checkLogout){
+      this.$store
+        .dispatch("LOGOUT")
+        .then(() => {
+          if (this.$route.path !== "/") this.$router.replace("/");
+        })
+        .catch(() => {
+          console.log("로그아웃 에러입니다.");
+        });
+      }
     }
   }
 };

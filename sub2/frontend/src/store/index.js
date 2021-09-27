@@ -70,7 +70,7 @@ export default new Vuex.Store({
     async GET_USER_INFO({ commit }, token) {
       let decode = jwt_decode(token);
       await findById(
-        decode.memberEmail,
+        decode.username,
         response => {
           if (response.data.message === "success") {
             commit("SET_IS_LOGIN", response.data.memberInfo);
@@ -87,7 +87,7 @@ export default new Vuex.Store({
 
     LOGOUT({ commit }) {
       commit("SET_IS_LOGOUT");
-      localStorage.removeItem("access-token");
+      localStorage.removeItem("token");
     },
 
     SET_SELECT_PLACE(context, payload) {

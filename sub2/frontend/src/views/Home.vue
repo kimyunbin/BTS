@@ -19,6 +19,9 @@
         class="justify-center"
       >다른사람경로보기&nbsp;<i class="fas fa-plus"></i>
       </v-btn>
+
+      <v-btn @click="check()">
+      </v-btn>
     </v-layout>
     <br><br><br>
     <h1><b>차범희님을 위한 추천 여행지역</b></h1>
@@ -173,7 +176,7 @@
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default{
   name: "ServeDev",
   components: {
@@ -183,6 +186,9 @@ export default{
   computed:{
     ...mapGetters([
       "other_road","SET_SELECT_ROAD"
+    ]),
+    ...mapState([
+      "is_login", "user_info"
     ])
   },
   mounted() {
@@ -232,8 +238,9 @@ export default{
     };
   },
   methods: {
-    move(){
-      alert("hi");
+    check(){
+      console.log(this.is_login);
+      console.log(this.user_info);
     },
     setDetailRoad(num){
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
