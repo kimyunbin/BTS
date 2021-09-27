@@ -26,7 +26,11 @@ import VueHtml2Canvas from 'vue-html2canvas';
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VueHtml2Canvas);
-
+Vue.use(StoryblokVue)
+library.add(faUserSecret)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.config.productionTip = false
+Vue.use(SequentialEntrance);
 new Vue({
   router,
   store,
@@ -36,7 +40,7 @@ new Vue({
   },
 }).$mount('#app')
 
-Vue.use(StoryblokVue)
+
 Vue.use(VueAnalytics, {
   id: 'UA-139190314-1',
   router,
@@ -45,8 +49,5 @@ Vue.use(VueAnalytics, {
     sendHitTask: isProd
   }
 })
-Vue.use(SequentialEntrance);
 
-library.add(faUserSecret)
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.config.productionTip = false
+
