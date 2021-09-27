@@ -8,6 +8,8 @@ urlpatterns = [
     path('login/', obtain_jwt_token), # login jwt 토큰 발급
     path('check/',views.checkusername, name='checkusername'),
     path('recommendcity/',views.recommendcity),
+    path('follow/<int:tour_id>',views.wishlist, name='wishlist'),
     path('usertest/',views.usertest),
+    
 
 ]

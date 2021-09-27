@@ -1,4 +1,4 @@
-from accounts.models import User
+from django.conf import settings
 from django.db import models
 from django.db.models.fields import AutoField
 
@@ -17,7 +17,7 @@ class Touristspot(models.Model):
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     Touristspot = models.ForeignKey(Touristspot, on_delete=models.CASCADE)
     rating = models.IntegerField()
     content = models.CharField(max_length=255)

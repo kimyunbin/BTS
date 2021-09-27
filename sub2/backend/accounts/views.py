@@ -1,3 +1,5 @@
+from django.http.response import JsonResponse
+from tour.models import Touristspot
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
@@ -7,7 +9,7 @@ from .serializers import UserSerializer, CitySerializer
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.conf import settings
-from .models import User, City
+from .models import User, City,WishList
 
 import jwt
 import os
@@ -90,9 +92,9 @@ def checkusername(request):
 
 @api_view(['POST'])
 def usertest(request):
-    print(request.user)
+    print(request.user.get_username())
     return Response({'sttus':'ss'})
-    
+
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
@@ -129,3 +131,25 @@ def recommendcity(request):
         serializer.data[i]['score']=1
     return Response({'main':[{'title':'personal','country':serializer.data}]}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def wishlist(request,tour_id):
+    '''
+    userid는 jwt로 spot_id 는 url로 받는다. 
+    버튼에서 눌렸을때 whishlist에서 있으면 삭제
+    없으면 생성해서 가지고 있는다.  
+    '''
+    token = request.headers['Authorization'].split()[1]
+    SECRET_KEY = settings.SECRET_KEY
+    payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    user = get_object_or_404(User, username=payload["username"])
+    tour = Touristspot.objects.get(pk=tour_id)
+    if WishList.objects.filter(user=user,Touristspot=tour).exists():
+        WishList.objects.filter(user=user,Touristspot=tour).delete()
+        follow = False
+    else:
+        WishList.objects.create(user=user,Touristspot=tour)
+        follow = True
+
+    return Response({"status":follow }, status=status.HTTP_200_OK)
