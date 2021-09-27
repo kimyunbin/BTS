@@ -6,6 +6,9 @@
           <span>여행지역 궁합도 사전 질문</span>
         </h2>
         <form>
+          <vueper-slides>
+            <vueper-slide v-for="i in 5" :key="i" :title="i.toString()" />
+          </vueper-slides>
           <vueper-slides class="in" :touchable="false" :bullets="false" :arrows="false" ref="first" style="width: 100%; height: 100%; display: inline-block;">
             <vueper-slide
               :key="1">
