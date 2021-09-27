@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Meta from 'vue-meta'
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 Vue.use(Router);
 Vue.use(Meta)
 
@@ -34,6 +34,12 @@ export default new Router({
       name: "signup",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/SignUp.vue")
+    },
+    {
+      path: "/signupresult",
+      name: "signupresult",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/signup/SignupResult.vue")
     },
     {
       path: "/signup2",
@@ -72,6 +78,12 @@ export default new Router({
         import( /* webpackChunkName: "about" */ "./views/Map.vue")
     },
     {
+      path: "/satisfactionmap",
+      name: "satisfactionmap",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/satisfaction/Map.vue")
+    },
+    {
       path: "/infodetail",
       name: "infodetail",
       component: () =>
@@ -82,6 +94,12 @@ export default new Router({
       name: "reviewwrite",
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/ReviewWrite.vue")
+    },
+    {
+      path: "/mypage",
+      name: "mypage",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/MyPage.vue")
     },
     {
       path: "/jeju",
@@ -185,6 +203,11 @@ export default new Router({
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/satisfaction/Jeonnam.vue")
     },
-
+    {
+      path: "/otherroad",
+      name: "otherroad",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/OtherRoad.vue")
+    },
   ]
 });

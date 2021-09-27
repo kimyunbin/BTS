@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Touristspot,Review
-from .serializers import reviewSerializer, tourSerializer
+from .models import Review, Route, RouteTouristspot, Routelike, Touristspot, RouteTouristspot
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
 from rest_framework.decorators import api_view
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -74,11 +74,18 @@ def tour_review(request, spot_pk):
         review.save()
         return Response({"status":"success"}, status=status.HTTP_201_CREATED)
 
-    elif request.method =='DELETE':
-        '''
-        리뷰삭제하기
-        '''
-        user = finduser(request)
-        spot = get_object_or_404(Touristspot, pk = spot_pk)
-        review = get_object_or_404(Review, user=user, Touristspot = spot)
+@api_view(['GET','POST'])
+def route(request):
+    user = finduser(request)
+    if request.method == 'POST':
+        route = Route(title=request.data['title'], user=user)
+        route.save()
+        for s in request.data['spot']:
+            spot = get_object_or_404(Touristspot, title = s)
+            temp = RouteTouristspot(route=route, touristspot=spot)
+            temp.save()
+        return Response({"status":"success"})
+    elif request.method == 'GET':
+        route = get_list_or_404(Route, user=user)
 
+        return Response(RouteSerializer(route, many=True).data)

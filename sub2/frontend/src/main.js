@@ -20,8 +20,12 @@ const isProd = process.env.NODE_ENV === "production"
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import '@babel/polyfill'
+import VueHtml2Canvas from 'vue-html2canvas';
+
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VueHtml2Canvas);
 
 new Vue({
   router,

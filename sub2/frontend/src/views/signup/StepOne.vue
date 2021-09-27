@@ -1,113 +1,61 @@
 <template>
-    
     <div style="padding: 2rem 3rem; text-align: left;">
-        <form>
-
+        <h5><b>당신이 선호하는 여행 경비는 얼마나 되나요?</b></h5>
+        <br>
         <div class="field">
-            <v-text-field
-            name="name"
-            color="blue"
-            background-color="transparent"
-            v-model="name"
-            :error-messages="nameErrors"
-            label="닉네임"
-            required
-            @blur="$v.name.$touch()"
-            ></v-text-field>
-            <v-btn @click="authentic()" color="blue" class="white--text">인증하기</v-btn>
+            <sequential-entrance fromRight>
+                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
+                        <img class="card filter" :src="img[index-1]" alt="">
+                        <br>
+                        <p align="center"><b>{{tooltip[index-1]}}</b></p>
+                    </div>
+            </sequential-entrance>
+            <!-- <label class="label">Username</label>
+            <div class="control">
+                <input :class="['input', ($v.form.username.$error) ? 'is-danger' : '']" type="text" placeholder="Text input"
+                       v-model="form.username">
+            </div>
+            <p v-if="$v.form.username.$error" class="help is-danger">This username is invalid</p> -->
         </div>
-        <div class="field">
-            <v-text-field
-            type="email"
-            color="blue"
-            background-color="transparent"
-            name="email"
-            v-model="email"
-            :error-messages="emailErrors"
-            label="E-mail"
-            required
-            @blur="$v.email.$touch()"
-            ></v-text-field>
-        </div>
-        <div class="field">
-            <v-text-field
-            :type="'password'"
-            name="password"
-            color="blue"
-            background-color="transparent"
-            v-model="password"
-            
-            label="비밀번호"
-            ></v-text-field>
-        </div>
-        <div class="field">
-            <v-text-field
-            :type="'password'"
-            name="passwordConfirm"
-            color="blue"
-            background-color="transparent"
-            v-model="password_confirm"
-            label="비밀번호확인"
-            ></v-text-field>
-        </div>
-        <div class="field">
-            <v-text-field
-            :type="'password'"
-            name="age"
-            color="blue"
-            background-color="transparent"
-            v-model="age"
-            label="나이"
-            ></v-text-field>
-        </div>
-        <div class="field">
-            <v-select
-            v-model="gender"
-            :items="gender"
-            :error-messages="selectErrors"
-            label="성별"
-            required
-            @change="$v.select.$touch()"
-            @blur="$v.select.$touch()"
-            ></v-select>
-        </div>
-        <v-btn @click="clear">초기화</v-btn>
-        </form>
     </div>
 </template>
 
 <script>
     import {validationMixin} from 'vuelidate'
-    import {
-        required,
-        maxLength,
-        email,
-        minLength}
-    from 'vuelidate/lib/validators'
+    import {required, email} from 'vuelidate/lib/validators'
+    import one from "@/assets/img/경비/동전.png";
+    import two from "@/assets/img/경비/천.png";
+    import three from "@/assets/img/경비/오천.png";
+    import four from "@/assets/img/경비/만.png";
+    import five from "@/assets/img/경비/오만.png";
+    import { mapGetters } from "vuex";
 
     export default {
         props: ['clickedNext', 'currentStep'],
         mixins: [validationMixin],
         data() {
             return {
-                name: "",
-                email: "",
-                password: "",
-                password_confirm:"",
-                error: {
-                    password_confirm: false,
-                },
-                gender: [
-                    '남성',
-                    '여성',
+                img:[
+                    one,
+                    two,
+                    three,
+                    four,
+                    five,
                 ],
-                age: "",
-            };
+                tooltip:[
+                    "5만원 이하",
+                    "5~10만원",
+                    "10~20만원",
+                    "20~50만원",
+                    "50만원 이상",
+                ],
+                budget : '',
+            }
         },
         validations: {
-            name: { required, maxLength: maxLength(8) },
-            email: { required, email },
-            password: {required, minLength: minLength(8)}
+            budget: {
+                required
+            },
         },
         watch: {
             $v: {
@@ -123,75 +71,79 @@
                 },
                 deep: true
             },
+
             clickedNext(val) {
-                console.log(val);
-                if(val === true | false) {
-                    this.$v.data.$touch();
+                if(val === true) {
+                    this.$v.$touch();
                 }
-            },
-            password_confirm: function(v){
-                this.checkForm();
-            },
+            }
         },
         mounted() {
             if(!this.$v.$invalid) {
                 this.$emit('can-continue', {value: true});
             } else {
-                this.$emit('can-continue', {value: false});
+                this.$emit('can-continue', {value: true});
             }
         },
-        computed: {
-            nameErrors() {
-                const errors = [];
-                if (!this.$v.name.$dirty) return errors;
-                !this.$v.name.maxLength &&
-                    errors.push("8글자 이내로 작성해주세요.");
-                !this.$v.name.required && errors.push("이름을 입력해주세요.");
-                return errors;
-                },
-            emailErrors() {
-                const errors = [];
-                if (!this.$v.email.$dirty) return errors;
-                !this.$v.email.email && errors.push("@ 이메일 형식으로 입력해주세요.");
-                !this.$v.email.required && errors.push("이메일을 입력해주세요.");
-                return errors;
-            }, 
-            passwordErrors() {
-                const errors = [];
-                if (!this.$v.password.$dirty) return errors;
-                !this.$v.password.minLength &&
-                    errors.push("비밀번호가 8글자 이상이어야합니다.");
-                !this.$v.body.required && errors.push("비밀번호를 확인해주세요");
-                return errors;
-            },
+        computed:{
+            ...mapGetters(["SET_SELECT_BUDGET"]),
         },
-        mathods: {
-            submit() {
-                this.$v.$touch();
+        methods: {
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.budget = 5;
+                }
+                if(index === 2) {
+                    this.budget = 10;
+                }
+                if(index === 3) {
+                    this.budget = 20;
+                }
+                if(index === 4) {
+                    this.budget = 50;
+                }
+                if(index === 5) {
+                    this.budget = 100;
+                }
+                this.setBudget(this.budget)
+                // console.log(this.budget)
             },
-            clear() {
-                this.$v.$reset();
-                this.name = "";
-                this.email = "";
-                this.body = "";
-                this.password = "";
-                this.password_confirm = "";
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
             },
-            checkForm() {
-                if (this.password !== this.password_confirm)
-                    this.error.password_confirm = "비밀번호가 다릅니다.";
-                else this.error.password_confirm = false;
-
-
-                let isSubmit = true;
-                Object.values(this.error).map(v => {
-                    if (v) isSubmit = false;
-                });
-                this.isSubmit = isSubmit;
-            },
-            authentic(){
-                
+            setBudget(budget){
+                this.$store.dispatch("SET_SELECT_BUDGET", budget);
             },
         },
     }
 </script>
+
+<style lang="scss" scoped>
+.field{
+    display: flex;
+    justify-content: center;
+}
+.box {
+    display: inline-block;
+    border-radius: 10px;
+    width: 160px;
+    height: 100px;
+    margin: 1rem;
+}
+.card {
+    width: 160px;
+    height: 100px;
+}
+.filter {
+    filter: grayscale(100%);
+}
+</style>

@@ -4,8 +4,8 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8 is-offset-2">
-                    <horizontal-stepper :steps="demoSteps" @completed-step="completeStep" :top-buttons="true"
-                                        @active-step="isStepActive" @stepper-finished="alert"></horizontal-stepper>
+                    <horizontal-stepper :steps="demoSteps" @completed-step="completeStep" :top-buttons="false"
+                                        @active-step="isStepActive" @stepper-finished="check()"></horizontal-stepper>
                 </div>
             </div>
         </div>
@@ -14,10 +14,17 @@
 </template>
 
 <script>
-    import HorizontalStepper from '../../components/HorizontalStepper.vue';
+    import HorizontalStepper from '../../assets/HorizontalStepper.vue';
 
     import StepOne from './StepOne.vue';
     import StepTwo from './StepTwo.vue';
+    import StepThree from './StepThree.vue';
+    import StepFour from './StepFour.vue';
+    import StepFive from './StepFive.vue';
+    import StepSix from './StepSix.vue';
+    import { mapGetters } from "vuex";
+    import { mapState } from 'vuex';
+    // import StepTwo from './Stepexample.vue';
 
     const teamUrl = 'https://github.com/PygmySlowLoris';
     const repoUrl = 'https://github.com/PygmySlowLoris/vue-stepper';
@@ -33,67 +40,63 @@
                 teamUrl: teamUrl,
                 demoSteps: [
                     {
-                        icon: 'mail',
+                        icon: 'monetization_on',
                         name: 'first',
-                        title: '회원가입',
-                        subtitle: '기본정보',
+                        title: '경비',
+                        subtitle: '',
                         component: StepOne,
                         completed: false
-
                     },
                     {
-                        icon: 'report_problem',
+                        icon: 'people',
                         name: 'second',
-                        title: '경비',
-                        subtitle: '당신의 여행지갑은?',
+                        title: '여행인원',
+                        subtitle: '',
                         component: StepTwo,
                         completed: false
                     },
                     {
-                        icon: 'announcement',
+                        icon: 'accessibility_new',
                         name: 'third',
-                        title: '여행인원',
-                        subtitle: '몇명이서 즐기는?',
-                        component: StepOne,
-                        completed: false
-                    },
-                    {
-                        icon: 'announcement',
-                        name: 'fourth',
                         title: '동반자',
-                        subtitle: '누구랑 즐기는?',
-                        component: StepOne,
+                        subtitle: '',
+                        component: StepThree,
                         completed: false
                     },
                     {
-                        icon: 'announcement',
-                        name: 'fifth',
+                        icon: 'flight_land',
+                        name: 'fourth',
                         title: '교통수단',
-                        subtitle: '여행지 교통',
-                        component: StepOne,
+                        subtitle: '',
+                        component: StepFour,
                         completed: false
                     },
                     {
-                        icon: 'announcement',
-                        name: 'sixth',
+                        icon: 'search',
+                        name: 'fifth',
                         title: '여행지 선택이유',
-                        subtitle: '왜 하필 그곳?',
-                        component: StepOne,
+                        subtitle: '',
+                        component: StepFive,
                         completed: false
                     },
                     {
-                        icon: 'announcement',
-                        name: 'seventh',
+                        icon: 'flag',
+                        name: 'sixth',
                         title: '여행활동',
-                        subtitle: '무엇을 즐기나요?',
-                        component: StepOne,
+                        subtitle: '',
+                        component: StepSix,
                         completed: false
                     },
                 ],
                 activeStep: 0
             }
         },
-        computed: {},
+        computed: {
+            ...mapGetters([
+                "select_budget", "select_travelers", "select_companion", "select_transportations", "select_selection", "select_activity", "select_user_signup"
+            ]),
+            ...mapState(["budget","travelers","companion","transportations","selection", "activity", "user_signup"]),
+        },
         methods: {
             completeStep(payload) {
                 this.demoSteps.forEach((step) => {
@@ -111,9 +114,11 @@
                     }
                 })
             },
-            alert(payload) {
-                alert('end')
-            }
+            check() {
+                this.$router.push("/signupresult")
+                // console.log(this.budget)
+            },
+
         }
     }
 </script>

@@ -137,6 +137,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+<<<<<<< HEAD
 
+=======
+*.pkl
+>>>>>>> feature/FE_signup
 *.xlsx
 *.html
