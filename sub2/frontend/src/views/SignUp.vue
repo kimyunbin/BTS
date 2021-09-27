@@ -116,7 +116,6 @@ export default {
         email: "",
         password: "",
         password_confirm:"",
-        select: "",
         gender: "",
         age: "",
       },

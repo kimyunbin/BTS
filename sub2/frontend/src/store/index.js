@@ -80,7 +80,6 @@ export default new Vuex.Store({
       state.select_info = data;
     },
     SET_SELECT_BUDGET(state, data) {
-      alert(data);
       state.budget = data;
     },
     SET_SELECT_TRAVELERS(state, data) {
@@ -140,7 +139,6 @@ export default new Vuex.Store({
     },
     SET_SELECT_BUDGET(context, payload) {
       this.state.budget = {};
-      alert(payload)
       context.commit("SET_SELECT_BUDGET", payload);
     },
     SET_SELECT_TRAVELERS(context, payload) {

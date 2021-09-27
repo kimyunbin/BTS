@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -48,7 +48,7 @@
         },
         validations: {
             companion: {
-                required
+                // required
             },
         },
         watch: {
@@ -84,33 +84,33 @@
             ...mapGetters(["SET_SELECT_COMPANION"]),
         },
         methods: {
-            onClick() {
-                $(".card").each(function ()
-                    {
-                        $(this).click(function () {                              
-                            if($(this).hasClass("filter")) {
-                                $(this).removeClass("filter");
-                                if($(".card").index(this) === 0) {
-                                    this.companion = true;
-                                }
-                                else if($(".card").index(this) === 1) {
-                                    this.companion = false;
-                                } 
-                                else {
-                                    this.companion = null;
-                                } 
-                                // console.log(this.companion);        
-                            } else {
-                                $(this).addClass("filter");
-                                this.companion = '';
-                                // console.log(this.companion)
-                            }
-                        });
-                    });
-                    this.setCompanion();
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.companion = true;
+                }
+                if(index === 2) {
+                    this.companion = false;
+                }
+                if(index === 3) {
+                    this.companion = null;
+                }
+                this.setCompanion(this.companion)
+                // console.log(this.budget)
             },
-            setCompanion(){
-                this.$store.dispatch("SET_SELECT_COMPANION", this.companion);
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            },
+            setCompanion(companion){
+                this.$store.dispatch("SET_SELECT_COMPANION", companion);
             },
         },
     }

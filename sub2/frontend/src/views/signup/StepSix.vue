@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 11" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 11" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -44,8 +44,8 @@
                 img:[
                     one,
                     two,
-                    three,
                     four,
+                    three,
                     five,
                     six,
                     seven,
@@ -57,8 +57,8 @@
                 tooltip:[
                     "자연풍경",
                     "음식",
-                    "레포츠",
                     "역사유적지",
+                    "레포츠",
                     "테마파크",
                     "휴식",
                     "온천",
@@ -108,57 +108,57 @@
             ...mapGetters(["SET_SELECT_ACTIVITY"]),
         },
         methods: {
-            onClick() {
-                $(".card").each(function ()
-                    {
-                        $(this).click(function () {                              
-                            if($(this).hasClass("filter")) {
-                                $(this).removeClass("filter");
-                                if($(".card").index(this) === 0) {
-                                    this.activity = 1;
-                                }
-                                else if($(".card").index(this) === 1) {
-                                    this.activity = 2;
-                                } 
-                                else if($(".card").index(this) === 2) {
-                                    this.activity = 3;
-                                } 
-                                else if($(".card").index(this) === 3) {
-                                    this.activity = 4;
-                                } 
-                                else if($(".card").index(this) === 4) {
-                                    this.activity = 5;
-                                } 
-                                else if($(".card").index(this) === 5) {
-                                    this.activity = 6;
-                                } 
-                                else if($(".card").index(this) === 6) {
-                                    this.activity = 7;
-                                } 
-                                else if($(".card").index(this) === 7) {
-                                    this.activity = 8;
-                                } 
-                                else if($(".card").index(this) === 8) {
-                                    this.activity = 9;
-                                } 
-                                else if($(".card").index(this) === 9) {
-                                    this.activity = 10;
-                                } 
-                                else {
-                                    this.activity = 11;
-                                } 
-                                // console.log(this.activity);        
-                            } else {
-                                $(this).addClass("filter");
-                                this.activity = '';
-                                // console.log(this.activity)        
-                            }
-                        });
-                    });
-                    this.setActivity();
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.activity = "10000000000";
+                }
+                if(index === 2) {
+                    this.activity = "01000000000";
+                }
+                if(index === 3) {
+                    this.activity = "00010000000";
+                }
+                if(index === 4) {
+                    this.activity = "00100000000";
+                }
+                if(index === 5) {
+                    this.activity = "00001000000";
+                }
+                if(index === 6) {
+                    this.activity = "00000100000";
+                }
+                if(index === 7) {
+                    this.activity = "00000010000";
+                }
+                if(index === 8) {
+                    this.activity = "00000001000";
+                }
+                if(index === 9) {
+                    this.activity = "00000000100";
+                }
+                if(index === 10) {
+                    this.activity = "00000000010";
+                }
+                if(index === 11) {
+                    this.activity = "00000000001";
+                }
+                this.setActivity(this.activity)
+                // console.log(this.budget)
             },
-            setActivity(){
-                this.$store.dispatch("SET_SELECT_ACTIVITY", this.activity);
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            },
+            setActivity(activity){
+                this.$store.dispatch("SET_SELECT_ACTIVITY", activity);
             },
         },
     }

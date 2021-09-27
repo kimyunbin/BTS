@@ -4,13 +4,12 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
                     </div>
             </sequential-entrance>
-            <v-btn @click="check()">d</v-btn>
             <!-- <label class="label">Username</label>
             <div class="control">
                 <input :class="['input', ($v.form.username.$error) ? 'is-danger' : '']" type="text" placeholder="Text input"
@@ -74,7 +73,6 @@
             },
 
             clickedNext(val) {
-                // alert(this.budget);
                 if(val === true) {
                     this.$v.$touch();
                 }
@@ -91,46 +89,39 @@
             ...mapGetters(["SET_SELECT_BUDGET"]),
         },
         methods: {
-            onClick() {
-                var func = this.setBudget() 
-
-                $(".card").each(function ()
-                    {
-                        $(this).click(function () {                              
-                            if($(this).hasClass("filter") === true) {
-                                $(this).removeClass("filter");
-                                if($(".card").index(this) === 0) {
-                                    this.budget = 5;
-                                }
-                                else if($(".card").index(this) === 1) {
-                                    this.budget = 10;
-                                } 
-                                else if($(".card").index(this) === 2) {
-                                    this.budget = 20;
-                                } 
-                                else if($(".card").index(this) === 3) {
-                                    this.budget = 50;
-                                } 
-                                else {
-                                    this.budget = 100;
-                                } 
-                                console.log(this.budget)
-                                func(this.budget)
-                            } else {
-                                $(this).addClass("filter");        
-                                this.budget = '';
-                                // console.log(this.budget)
-                            }
-                        });
-                    });
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.budget = 5;
+                }
+                if(index === 2) {
+                    this.budget = 10;
+                }
+                if(index === 3) {
+                    this.budget = 20;
+                }
+                if(index === 4) {
+                    this.budget = 50;
+                }
+                if(index === 5) {
+                    this.budget = 100;
+                }
+                this.setBudget(this.budget)
+                // console.log(this.budget)
+            },
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
             },
             setBudget(budget){
-
-                alert(budget)
                 this.$store.dispatch("SET_SELECT_BUDGET", budget);
-            },
-            check(){
-                console.log(this.budget)
             },
         },
     }

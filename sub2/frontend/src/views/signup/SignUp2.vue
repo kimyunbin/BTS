@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import HorizontalStepper from '../../components/HorizontalStepper.vue';
+    import HorizontalStepper from '../../assets/HorizontalStepper.vue';
 
     import StepOne from './StepOne.vue';
     import StepTwo from './StepTwo.vue';

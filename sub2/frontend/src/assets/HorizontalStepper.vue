@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import translations from "../assets/js/Translations.js";
+import translations from "./js/Translations.js";
 
 export default {
   filters: {

@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -90,39 +90,39 @@
             ...mapGetters(["SET_SELECT_TRANSPORTATIONS"]),
         },
         methods: {
-            onClick() {
-                $(".card").each(function ()
-                    {
-                        $(this).click(function () {                              
-                            if($(this).hasClass("filter")) {
-                                $(this).removeClass("filter");
-                                if($(".card").index(this) === 0) {
-                                    this.transportations = 1;
-                                }
-                                else if($(".card").index(this) === 1) {
-                                    this.transportations = 2;
-                                } 
-                                else if($(".card").index(this) === 2) {
-                                    this.transportations = 4;
-                                } 
-                                else if($(".card").index(this) === 3) {
-                                    this.transportations = 3;
-                                } 
-                                else {
-                                    this.transportations = 5;
-                                } 
-                                // console.log(this.transportations);       
-                            } else {
-                                $(this).addClass("filter");
-                                this.transportations = '';
-                                // console.log(this.transportations)      
-                            }
-                        });
-                    });
-                    this.setTransportations();
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.transportations = "10000";
+                }
+                if(index === 2) {
+                    this.transportations = "01000";
+                }
+                if(index === 3) {
+                    this.transportations = "00010";
+                }
+                if(index === 4) {
+                    this.transportations = "00100";
+                }
+                if(index === 5) {
+                    this.transportations = "00001";
+                }
+                this.setTransportations(this.transportations)
+                // console.log(this.budget)
             },
-            setTransportations(){
-                this.$store.dispatch("SET_SELECT_TRANSPORTATIONS", this.transportations);
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            },
+            setTransportations(setTransportations){
+                this.$store.dispatch("SET_SELECT_TRANSPORTATIONS", setTransportations);
             },
         },
     }

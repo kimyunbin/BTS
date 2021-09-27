@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick()">
+                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -38,15 +38,15 @@
                 img:[
                     one,
                     two,
-                    three,
                     four,
+                    three,
                     five,
                 ],
                 tooltip:[
                     "지명도",
                     "볼거리",
-                    "저렴한 가격",
                     "이동거리",
+                    "저렴한 가격",
                     "숙박시설",
                 ],
                 selection : '',
@@ -90,39 +90,39 @@
             ...mapGetters(["SET_SELECT_SELECTION"]),
         },
         methods: {
-            onClick() {
-                $(".card").each(function ()
-                    {
-                        $(this).click(function () {                              
-                            if($(this).hasClass("filter")) {
-                                $(this).removeClass("filter");
-                                if($(".card").index(this) === 0) {
-                                    this.selection = 1;
-                                }
-                                else if($(".card").index(this) === 1) {
-                                    this.selection = 2;
-                                } 
-                                else if($(".card").index(this) === 2) {
-                                    this.selection = 3;
-                                } 
-                                else if($(".card").index(this) === 3) {
-                                    this.selection = 4;
-                                } 
-                                else {
-                                    this.selection = 5;
-                                } 
-                                // console.log(this.selection);        
-                            } else {
-                                $(this).addClass("filter");
-                                this.selection = '';
-                                // console.log(this.selection)        
-                            }
-                        });
-                    });
-                    this.setSelection();
+            onClick(index) {
+                // console.log("index " , index);
+                if(index === 1) {
+                    this.selection = "10000";
+                }
+                if(index === 2) {
+                    this.selection = "01000";
+                }
+                if(index === 3) {
+                    this.selection = "00010";
+                }
+                if(index === 4) {
+                    this.selection = "00100";
+                }
+                if(index === 5) {
+                    this.selection = "00001";
+                }
+                this.setSelection(this.selection)
+                // console.log(this.budget)
             },
-            setSelection(){
-                this.$store.dispatch("SET_SELECT_SELECTION", this.selection);
+            filter() {
+                $(".card").each(function () {
+                    $(this).click(function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            },
+            setSelection(selection){
+                this.$store.dispatch("SET_SELECT_SELECTION", selection);
             },
         },
     }
