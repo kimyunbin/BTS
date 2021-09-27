@@ -1,6 +1,6 @@
 <template>
     <div style="padding: 2rem 3rem; text-align: left;">
-        <h5><b>당신이 선호하는 여행 인원 수는 얼마나 되나요?</b></h5>
+        <h5><b>당신이 선호하는 여행지 교통수단은 무엇인가요?</b></h5>
         <br>
         <div class="field">
             <sequential-entrance fromRight>
@@ -23,11 +23,11 @@
 <script>
     import {validationMixin} from 'vuelidate'
     import {required, email} from 'vuelidate/lib/validators'
-    import one from "@/assets/img/인원/1.png";
-    import two from "@/assets/img/인원/2.png";
-    import three from "@/assets/img/인원/3.png";
-    import four from "@/assets/img/인원/4.png";
-    import five from "@/assets/img/인원/5.png";
+    import one from "@/assets/img/교통수단/항공.jpeg";
+    import two from "@/assets/img/교통수단/지하철.jpeg";
+    import three from "@/assets/img/교통수단/관광버스.jpeg";
+    import four from "@/assets/img/교통수단/렌트카.jpeg";
+    import five from "@/assets/img/교통수단/기타.jpeg";
     import { mapGetters } from "vuex";
 
     export default {
@@ -38,22 +38,22 @@
                 img:[
                     one,
                     two,
-                    three,
                     four,
+                    three,
                     five,
                 ],
                 tooltip:[
-                    "혼자",
-                    "둘이서",
-                    "3명",
-                    "4명",
-                    "5명 이상",
+                    "항공",
+                    "지하철",
+                    "렌트카",
+                    "관광버스",
+                    "기타",
                 ],
-                travelers : '',
+                transportations : '',
             }
         },
         validations: {
-            travelers: {
+            transportations: {
                 required
             },
         },
@@ -87,27 +87,27 @@
             }
         },
         computed:{
-            ...mapGetters(["SET_SELECT_TRAVELERS"]),
+            ...mapGetters(["SET_SELECT_TRANSPORTATIONS"]),
         },
         methods: {
             onClick(index) {
                 // console.log("index " , index);
                 if(index === 1) {
-                    this.travelers = 1;
+                    this.transportations = "10000";
                 }
                 if(index === 2) {
-                    this.travelers = 2;
+                    this.transportations = "01000";
                 }
                 if(index === 3) {
-                    this.travelers = 3;
+                    this.transportations = "00010";
                 }
                 if(index === 4) {
-                    this.travelers = 4;
+                    this.transportations = "00100";
                 }
                 if(index === 5) {
-                    this.travelers = 5;
+                    this.transportations = "00001";
                 }
-                this.setTravelers(this.travelers)
+                this.setTransportations(this.transportations)
                 // console.log(this.budget)
             },
             filter() {
@@ -121,8 +121,8 @@
                     })
                 })
             },
-            setTravelers(travelers){
-                this.$store.dispatch("SET_SELECT_TRAVELERS", travelers);
+            setTransportations(setTransportations){
+                this.$store.dispatch("SET_SELECT_TRANSPORTATIONS", setTransportations);
             },
         },
     }
