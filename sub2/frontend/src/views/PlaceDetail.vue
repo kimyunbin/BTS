@@ -2,7 +2,7 @@
   <div>
     <br><br>
     <v-layout>
-      <h1 data-aos="fade-up"><b>{{select_place.title}} 관광 추천</b></h1>
+      <h1 data-aos="fade-up"><b>{{select_place}} 관광 추천</b></h1>
     </v-layout>
 
     <br>
@@ -10,7 +10,7 @@
     <h1><b>즐길거리</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="items" :options="options" >
+      <vue-horizontal-list :items="touristSpots" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -99,10 +99,10 @@ export default {
     return {
       options: {
         item: {
-          padding: -20 
+          padding: -20
         },
         map:{
-          padding: -20 
+          padding: -20
         },
         responsive: [
           { end: 576, size: 1 },
@@ -111,7 +111,7 @@ export default {
           { size: 4 },
         ],
         list: {
-          
+
           windowed: 1200,
           padding: 30,
         },
@@ -145,9 +145,12 @@ export default {
         { id:"8", title: "Item 1", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
         { id:"9", title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
+      touristSpots: [],
     };
   },
-  
+  created() {
+    this.touristSpots =  this.$store.state.select_info.관광지
+  },
   methods: {
     check(){
       alert(this.select_place.title);
