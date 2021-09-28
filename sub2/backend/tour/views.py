@@ -137,7 +137,6 @@ def tour_city(request):
     print(genderserializer.is_valid(),travelerserializer.is_valid(),budgetserializer.is_valid(),companionserializer.is_valid())
     
     context = {
-        
         'gender': genderserializer.data,
         'traveler' : travelerserializer.data,
         'budget': budgetserializer.data,
