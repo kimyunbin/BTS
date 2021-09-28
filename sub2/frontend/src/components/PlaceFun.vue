@@ -1,17 +1,29 @@
 <template>
   <v-card @click="setSelectInfo()" hover class="justify-center" >
-        <v-img
-          :src="item.src"
-          width=100%
-          height="200"
-          object-fit: cover
-        />
-        
+
+        <div v-if ="item.img.length">
+          <v-img
+            :src="item.img[0].images"
+            width=100%
+            height="200"
+            object-fit: cover
+          />
+        </div>
+
+        <div v-else>
+          <v-img
+            src="https://i.ibb.co/q7dBcZ1/image.jpg"
+            width=100%
+            height="200"
+            object-fit: cover
+          />
+        </div>
+
         <v-card-title primary-title>
         <div>
           <p class="headline mb-0"><b>{{item.title}}</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{item.content}}</b></p>
+            <p class="green--text font-weight-medium"><b>{{item.address}}</b></p>
           </div>
         </div>
       </v-card-title>
@@ -32,8 +44,9 @@ export default {
   },
   methods: {
     setSelectInfo(){
-      this.$store.dispatch("SET_SELECT_INFO", this.item).then(()=>{
-        this.$router.replace("/infodetail");      
+      console.log(this.item)
+      this.$store.dispatch("SET_SELECT_DETAIL", this.item).then(()=>{
+        this.$router.replace("/infodetail");
       });
     }
   },
