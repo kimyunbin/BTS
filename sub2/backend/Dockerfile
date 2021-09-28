@@ -7,8 +7,6 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip
 RUN pip install django djangorestframework mysqlclient djangorestframework-jwt
 RUN pip install -r requirements.txt
-RUN python3 manage.py makemigrations
-RUN python3 mange.py migrate
 COPY . .
 
 EXPOSE 8000

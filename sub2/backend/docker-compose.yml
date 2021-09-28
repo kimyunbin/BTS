@@ -11,3 +11,16 @@ services:
       - ./static:/usr/src/app/staticfiles
     ports:
       - "8000:8000"
+  db:
+    image: mariadb:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ssafy_web_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root1234
+      MYSQL_ROOT_PASSWORD: root1234
+    volumes:
+      - ../db/data:/var/lib/mysql
+      - ../db/data/conf.d:/etc/mysql/conf.d
