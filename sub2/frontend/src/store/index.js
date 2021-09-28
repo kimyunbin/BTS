@@ -15,6 +15,7 @@ export default new Vuex.Store({
     select_info: null, // 선택 정보(즐길거리, 숙소, 맛집)
     other_road: [], // 다른 사람들의 경로
     select_road: [], // Home.vue에서 선택된 경로
+    select_map: null, //svg에서 선택된 경로
   },
 
   getters: {
@@ -57,6 +58,9 @@ export default new Vuex.Store({
     select_user_signup(state) {
       return state.user_signup;
     },
+    select_map(state) {
+      return state.select_map;
+    }
   },
   mutations: {
     SET_IS_LOGIN(state, is_login) {
@@ -107,6 +111,9 @@ export default new Vuex.Store({
     SET_SELECT_USERSIGNUP(state, data) {
       state.user_signup = data;
     },
+    SET_SELECT_MAP(state, data) {
+      state.select_map = data;
+    }
   },
   actions: {
     async GET_USER_INFO({ commit }, token) {
@@ -176,5 +183,9 @@ export default new Vuex.Store({
       this.state.activity = {};
       context.commit("SET_SELECT_ACTIVITY", payload);
     },
+    SET_SELECT_MAP(context, payload) {
+      this.state.select_map = null;
+      context.commit("SET_SELECT_MAP", payload);
+    }
   }
 });

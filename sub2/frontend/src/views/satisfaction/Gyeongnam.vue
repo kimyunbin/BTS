@@ -6,6 +6,7 @@
 
 <script>
 import * as d3 from 'd3';
+import { mapGetters, mapState } from "vuex";
 
 const MAP_GEOJSON = require('./gyeongnam.json'); // json 파일 입력시 해당지역 지도 출력
 
@@ -20,6 +21,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      "SET_SELECT_MAP"
+    ]),
+    ...mapState([
+      "select_map"
+    ])
   },
   created() {
   },
@@ -35,6 +42,11 @@ export default {
     partyColor(code) {
       let color = null;
       return color;
+    },
+    move(city){
+      this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
+        this.$router.replace("/map");      
+      });
     },
     drawMap() {
       // 지도정보
@@ -110,6 +122,7 @@ export default {
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "경상남도 " + name
           console.log(name)
+        _this.move(name);
       }
 
       function mouseover(d){

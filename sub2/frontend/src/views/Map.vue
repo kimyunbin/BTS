@@ -77,11 +77,11 @@ import { mapGetters } from "vuex";
 
 export default {
     created(){
-
+        this.place = this.select_map;
     },
     computed:{
         ...mapGetters([
-            "other_road","CLEAR_OTHER_ROAD"
+            "other_road","CLEAR_OTHER_ROAD","select_map"
         ])
     },
     mounted() {
@@ -96,7 +96,7 @@ export default {
             map:{},
             ps : {},
             infowindow : {},
-            place: "강남",
+            place: "",
             my_road :[
 
             ],

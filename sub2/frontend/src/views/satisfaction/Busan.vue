@@ -6,7 +6,7 @@
 
 <script>
 import * as d3 from 'd3';
-
+import { mapGetters, mapState } from "vuex";
 const MAP_GEOJSON = require('./busan.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
@@ -19,7 +19,13 @@ export default {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
     }
   },
-  computed: {
+  computed:{
+    ...mapGetters([
+      "SET_SELECT_MAP"
+    ]),
+    ...mapState([
+      "select_map"
+    ])
   },
   created() {
   },
@@ -35,6 +41,11 @@ export default {
     partyColor(code) {
       let color = null;
       return color;
+    },
+    move(city){
+      this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
+        this.$router.replace("/map");      
+      });
     },
     drawMap() {
       // 지도정보
@@ -94,6 +105,8 @@ export default {
         .range(['#595959', '#595959']);
 
       const _this = this;
+
+      //
       // Get province color
       function fillFn(d){
 
@@ -109,7 +122,8 @@ export default {
         
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "부산광역시 " + name
-          console.log(name)
+        //console.log(name);
+        _this.move(name);
       }
 
       function mouseover(d){
@@ -141,6 +155,7 @@ export default {
         return d && d.properties ? d.properties.name : null;
       }
 
+      
       // Add background
       background
         .on('click', clicked);

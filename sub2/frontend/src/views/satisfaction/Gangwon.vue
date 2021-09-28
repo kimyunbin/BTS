@@ -6,7 +6,7 @@
 
 <script>
 import * as d3 from 'd3';
-
+import { mapGetters, mapState } from "vuex";
 const MAP_GEOJSON = require('./gangwon.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
@@ -20,6 +20,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      "SET_SELECT_MAP"
+    ]),
+    ...mapState([
+      "select_map"
+    ])
   },
   created() {
   },
@@ -31,6 +37,11 @@ export default {
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
+    },
+    move(city){
+      this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
+        this.$router.replace("/map");      
+      });
     },
     partyColor(code) {
       let color = null;
@@ -110,6 +121,7 @@ export default {
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "강원도 " + name
           console.log(name)
+          _this.move(name);
       }
 
       function mouseover(d){
