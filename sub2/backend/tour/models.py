@@ -30,7 +30,7 @@ class ToruistImg(models.Model):
 
 class Route(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=125)
 
 class RouteTouristspot(models.Model):
@@ -40,5 +40,5 @@ class RouteTouristspot(models.Model):
 
 class Routelike(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
