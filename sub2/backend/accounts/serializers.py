@@ -1,8 +1,8 @@
 from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import City
-
+from .models import City, WishList
+from tour.serializers import UserNameSerializer,tourSerializer
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,3 +21,10 @@ class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
         fields = ('state','city','code','satis')
+
+class WishSerialzer(serializers.ModelSerializer):
+    user = UserNameSerializer()
+    Touristspot = tourSerializer()
+    class Meta:
+        model = WishList
+        fields = ('user','Touristspot')

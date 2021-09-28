@@ -2,14 +2,14 @@
     <div>
         <div class="map_wrap" ref="printMe">
             <div id="map"  style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-            
+
             <div id="menu_wrap" class="bg_white">
                 <div class="option">
                     <div>
                         <form>
                             <v-layout row wrap justify-center align-center>
-                            장소 : 
-                        
+                            장소 :
+
                             <v-text-field
                                 color="green"
                                 background-color="transparent"
@@ -19,8 +19,8 @@
                                 width="20px"
                                 @keydown.enter.prevent="searchPlaces()"
                             ></v-text-field>
-                        
-                            <v-btn dark small @click="searchPlaces()">검색</v-btn> 
+
+                            <v-btn dark small @click="searchPlaces()">검색</v-btn>
                             </v-layout>
                         </form>
                     </div>
@@ -38,7 +38,7 @@
                 :key="idx"
                 xs12 sm6 md4 lg3 xl3
             >
-                
+
             <v-layout row>
                 <v-card row hover flat width="220" height="230">
                     <v-card-title primary-title class="justify-center">
@@ -58,11 +58,11 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <v-icon>arrow_right_alt</v-icon>
             </v-layout>
-    
+
             </v-flex>
             </v-layout>
         </div>
-        
+
         <!-- <v-btn @click="makeLine()"></v-btn> -->
         <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제</v-btn>
 
@@ -77,7 +77,7 @@ import { mapGetters } from "vuex";
 
 export default {
     created(){
-        
+
     },
     computed:{
         ...mapGetters([
@@ -98,10 +98,10 @@ export default {
             infowindow : {},
             place: "강남",
             my_road :[
-                
+
             ],
             my_road_title :[
-                
+
             ],
             output: null,
             polyline :null,
@@ -125,7 +125,7 @@ export default {
             this.my_road = [];
             this.my_road_title = [];
         },
-        
+
         makeLine(){
             this.linePath = [];
             for(var i = 0; i< this.my_road.length; i++){
@@ -138,8 +138,8 @@ export default {
                 strokeOpacity: 0.9, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
                 strokeStyle: 'solid' // 선의 스타일입니다
             });
-            
-            this.polyline.setMap(this.map);  
+
+            this.polyline.setMap(this.map);
         },
         check(){
             this.print();
@@ -160,21 +160,21 @@ export default {
                 level: 3 //지도의 레벨(확대, 축소 정도)
             };
             this.map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-            this.ps = new kakao.maps.services.Places();  
+            this.ps = new kakao.maps.services.Places();
             this.infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
             // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
         },
         searchPlaces() {
             var keyword = this.place;
-            
+
             if (!keyword.replace(/^\s+|\s+$/g, '')) {
                 alert('장소를 입력해주세요!');
                 return false;
             }
 
             // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-            this.ps.keywordSearch( keyword, this.placesSearchCB); 
+            this.ps.keywordSearch( keyword, this.placesSearchCB);
         },
         placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
@@ -196,38 +196,38 @@ export default {
         },
 
         displayInfowindow(title, infowindow, marker, address, src) {
-            var content = 
-                            '<div class="wrap3">' + 
-                            '    <div class="info3">' + 
-                            '        <div class="title3">' + 
-                                            title      + 
-                            
-                            '        </div>' + 
+            var content =
+                            '<div class="wrap3">' +
+                            '    <div class="info3">' +
+                            '        <div class="title3">' +
+                                            title      +
+
+                            '        </div>' +
                             '        <div class="body3">' +
                             '            <div class="img3">' +
                             '                <img src="https://i.ibb.co/gWBNgwm/image.jpg" width="73" height="70">' +
-                            '           </div>' + 
-                            '            <div class="desc3">' + 
+                            '           </div>' +
+                            '            <div class="desc3">' +
                             '                <div class="ellipsis3">'+
                                             address
-                            '</div>' + 
-                            '                <div class="jibun3 ellipsis3">(우) 63309 (지번) 영평동 2181</div>' + 
-                            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
-                            '            </div>' + 
-                            '        </div>' + 
-                            '    </div>' +    
+                            '</div>' +
+                            '                <div class="jibun3 ellipsis3">(우) 63309 (지번) 영평동 2181</div>' +
+                            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' +
+                            '            </div>' +
+                            '        </div>' +
+                            '    </div>' +
                             '</div>';
 
             infowindow.setContent(content);
             infowindow.open(this.map, marker);
         },
-        
+
         displayPlaces(places) {
-            var listEl = document.getElementById('placesList'), 
+            var listEl = document.getElementById('placesList'),
             menuEl = document.getElementById('menu_wrap'),
-            fragment = document.createDocumentFragment(), 
-            bounds = new kakao.maps.LatLngBounds(); 
-            
+            fragment = document.createDocumentFragment(),
+            bounds = new kakao.maps.LatLngBounds();
+
             // 검색 결과 목록에 추가된 항목들을 제거합니다
             this.removeAllChildNods(listEl);
 
@@ -236,17 +236,17 @@ export default {
             var infowindow =  new kakao.maps.InfoWindow({
                 zIndex:1,
             });
-            
+
             var map = this.map;
             var func = this.displayInfowindow;
             var addRoad = this.addmy_road;
             for ( var i=0; i < places.length; i++ ) {
-                
+
                 // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                    marker = this.addMarker(placePosition, i), 
+                    marker = this.addMarker(placePosition, i),
                     itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
+                    console.log(itemEl)
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
@@ -259,8 +259,8 @@ export default {
                         func(title,infowindow,marker,address);
 
                     });
-                    
-                    
+
+
                     kakao.maps.event.addListener(marker, 'mouseout', function() {
                         infowindow.close();
                     });
@@ -273,7 +273,7 @@ export default {
                         var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
                         infowindow.setContent(content);
                         infowindow.open(map, marker);
-                        
+
                     };
                     // itemEl.onclick = function(){
                     //     func(title, infowindow, marker);
@@ -283,7 +283,7 @@ export default {
                         infowindow.close();
                     };
                 })(marker, places[i].place_name, places[i].x, places[i].y, places[i].address_name);
-                
+
                 fragment.appendChild(itemEl);
             }
             // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
@@ -292,7 +292,7 @@ export default {
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
             this.map.setBounds(bounds);
         },
-        
+
         getListItem(index, places) {
             var el = document.createElement('li'),
             itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
@@ -303,11 +303,11 @@ export default {
                 itemStr += '    <span>' + places.road_address_name + '</span>' +'&nbsp&nbsp'+
                             '   <span class="jibun gray">' +  places.address_name  + '</span>';
             } else {
-                itemStr += '    <span>' +  places.address_name  + '</span>'; 
+                itemStr += '    <span>' +  places.address_name  + '</span>';
             }
-                        
+
             itemStr += '  <span class="tel">' + places.phone  + '</span>'+
-                        '</div>';           
+                        '</div>';
             el.innerHTML = itemStr;
             el.className = 'item';
 
@@ -324,23 +324,24 @@ export default {
                 markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
                 marker = new kakao.maps.Marker({
                     position: position, // 마커의 위치
-                    image: markerImage 
+                    image: markerImage,
+                    title : title
                 });
             marker.setMap(this.map); // 지도 위에 마커를 표출합니다
             this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
+            console.log(this.markers)
             return marker;
         },
         removeMarker() {
             for ( var i = 0; i < this.markers.length; i++ ) {
                 this.markers[i].setMap(null);
-            }   
+            }
             this.markers = [];
         },
         displayPagination(pagination) {
             var paginationEl = document.getElementById('pagination'),
                 fragment = document.createDocumentFragment(),
-                i; 
+                i;
 
             // 기존에 추가된 페이지번호를 삭제합니다
             while (paginationEl.hasChildNodes()) {
@@ -366,7 +367,7 @@ export default {
             }
             paginationEl.appendChild(fragment);
         },
-        removeAllChildNods(el) {   
+        removeAllChildNods(el) {
             while (el.hasChildNodes()) {
                 el.removeChild (el.lastChild);
             }
@@ -376,7 +377,7 @@ export default {
             if(this.my_road_title.indexOf(title2)>0){
                 alert("이미 경로에 포함되어있습니다.");
                 return;
-            } 
+            }
             alert("추가되었습니다.");
             const road ={
                 name: "sgs1159",
@@ -401,7 +402,7 @@ export default {
 .bg_white {background:#fff;}
 #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
 #menu_wrap .option{text-align: center;}
-#menu_wrap .option p {margin:10px 0;}  
+#menu_wrap .option p {margin:10px 0;}
 #menu_wrap .option button {margin-left:5px;}
 #placesList li {list-style: none;}
 #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
@@ -436,7 +437,7 @@ export default {
 /* .wrap3 {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;} */
 .wrap3 * {padding: 0;margin: 0;}
 .wrap3 .info3 {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
-/* .wrap3 .info3:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;} */ 
+/* .wrap3 .info3:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;} */
 .info3 .title3 {height: 32px;background: #eee;border-bottom: 1px solid #ddd;text-align: center; font-size: 20px;font-weight: bold;}
 .info3 .body3 {position: relative;overflow: hidden;}
 .info3 .desc3 {position: relative;margin: 13px 0 0 90px;height: 75px;}
