@@ -23,9 +23,10 @@ def tour_detail(request):
     지역코드를 path_variable로 받는다. 
     부산광역시, 시흥시, 서울특별시등 xx시로 받는다.
     지역의 관광지,문화시설,레포츠,숙박,음식을 리뷰순으로 정렬하여 20개 반환한다. 
-    
     '''
     code = request.GET.get('code')
+    print(code)
+    
 
     views = Touristspot.objects.filter(address__icontains=code,category='관광지').order_by('-counting')[:20]
     cultures = Touristspot.objects.filter(address__icontains=code,category='문화시설').order_by('-counting')[:20]
