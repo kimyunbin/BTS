@@ -1,8 +1,9 @@
+from botocore.retries import bucket
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Review, Route, RouteTouristspot, Routelike, Touristspot, RouteTouristspot
-from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
+from .models import Review, Route, RouteTouristspot, Routelike, ToruistImg, Touristspot, RouteTouristspot
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
 from rest_framework.decorators import api_view
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -108,26 +109,26 @@ def tour_city(request):
     budgets = user.budget
     companions = user.companion
     if genders == True :
-        gender = City.objects.filter(code__in =man).order_by('-satis')
+        gender = City.objects.filter(code__in = man,user=user).order_by('-satis')[:10]
     else:
-        gender = City.objects.filter(code__in =woman).order_by('-satis')
+        gender = City.objects.filter(code__in = woman,user=user).order_by('-satis')[:10]
 
     if travelers == 1:
-        traveler = City.objects.filter(code__in =single).order_by('-satis')
+        traveler = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
     else :
-        traveler = City.objects.filter(code__in =multi).order_by('-satis')
+        traveler = City.objects.filter(code__in =multi,user=user).order_by('-satis')[:10]
     
     if budgets <= 100000:
-        budget = City.objects.filter(code__in =poor).order_by('-satis')
+        budget = City.objects.filter(code__in =poor,user=user).order_by('-satis')[:10]
     else:
-        budget = City.objects.filter(code__in =rich).order_by('-satis')
+        budget = City.objects.filter(code__in =rich,user=user).order_by('-satis')[:10]
 
     if companions == True:
-        companion = City.objects.filter(code__in =family).order_by('-satis')
+        companion = City.objects.filter(code__in =family,user=user).order_by('-satis')[:10]
     elif companions == False:
-        companion = City.objects.filter(code__in =friend).order_by('-satis')
+        companion = City.objects.filter(code__in =friend,user=user).order_by('-satis')[:10]
     else:
-        companion = City.objects.filter(code__in =single).order_by('-satis')
+        companion = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
 
     genderserializer = CitySerializer(data=gender, many=True)
     travelerserializer = CitySerializer(data=traveler, many=True)
@@ -144,3 +145,32 @@ def tour_city(request):
     }
     return Response(context)
     # return Response({"context":genderserializer.data})
+
+import requests
+from PIL import Image
+@api_view(('POST',))
+def test(request):
+    img=ToruistImg.objects.get(id=1)
+    url = 'https:' +img.images
+    img_response = requests.get(url)
+
+    # print(img_response.content)
+    if img_response.status_code == 200:
+        #print(img_response.content)
+    
+        print("========= [이미지 저장] =========")
+        with open('test.jpg', 'wb') as fp:
+            fp.write(img_response.content)
+        image = Image.open("test.jpg")
+        print(image)
+    test = {
+        'image': image,
+        'testfield': 's'
+    }
+    
+    serializer = PhotoSerializer(data = test)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
