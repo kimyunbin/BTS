@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Review, Route, RouteTouristspot, Routelike, ToruistImg, Touristspot, RouteTouristspot
-from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
 from rest_framework.decorators import api_view
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -84,7 +84,7 @@ def route(request):
         route = Route(title=request.data['title'], user=user)
         route.save()
         for s in request.data['spot']:
-            spot = get_object_or_404(Touristspot, title = s)
+            spot = get_object_or_404(Touristspot, id = s['id'])
             temp = RouteTouristspot(route=route, touristspot=spot)
             temp.save()
         return Response({"status":"success"})
@@ -145,31 +145,3 @@ def tour_city(request):
     }
     return Response(context)
     # return Response({"context":genderserializer.data})
-
-import requests
-from PIL import Image
-@api_view(('POST',))
-def test(request):
-    img=ToruistImg.objects.get(id=1)
-    url = 'https:' +img.images
-    img_response = requests.get(url)
-
-    # print(img_response.content)
-    if img_response.status_code == 200:
-        #print(img_response.content)
-    
-        print("========= [이미지 저장] =========")
-        with open('test.jpg', 'wb') as fp:
-            fp.write(img_response.content)
-        image = Image.open("test.jpg")
-        print(image)
-    test = {
-        'image': image,
-        'testfield': 's'
-    }
-    
-    serializer = PhotoSerializer(data = test)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
