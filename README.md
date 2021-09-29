@@ -19,6 +19,7 @@
   - 추천받은 여행지에서 자신만의 경로를 제작하여 여행계획을 수립할 수 있다.
   - 다른 사람들의 여행경로를 추천받을 수 있다.
   
+
 <br>
 
 ## 프로젝트 명세
@@ -32,18 +33,43 @@
 
 - **담당자** : 김윤빈, 임광훈
 <details>
-    <summary>Back 자세히 살펴보기 🔥</summary>
+    <summary>Front 자세히 살펴보기 🌈</summary>
     <ul>
-      <li>기술스택 ⚙</li>
+        <li>기술스택 ⚙</li>
+    </ul>   
+    <ul>
+        <li>Django</li>
+        <li>AWS</li>
+        <li>Docker</li>
+        <li>Jenkins</li>
+        <li>Mariadb</li>
     </ul>
+    <li>--------------------------------------------------------------------------------------</li>
     <ul>
-        
-    </ul>
+        <li>라이브러리 📚</li>
+    </ul>   
     <ul>
-      <li>라이브러리 📚</li>
-      <li></li>
+        <li>Scikit-learn</li>
+        <li>djangorestframework-jwt</li>
+        <li>gunicorn</li>
+        <li>numpy</li>
+        <li>pandas</li>
+        <li>django-rest-authtoken</li>
+        <li>pymongo</li>
+        <li>python-dateutil</li>
+        <li>pytz</li>
+        <li>requests</li>
+        <li>scipy</li>
+        <li>six</li>
+        <li>sqlparse</li>
+        <li>threadpoolctl</li>
+        <li>urllib3</li>
+        <li>TruncatedSVD</li>
+        <li>svds</li>
     </ul>
 </details>
+
+
 
 ### ✨Front-End 
 
