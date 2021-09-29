@@ -47,9 +47,9 @@ def tour_detail(request):
     context = {
         '관광지': view.data,
         '문화시설': culture.data,
-        '음식':report.data,
+        '음식':eat.data,
         '숙박': sleep.data,
-        '레포츠':eat.data
+        '레포츠':report.data
     }
     return Response(context)
 
@@ -147,30 +147,50 @@ def tour_city(request):
     # return Response({"context":genderserializer.data})
 
 import requests
+import boto3
+import uuid
 from PIL import Image
+from io  import BytesIO
 @api_view(('POST',))
 def test(request):
-    img=ToruistImg.objects.get(id=1)
+    # for i in range(1,10):
+    img=ToruistImg.objects.get(id = 6830)
     url = 'https:' +img.images
     img_response = requests.get(url)
-
+    
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
+        aws_secret_access_key = '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'
+    )
     # print(img_response.content)
     if img_response.status_code == 200:
         #print(img_response.content)
-    
+
         print("========= [이미지 저장] =========")
         with open('test.jpg', 'wb') as fp:
             fp.write(img_response.content)
         image = Image.open("test.jpg")
-        print(image)
-    test = {
-        'image': image,
-        'testfield': 's'
-    }
+        buffer = BytesIO()
+        image.save(buffer, "JPEG")
+        buffer.seek(0)
+        url_generator = str(uuid.uuid4())
+        img.awsimages = url_generator
+        img.save()
+
+        print(url_generator)
+        s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
     
-    serializer = PhotoSerializer(data = test)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'image_url' : url_generator}, status = 200)
+
+    # test = {
+    #     'image': image,
+    #     'testfield': 's'
+    # }
+    
+    # serializer = PhotoSerializer(data = test)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #     return Response(serializer.data,status=status.HTTP_200_OK)
+    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

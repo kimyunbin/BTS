@@ -6,7 +6,7 @@ from .models import *
 class imageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToruistImg
-        fields = ('images',)
+        fields = ('awsimages',)
 
 
 class tourSerializer(serializers.ModelSerializer):
@@ -41,4 +41,10 @@ class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
         fields = '__all__'
-    
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = test
+        fields = "__all__"
