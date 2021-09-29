@@ -3,7 +3,14 @@ import Vuex from "vuex";
 import jwt_decode from "jwt-decode";
 import createPersistedState from "vuex-persistedstate";
 import { findById } from "@/api/user.js";
+import { createInstance2 } from "@/api/index.js";
+import { createInstance3 } from "@/api/index.js";
+
+import thumbnail from '../assets/json/thumbnail.json'
+
 Vue.use(Vuex);
+
+// const BASE_URL = "http://j5c203.p.ssafy.io/api/"
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
@@ -11,10 +18,13 @@ export default new Vuex.Store({
     is_login: false, // 로그인 여부
     user_info: null, // 현재 로그인된 유저정보
     token: "",
-    select_place: null, //선택 장소
-    select_info: null, // 선택 정보(즐길거리, 숙소, 맛집)
+    select_place: null, //선택 지역장소 이름
+    select_info: null, // 선택 정보(즐길거리, 숙소, 맛집) 들이 들어가 있는 것들
+    select_detail:null, //선택 spot장소의 좌표 등 세부정보
     other_road: [], // 다른 사람들의 경로
     select_road: [], // Home.vue에서 선택된 경로
+    recom_area: [], // Home.vue에서 보여주는 추천지역
+    satis_area: [], // 만족도 높은 순 지역 결과
   },
 
   getters: {
@@ -29,6 +39,9 @@ export default new Vuex.Store({
     },
     select_info(state) {
       return state.select_info;
+    },
+    select_detail(state) {
+      return state.select_detail;
     },
     other_road(state) {
       return state.other_road;
@@ -57,6 +70,12 @@ export default new Vuex.Store({
     select_user_signup(state) {
       return state.user_signup;
     },
+    get_recommend_area(state) {
+      return state.recom_area;
+    },
+    get_satis_area(state) {
+      return  state.satis_area;
+    }
   },
   mutations: {
     SET_IS_LOGIN(state, is_login) {
@@ -79,6 +98,9 @@ export default new Vuex.Store({
     },
     SET_SELECT_INFO(state, data) {
       state.select_info = data;
+    },
+    SET_SELECT_DETAIL(state, data) {
+      state.select_detail = data;
     },
     SET_SELECT_ROAD(state, data) {
       state.select_road = data;
@@ -107,6 +129,12 @@ export default new Vuex.Store({
     SET_SELECT_USERSIGNUP(state, data) {
       state.user_signup = data;
     },
+    GET_RECOMMEND_AREA(state, data) {
+      state.recom_area = data;
+    },
+    SATIS_AREA(state, data) {
+      state.satis_area = data;
+    }
   },
   actions: {
     async GET_USER_INFO({ commit }, token) {
@@ -136,9 +164,16 @@ export default new Vuex.Store({
       this.state.select_place = {};
       context.commit("SET_SELECT_PLACE", payload);
     },
-    SET_SELECT_INFO(context, payload) {
-      this.state.select_info = {};
-      context.commit("SET_SELECT_INFO", payload);
+    async SET_SELECT_INFO(context, payload) {
+      // this.state.select_info = {};
+      const instance = createInstance3()
+      const response = await instance.get(`tour/detail?code=${payload}`)
+      console.log(response.data)
+      context.commit("SET_SELECT_INFO", response.data);
+    },
+    SET_SELECT_DETAIL(context, payload) {
+      this.state.select_detail = {};
+      context.commit("SET_SELECT_DETAIL", payload);
     },
     SET_SELECT_ROAD(context, payload) {
       this.select_road = [];
@@ -176,5 +211,52 @@ export default new Vuex.Store({
       this.state.activity = {};
       context.commit("SET_SELECT_ACTIVITY", payload);
     },
+    // 메인페이지 추천지역 불러오기
+    async GET_RECOMMEND_AREA(context) {
+      const instance = createInstance2()
+      const response = await instance.get("/accounts/recommendcity")
+      // console.log(response.data.main[0].country, 'axios')
+      const satis_area = response.data.main[0].country
+      context.commit("SATIS_AREA" ,satis_area)
+      let data = []
+      for (let i = 0; i < 10; i++) {
+        const state = response.data.main[0].country[i].state;
+        const name = response.data.main[0].country[i].city;
+        var imgurl = null
+        // 여기서 지역 확인 후 imgurl 넣어줘야함
+        for (let index = 0; index < thumbnail.data.length; index++) {
+          const state_ch = thumbnail.data[index].state;
+          if (state_ch == state) {
+            // console.log(state,'state')
+            for (let index2 = 0; index2 < thumbnail.data[index].city.length; index2++) {
+              const city_ch = thumbnail.data[index].city[index2].name;
+
+              if (city_ch == name) {
+                imgurl = thumbnail.data[index].city[index2].url
+                // console.log(imgurl,'img')
+                break
+              }
+            }
+            break
+          }
+        }
+        const input =
+        {
+          'state': state,
+          'name' : name,
+          'imgurl' : imgurl
+        }
+        // console.log(input, 'input')
+        data.push(input)
+      }
+      // console.log(data, '3')
+      context.commit("GET_RECOMMEND_AREA", data);
+    },
+    // 해당 spot 리뷰데이터 불러오기
+    async GET_REVIEW(context, Spok_pk) {
+      const instance = createInstance3()
+      const response = await instance.get(`tour/detail/${Spok_pk}`)
+      console.log(response.data)
+    }
   }
 });
