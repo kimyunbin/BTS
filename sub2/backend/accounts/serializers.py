@@ -7,6 +7,7 @@ from tour.serializers import UserNameSerializer,tourSerializer
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth import authenticate
+
 User = get_user_model()
 JWT_PAYLOAD_HANDLER = api_settings.JWT_PAYLOAD_HANDLER
 JWT_ENCODE_HANDLER = api_settings.JWT_ENCODE_HANDLER
@@ -40,6 +41,7 @@ class UserCreateSerializer(serializers.Serializer):
         user.set_password(validated_data['password'])
 
         user.save()
+        
         return user
 
 

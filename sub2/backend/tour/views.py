@@ -1,8 +1,9 @@
+from botocore.retries import bucket
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Review, Route, RouteTouristspot, Routelike, Touristspot, RouteTouristspot
-from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
+from .models import Review, Route, RouteTouristspot, Routelike, ToruistImg, Touristspot, RouteTouristspot
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
 from rest_framework.decorators import api_view
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -46,9 +47,9 @@ def tour_detail(request):
     context = {
         '관광지': view.data,
         '문화시설': culture.data,
-        '음식':report.data,
+        '음식':eat.data,
         '숙박': sleep.data,
-        '레포츠':eat.data
+        '레포츠':report.data
     }
     return Response(context)
 
@@ -108,26 +109,26 @@ def tour_city(request):
     budgets = user.budget
     companions = user.companion
     if genders == True :
-        gender = City.objects.filter(code__in =man).order_by('-satis')
+        gender = City.objects.filter(code__in = man,user=user).order_by('-satis')[:10]
     else:
-        gender = City.objects.filter(code__in =woman).order_by('-satis')
+        gender = City.objects.filter(code__in = woman,user=user).order_by('-satis')[:10]
 
     if travelers == 1:
-        traveler = City.objects.filter(code__in =single).order_by('-satis')
+        traveler = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
     else :
-        traveler = City.objects.filter(code__in =multi).order_by('-satis')
+        traveler = City.objects.filter(code__in =multi,user=user).order_by('-satis')[:10]
     
     if budgets <= 100000:
-        budget = City.objects.filter(code__in =poor).order_by('-satis')
+        budget = City.objects.filter(code__in =poor,user=user).order_by('-satis')[:10]
     else:
-        budget = City.objects.filter(code__in =rich).order_by('-satis')
+        budget = City.objects.filter(code__in =rich,user=user).order_by('-satis')[:10]
 
     if companions == True:
-        companion = City.objects.filter(code__in =family).order_by('-satis')
+        companion = City.objects.filter(code__in =family,user=user).order_by('-satis')[:10]
     elif companions == False:
-        companion = City.objects.filter(code__in =friend).order_by('-satis')
+        companion = City.objects.filter(code__in =friend,user=user).order_by('-satis')[:10]
     else:
-        companion = City.objects.filter(code__in =single).order_by('-satis')
+        companion = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
 
     genderserializer = CitySerializer(data=gender, many=True)
     travelerserializer = CitySerializer(data=traveler, many=True)
@@ -144,3 +145,52 @@ def tour_city(request):
     }
     return Response(context)
     # return Response({"context":genderserializer.data})
+
+import requests
+import boto3
+import uuid
+from PIL import Image
+from io  import BytesIO
+@api_view(('POST',))
+def test(request):
+    # for i in range(1,10):
+    img=ToruistImg.objects.get(id = 6830)
+    url = 'https:' +img.images
+    img_response = requests.get(url)
+    
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
+        aws_secret_access_key = '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'
+    )
+    # print(img_response.content)
+    if img_response.status_code == 200:
+        #print(img_response.content)
+
+        print("========= [이미지 저장] =========")
+        with open('test.jpg', 'wb') as fp:
+            fp.write(img_response.content)
+        image = Image.open("test.jpg")
+        buffer = BytesIO()
+        image.save(buffer, "JPEG")
+        buffer.seek(0)
+        url_generator = str(uuid.uuid4())
+        img.awsimages = url_generator
+        img.save()
+
+        print(url_generator)
+        s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
+    
+    return Response({'image_url' : url_generator}, status = 200)
+
+    # test = {
+    #     'image': image,
+    #     'testfield': 's'
+    # }
+    
+    # serializer = PhotoSerializer(data = test)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #     return Response(serializer.data,status=status.HTTP_200_OK)
+    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
