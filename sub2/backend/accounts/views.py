@@ -196,4 +196,3 @@ def wishlist(request):
         'data': serializers.data
     }
     return Response(context,status=status.HTTP_200_OK)
-
