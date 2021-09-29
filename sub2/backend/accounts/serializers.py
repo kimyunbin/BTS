@@ -17,7 +17,7 @@ class UserCreateSerializer(serializers.Serializer):
     nickname =  serializers.CharField()
     budget = serializers.IntegerField()
     travelers = serializers.IntegerField()
-    companion = serializers.BooleanField()
+    companion = serializers.BooleanField(required=False, allow_null=True)
     transportation = serializers.CharField()
     selection = serializers.CharField()
     age = serializers.IntegerField()
@@ -25,12 +25,13 @@ class UserCreateSerializer(serializers.Serializer):
     sex = serializers.BooleanField()
 
     def create(self, validated_data):
+        c = validated_data.get('companion')
         user = User.objects.create( # User 생성
             username=validated_data['username'],
             nickname=validated_data['nickname'],
             budget=validated_data['budget'],
             travelers=validated_data['travelers'],
-            companion=validated_data['companion'],
+            companion=c,
             transportation=validated_data['transportation'],
             selection=validated_data['selection'],
             age=validated_data['age'],
