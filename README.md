@@ -118,6 +118,8 @@
         <li>vuex</li>
         <li>vuex-persistedstate</li>
         <li>webstomp-client</li>
+        <li>d3</li>
+        <li>jquery</li>
     </ul>
 </details>
 
