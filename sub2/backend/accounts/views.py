@@ -70,7 +70,8 @@ def userSatis(request,user):
 def signup(request):
     serializer = UserCreateSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save()
+        user = serializer.save()
+        userSatis(request,user)
         return Response({"status":"success"}, status=status.HTTP_201_CREATED)
     return Response({"status":"fail"}, status = status.HTTP_400_BAD_REQUEST)
 
@@ -100,13 +101,23 @@ def checkusername(request):
     else:
         return Response({"status":"success"},status=status.HTTP_201_CREATED)
 
+import requests
 @api_view(['POST'])
 def usertest(request):
-    print(request.user)
-    print(request.user.username)
-    print(request.user.get_username())
-    return Response({'sttus':'ss'})
     
+    url = 'https://img1.kakaocdn.net/relay/local/R640x320/?fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F99C9B2465BC59E95178EDA'
+        #해당 url로 서버에게 요청
+    img_response = requests.get(url)
+
+    #요청에 성공했다면,
+    if img_response.status_code == 200:
+        #print(img_response.content)
+    
+        print("========= [이미지 저장] =========")
+        with open("test.jpg", "wb") as fp:
+            fp.write(img_response.content)
+
+    return Response({"status":"ss"})
 @api_view(['GET','POST'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -185,4 +196,3 @@ def wishlist(request):
         'data': serializers.data
     }
     return Response(context,status=status.HTTP_200_OK)
-
