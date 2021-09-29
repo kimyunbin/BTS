@@ -92,6 +92,14 @@ def route(request):
         route = get_list_or_404(Route, user=user)
 
         return Response(RouteSerializer(route, many=True).data)
+
+@api_view(['GET'])
+def route_random(request):
+    user = finduser(request)
+    route = get_list_or_404(Route.objects.exclude(user=user).order_by("?"))
+
+    return Response(RouteSerializer(route, many=True).data[:3])
+
 @api_view(('GET',))
 def tour_city(request):
     man = [32030, 37020, 39020, 31370, 34030, 32060, 39010, 36020, 37010, 21090, 34380, 32010, 38090, 38050, 38350, 31380, 35380, 35020, 36310, 35010, 34020, 38080, 33380, 35330, 31200, 23310, 23010, 21140, 34370, 38100]
