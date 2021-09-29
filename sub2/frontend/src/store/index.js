@@ -25,6 +25,8 @@ export default new Vuex.Store({
     select_road: [], // Home.vue에서 선택된 경로
     recom_area: [], // Home.vue에서 보여주는 추천지역
     satis_area: [], // 만족도 높은 순 지역 결과
+    gender_recom_area: [], // Home.vue에서 보여주는 성별 별 추천지역
+    traveler_recom_area: [], //Home.vue에서 보여주는 저희가 추천하는 추천지역
   },
 
   getters: {
@@ -75,6 +77,12 @@ export default new Vuex.Store({
     },
     get_satis_area(state) {
       return  state.satis_area;
+    },
+    get_gender_recom_area(state) {
+      return state.gender_recom_area;
+    },
+    get_traveler_recom_area(state) {
+      return state.traveler_recom_area;
     }
   },
   mutations: {
@@ -134,7 +142,13 @@ export default new Vuex.Store({
     },
     SATIS_AREA(state, data) {
       state.satis_area = data;
-    }
+    },
+    GET_GENDER_RECOMMEND_AREA(state, data) {
+      state.gender_recom_area = data;
+    },
+    GET_TRAVELER_RECOMMEND_AREA(state, data) {
+      state.traveler_recom_area = data;
+    },
   },
   actions: {
     async GET_USER_INFO({ commit }, token) {
@@ -252,6 +266,80 @@ export default new Vuex.Store({
       // console.log(data, '3')
       context.commit("GET_RECOMMEND_AREA", data);
     },
+    async GET_OTHER_RECOMMEND_AREA(context) {
+      const instance = createInstance2()
+      const response = await instance.get("/tour/city/")
+      console.log(response.data)
+      // 여기가 gender부분
+      console.log(response.data.gender,'gender')
+      let gender_data = []
+      for (let i = 0; i < 10; i++) {
+        const gender_state = response.data.gender[i].state;
+        const gender_name = response.data.gender[i].city;
+        var g_imgurl = null
+        for (let index = 0; index < thumbnail.data.length; index++) {
+          const state_ch = thumbnail.data[index].state;
+          if (state_ch == gender_state) {
+            // console.log(state,'state')
+            for (let index2 = 0; index2 < thumbnail.data[index].city.length; index2++) {
+              const city_ch = thumbnail.data[index].city[index2].name;
+
+              if (city_ch == gender_name) {
+                g_imgurl = thumbnail.data[index].city[index2].url
+                // console.log(imgurl,'img')
+                break
+              }
+            }
+            break
+          }
+        }
+        const gender_input =
+        {
+          'state': gender_state,
+          'name' : gender_name,
+          'imgurl' : g_imgurl
+        }
+        console.log(gender_input, 'gender_input')
+        gender_data.push(gender_input)
+      }
+      context.commit("GET_GENDER_RECOMMEND_AREA", gender_data);
+      // 여기가 traveler부분
+      console.log(response.data.traveler,'traveler')
+      let traveler_data = []
+      for (let i = 0; i < 10; i++) {
+        const traveler_state = response.data.traveler[i].state;
+        const traveler_name = response.data.traveler[i].city;
+        var t_imgurl = null
+        for (let index = 0; index < thumbnail.data.length; index++) {
+          const state_ch = thumbnail.data[index].state;
+          if (state_ch == traveler_state) {
+            // console.log(state,'state')
+            for (let index2 = 0; index2 < thumbnail.data[index].city.length; index2++) {
+              const city_ch = thumbnail.data[index].city[index2].name;
+
+              if (city_ch == traveler_name) {
+                t_imgurl = thumbnail.data[index].city[index2].url
+                // console.log(imgurl,'img')
+                break
+              }
+            }
+            break
+          }
+        }
+        const traveler_input =
+        {
+          'state': traveler_state,
+          'name' : traveler_name,
+          'imgurl' : t_imgurl
+        }
+        console.log(traveler_input, 'traveler_input')
+        traveler_data.push(traveler_input)
+      }
+      context.commit("GET_TRAVELER_RECOMMEND_AREA", traveler_data);
+
+    },
+
+
     // 해당 spot 리뷰데이터 불러오기
     async GET_REVIEW(context, Spok_pk) {
       const instance = createInstance3()

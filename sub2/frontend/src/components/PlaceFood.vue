@@ -6,12 +6,12 @@
           height="200"
           object-fit: cover
         />
-        
+
         <v-card-title primary-title>
         <div>
           <p class="headline mb-0"><b>{{item.title}}</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{item.content}}</b></p>
+            <p class="green--text font-weight-medium"><b>{{item.address}}</b></p>
           </div>
         </div>
       </v-card-title>
@@ -33,7 +33,7 @@ export default {
   methods: {
     setSelectInfo(){
       this.$store.dispatch("SET_SELECT_INFO", this.item).then(()=>{
-        this.$router.replace("/infodetail/"+this.item.title); 
+        this.$router.replace("/infodetail/"+this.item.title);
       });
     }
   },

@@ -32,7 +32,7 @@
     <h1><b>숙소</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="stays" :options="options" >
+      <vue-horizontal-list :items="Accommodation" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -54,7 +54,7 @@
     <h1><b>맛집</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="items" :options="options" >
+      <vue-horizontal-list :items="Food" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -146,10 +146,14 @@ export default {
         { id:"9", title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
       touristSpots: [],
+      Accommodation: [],
+      Food: [],
     };
   },
   created() {
     this.touristSpots =  this.$store.state.select_info.관광지
+    this.Accommodation =  this.$store.state.select_info.숙박
+    this.Food =  this.$store.state.select_info.음식
   },
   methods: {
     check(){

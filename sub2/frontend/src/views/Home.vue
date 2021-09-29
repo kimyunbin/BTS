@@ -132,7 +132,7 @@
     <h1><b>남자를 위한 추천 여행지역</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="items" :options="options" >
+      <vue-horizontal-list :items="gender_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -154,7 +154,7 @@
     <h1><b>저희가 추천하는 여행지역</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="items" :options="options" >
+      <vue-horizontal-list :items="traveler_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -188,7 +188,7 @@ export default{
       "other_road","SET_SELECT_ROAD"
     ]),
     ...mapState([
-      "is_login", "user_info"
+      "is_login", "user_info", "gender_recom_area", "traveler_recom_area"
     ])
   },
   mounted() {
@@ -235,7 +235,8 @@ export default{
         { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
         { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
-      items2: []
+      items2: [],
+      genderItems: [],
     };
   },
   created() {
@@ -243,6 +244,8 @@ export default{
     .then(()=>{
      this.items2 =  this.$store.state.recom_area
     })
+    this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
+
   },
 
   methods: {
