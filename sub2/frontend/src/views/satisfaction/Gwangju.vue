@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: []
     }
   },
   computed: {
@@ -26,16 +27,25 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    console.log(this.items)
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "경기도") {
+          this.items.push(this.satis_area[i])
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -58,7 +68,7 @@ export default {
               }
         )
         .catch(() => {
-            alert("에러발생!");
+            // alert("에러발생!");
           //this.$router.push("/");
         });
               
@@ -119,7 +129,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
