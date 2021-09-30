@@ -23,6 +23,9 @@ export default new Vuex.Store({
     select_detail:null, //선택 spot장소의 좌표 등 세부정보
     other_road: [], // 다른 사람들의 경로
     select_road: [], // Home.vue에서 선택된 경로
+    select_map: null, //svg에서 선택된 경로
+    tour_detail: [],
+    tour_image:[],
     recom_area: [], // Home.vue에서 보여주는 추천지역
     satis_area: [], // 만족도 높은 순 지역 결과
   },
@@ -49,7 +52,7 @@ export default new Vuex.Store({
     select_road(state) {
       return state.select_road;
     },
-    select_budget(state) {
+    select_budget(state) {index
       return state.budget;
     },
     select_travelers(state) {
@@ -69,6 +72,15 @@ export default new Vuex.Store({
     },
     select_user_signup(state) {
       return state.user_signup;
+    },
+    select_map(state) {
+      return state.select_map;
+    },
+    tour_detail(state) {
+      return state.tour_detail;
+    },
+    tour_imaget(state) {
+      return state.tour_image;
     },
     get_recommend_area(state) {
       return state.recom_area;
@@ -128,6 +140,15 @@ export default new Vuex.Store({
     },
     SET_SELECT_USERSIGNUP(state, data) {
       state.user_signup = data;
+    },
+    SET_SELECT_MAP(state, data) {
+      state.select_map = data;
+    },
+    SET_TOUR_DETAIL(state, data) {
+      state.tour_detail = data;
+    },
+    SET_TOUR_IMAGE(state, data) {
+      state.tour_image = data;
     },
     GET_RECOMMEND_AREA(state, data) {
       state.recom_area = data;
@@ -211,7 +232,19 @@ export default new Vuex.Store({
       this.state.activity = {};
       context.commit("SET_SELECT_ACTIVITY", payload);
     },
-    // 메인페이지 추천지역 불러오기
+    SET_SELECT_MAP(context, payload) {
+      this.state.select_map = null;
+      context.commit("SET_SELECT_MAP", payload);
+    },
+    SET_TOUR_DETAIL(context, payload) {
+      this.state.tour_detail = null;
+      context.commit("SET_TOUR_DETAIL", payload);
+    },
+    SET_TOUR_IMAGE(context, payload) {
+      this.state.tour_image = null;
+      context.commit("SET_TOUR_IMAGE", payload);
+      // 메인페이지 추천지역 불러오기
+    },
     async GET_RECOMMEND_AREA(context) {
       const instance = createInstance2()
       const response = await instance.get("/accounts/recommendcity")

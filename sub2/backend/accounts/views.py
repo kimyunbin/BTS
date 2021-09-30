@@ -69,6 +69,7 @@ def userSatis(request,user):
 @permission_classes([AllowAny])
 def signup(request):
     serializer = UserCreateSerializer(data=request.data)
+    print('---')
     if serializer.is_valid(raise_exception=True):
         user = serializer.save()
         userSatis(request,user)

@@ -19,10 +19,119 @@
         class="justify-center"
       >다른사람경로보기&nbsp;<i class="fas fa-plus"></i>
       </v-btn>
-
-      <v-btn @click="check()">
-      </v-btn>
     </v-layout>
+
+    <ul class="slides">
+    <input type="radio" name="radio-btn" id="img-1" checked />
+    <li class="slide-container">
+    <div class="slide">
+      <a href="/satisfactionmap">
+      <img src="https://i.ibb.co/PFJwzf5/06.jpg" /></a>
+    </div>
+    <div class="nav">
+      <label for="img-6" class="prev">&#x2039;</label>
+      <label for="img-2" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-2" />
+    <li class="slide-container">
+        <div class="slide">
+          <a href="/satisfactionmap">
+          <img src="https://i.ibb.co/Z6T3bLs/image.jpg" /></a>
+        </div>
+    <div class="nav">
+      <label for="img-1" class="prev">&#x2039;</label>
+      <label for="img-3" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-3" />
+    <li class="slide-container">
+        <div class="slide">
+          <a href="/satisfactionmap">
+          <img src="https://i.ibb.co/x5MCb10/image.jpg" /></a>
+        </div>
+    <div class="nav">
+      <label for="img-2" class="prev">&#x2039;</label>
+      <label for="img-4" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-4" />
+    <li class="slide-container">
+        <div class="slide">
+          <a href="/satisfactionmap">
+          <img src="https://i.ibb.co/qBfG2mk/image.jpg" /></a>
+        </div>
+    <div class="nav">
+      <label for="img-3" class="prev">&#x2039;</label>
+      <label for="img-5" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-5" />
+    <li class="slide-container">
+        <div class="slide">
+          <a href="/satisfactionmap">
+          <img src="https://i.ibb.co/dJ1Kt0H/image.jpg" /></a>
+        </div>
+    <div class="nav">
+      <label for="img-4" class="prev">&#x2039;</label>
+      <label for="img-6" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <input type="radio" name="radio-btn" id="img-6" />
+    <li class="slide-container">
+        <div class="slide">
+          <a href="/satisfactionmap">
+          <img src="https://i.ibb.co/WtCgpYM/image.jpg" /></a>
+        </div>
+    <div class="nav">
+      <label for="img-5" class="prev">&#x2039;</label>
+      <label for="img-1" class="next">&#x203a;</label>
+    </div>
+    </li>
+
+    <li class="nav-dots">
+      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
+      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
+      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
+      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
+      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
+      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
+    </li>
+</ul>
+
+    <div id="demo">
+      <div id="slider">
+      <input checked="" type="radio" name="slider" id="slide1" selected="false">
+      <input type="radio" name="slider" id="slide2" selected="false">
+      <input type="radio" name="slider" id="slide3" selected="false">
+      <input type="radio" name="slider" id="slide4" selected="false">
+      <div id="slides">
+        <div id="overflow">
+          <div class="inner">
+            <article v-for="(item,i) in items2" :key="i" class="slide">
+              <div class="image-container">
+                <a :href="item.src">
+                <img :src="item.img" alt="item.title" style="margin-bottom:10px"/>
+                </a>
+              </div>
+              <p><br></p>
+              <div class="title" style="padding-top:5px">{{item.title}}</div>
+              
+            </article>
+          </div> <!-- .inner -->
+        </div> <!-- #overflow -->
+      </div>
+      <label for="slide1"></label>
+      <label for="slide2"></label>
+      <label for="slide3"></label>
+      <label for="slide4"></label>
+    </div>
+  </div>
     <br><br><br>
     <h1><b>차범희님을 위한 추천 여행지역</b></h1>
     <br>
@@ -51,11 +160,11 @@
     <h1><b>다른 유저가 갔던 여행 경로 추천</b></h1>
     <br>
     <section>
-      <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+      <v-layout row justify-center align-center wrap class="mt-4 pt-2" v-if="other_road.length>2">
         <v-card @click="setDetailRoad(0)" hover>
           <div id="map" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>테스트</b></p>
+            <p class="headline mb-0"><b>{{other_road[0][0].title}} 여행경로</b></p>
           <div>
             <p class="green--text font-weight-medium"><b>{{other_road[0][0].name}}의 경로</b></p>
           </div>
@@ -65,9 +174,9 @@
         <v-card @click="setDetailRoad(1)" hover>
           <div id="map2" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>서울 구경 가즈아</b></p>
+            <p class="headline mb-0"><b>{{other_road[1][0].title}} 여행경로</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{other_road[0][0].name}}의 경로</b></p>
+            <p class="green--text font-weight-medium"><b>{{other_road[1][0].name}}</b></p>
           </div>
         </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -75,9 +184,9 @@
         <v-card @click="setDetailRoad(2)" hover>
           <div id="map3" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>테스트</b></p>
+            <p class="headline mb-0"><b>{{other_road[2][0].title}}</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{other_road[0][0].name}}의 경로</b></p>
+            <p class="green--text font-weight-medium"><b>{{other_road[2][0].name}}의 경로</b></p>
           </div>
         </div>
         </v-card>&nbsp;&nbsp;
@@ -177,11 +286,13 @@
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
 import { mapGetters, mapState } from "vuex";
+
 export default{
   name: "ServeDev",
   components: {
     VueHorizontalList,
     PlaceComponent,
+    
   },
   computed:{
     ...mapGetters([
@@ -195,9 +306,47 @@ export default{
     window.kakao && window.kakao.maps
       ? this.initMap()
       : this.addKakaoMapScript();
+
+      $(document).ready(function(){
+      $('.slider').slider();
+    });
   },
   data() {
     return {
+      swiperOption: {
+          slidesPerView: 'auto',
+          spaceBetween: 30,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+          }
+      },
+      items2 : [
+        {
+          src:"/satisfactionmap",
+          title: '함양 용추폭포',
+          img: "https://i.ibb.co/Sc2d57d/image.jpg",
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+        }, 
+        {
+          src:"/satisfactionmap",
+          title: '단양 만천하스카이워크',
+          img: "https://i.ibb.co/D40Hy4z/image.jpg",
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+        }, 
+        {
+          src:"/satisfactionmap",
+          title: '영천 팔공산 도립공원',
+          img: "https://i.ibb.co/p43Ckf9/image.jpg",
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+        }, 
+        {
+          src:"/satisfactionmap",
+          title: '소양강스카이워크',
+          img: "https://i.ibb.co/Cv4fSBn/image.jpg",
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+        }
+      ],
       options: {
         item: {
           padding: -20
@@ -224,6 +373,8 @@ export default{
           cursor:"pointer"
         }
       },
+    
+      
       items: [
         { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
         { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
@@ -248,7 +399,7 @@ export default{
   methods: {
     check(){
       console.log(this.is_login);
-      console.log(this.user_info);
+      console.log(this.other_road);
     },
     setDetailRoad(num){
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
@@ -257,7 +408,7 @@ export default{
     },
     checkOtherRoad(){
       console.log(this.other_road);
-      console.log(this.other_road[1].length);
+      //console.log(this.other_road[1].length);
     },
     addKakaoMapScript() {
       const script = document.createElement("script");
@@ -391,7 +542,7 @@ export default{
 };
 </script>
 
-<style>
+<style > 
 
 @media (min-width: 1200px) {
     #app {
@@ -405,3 +556,227 @@ export default{
 }
 
 </style>
+<<<<<<< HEAD
+<style scoped>
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+html, body { background: #333 url("https://codepen.io/images/classy_fabric.png"); }
+
+.slides {
+    padding: 0;
+    width: 1050px;
+    height: 620px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+}
+
+.slides * {
+    user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.slides input { display: none; }
+
+.slide-container { display: block; }
+
+.slide {
+    top: 0;
+    opacity: 0;
+    width: 1050px;
+    height: 620px;
+    display: block;
+    position: absolute;
+    transform: scale(0);
+    transition: all .7s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+}
+
+.nav label {
+    width: 200px;
+    height: 100%;
+    display: none;
+    position: absolute;
+
+    opacity: 0;
+    z-index: 9;
+    cursor: pointer;
+
+    transition: opacity .2s;
+
+    color: #FFF;
+    font-size: 156pt;
+    text-align: center;
+    line-height: 640px;
+    font-family: "Varela Round", sans-serif;
+    background-color: rgba(255, 255, 255, .3);
+    text-shadow: 0px 0px 15px rgb(119, 119, 119);
+}
+
+.slide:hover + .nav label { opacity: 0.5; }
+
+.nav label:hover { opacity: 1; }
+
+.nav .next { right: 0; }
+
+input:checked + .slide-container  .slide {
+    opacity: 1;
+
+    transform: scale(1);
+
+    transition: opacity 1s ease-in-out;
+}
+
+input:checked + .slide-container .nav label { display: block; }
+
+.nav-dots {
+  width: 100%;
+  bottom: 9px;
+  height: 11px;
+  display: block;
+  position: absolute;
+  text-align: center;
+}
+
+.nav-dots .nav-dot {
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin: 0 4px;
+  position: relative;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.nav-dots .nav-dot:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+input#img-1:checked ~ .nav-dots label#img-dot-1,
+input#img-2:checked ~ .nav-dots label#img-dot-2,
+input#img-3:checked ~ .nav-dots label#img-dot-3,
+input#img-4:checked ~ .nav-dots label#img-dot-4,
+input#img-5:checked ~ .nav-dots label#img-dot-5,
+input#img-6:checked ~ .nav-dots label#img-dot-6 {
+  background: rgba(0, 0, 0, 0.8);
+}
+</style>
+
+<style lang="scss">
+// .slide {
+  
+//   .image-container {
+//     img {
+//       width: 1200px;
+//       height: 700px;
+//     }
+//     float: left;
+//     width: 100%;
+//     margin-right: 15px;
+//   }
+//   .title {
+//     font-size: 20px;
+//     font-weight: 700;
+//     text-align: left;
+//   }
+//   .teaser {
+//     text-align: left;
+//   }
+  
+// }
+
+// * {
+//   -webkit-box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   -ms-box-sizing: border-box;
+//   box-sizing: border-box;
+// }
+
+// #slider {
+//   max-width: 1600px;
+//   text-align: center;
+//   margin: 0 auto;
+// }
+
+// #overflow {
+//   width: 100%;
+//   overflow: hidden;
+// }
+
+// #slides .inner {
+//   width: 400%;
+// }
+
+// #slides .inner {
+//   -webkit-transform: translateZ(0);
+//   -moz-transform: translateZ(0);
+//   -o-transform: translateZ(0);
+//   -ms-transform: translateZ(0);
+//   transform: translateZ(0);
+
+//   -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+//   -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+//   transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+// }
+
+// #slides article {
+//   width: 25%;
+//   float: left;
+// }
+
+// #slide1:checked ~ #slides .inner {
+//   margin-left: 0;
+// }
+
+// #slide2:checked ~ #slides .inner {
+//   margin-left: -100%;
+// }
+
+// #slide3:checked ~ #slides .inner {
+//   margin-left: -200%;
+// }
+
+// #slide4:checked ~ #slides .inner {
+//   margin-left: -300%;
+// }
+
+// input[type="radio"] {
+//   display: none;
+// }
+
+// label {
+//   background: #CCC;
+//   display: inline-block;
+//   cursor: pointer;
+//   width: 13px;
+//   height: 13px;
+//   border-radius: 5px;
+// }
+
+// #slide1:checked ~ label[for="slide1"],
+// #slide2:checked ~ label[for="slide2"],
+// #slide3:checked ~ label[for="slide3"],
+// #slide4:checked ~ label[for="slide4"] {
+//   background: #333;
+// }
+</style>
+=======
+>>>>>>> b47026525afafa48045ba7988578293f902a2137
