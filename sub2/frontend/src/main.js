@@ -22,6 +22,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '@babel/polyfill'
 import VueHtml2Canvas from 'vue-html2canvas';
+import VueSimpleAlert from "vue-simple-alert";
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
@@ -31,6 +32,8 @@ library.add(faUserSecret)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 Vue.use(SequentialEntrance);
+Vue.use(VueSimpleAlert);
+
 new Vue({
   router,
   store,
