@@ -3,7 +3,7 @@
 
         <div v-if ="item.img.length">
           <v-img
-            :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${item.img[0].images}`"
+            :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${item.img[0].awsimages}`"
             width=100%
             height="200"
             object-fit: cover

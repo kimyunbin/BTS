@@ -27,6 +27,8 @@ export default new Vuex.Store({
     satis_area: [], // 만족도 높은 순 지역 결과
     gender_recom_area: [], // Home.vue에서 보여주는 성별 별 추천지역
     traveler_recom_area: [], //Home.vue에서 보여주는 저희가 추천하는 추천지역
+    reviews: [],
+    select_like: Boolean,
   },
 
   getters: {
@@ -83,6 +85,12 @@ export default new Vuex.Store({
     },
     get_traveler_recom_area(state) {
       return state.traveler_recom_area;
+    },
+    get_review(state) {
+      return state.reviews;
+    },
+    get_select_like(state) {
+      return state.select_like;
     }
   },
   mutations: {
@@ -149,6 +157,12 @@ export default new Vuex.Store({
     GET_TRAVELER_RECOMMEND_AREA(state, data) {
       state.traveler_recom_area = data;
     },
+    GET_REVIEW(state, data) {
+      state.reviews = data;
+    },
+    SET_SELECT_LIKE(state, data) {
+      state.select_like = data;
+    }
   },
   actions: {
     async GET_USER_INFO({ commit }, token) {
@@ -181,8 +195,8 @@ export default new Vuex.Store({
     async SET_SELECT_INFO(context, payload) {
       // this.state.select_info = {};
       const instance = createInstance3()
-      const response = await instance.get(`tour/detail?code=${payload}`)
-      console.log(response.data)
+      const response = await instance.get(`/tour/detail/?code=${payload}`)
+      // console.log(response.data)
       context.commit("SET_SELECT_INFO", response.data);
     },
     SET_SELECT_DETAIL(context, payload) {
@@ -225,10 +239,11 @@ export default new Vuex.Store({
       this.state.activity = {};
       context.commit("SET_SELECT_ACTIVITY", payload);
     },
+
     // 메인페이지 추천지역 불러오기
     async GET_RECOMMEND_AREA(context) {
       const instance = createInstance2()
-      const response = await instance.get("/accounts/recommendcity")
+      const response = await instance.get("/accounts/recommendcity/")
       // console.log(response.data.main[0].country, 'axios')
       const satis_area = response.data.main[0].country
       context.commit("SATIS_AREA" ,satis_area)
@@ -271,7 +286,7 @@ export default new Vuex.Store({
       const response = await instance.get("/tour/city/")
       console.log(response.data)
       // 여기가 gender부분
-      console.log(response.data.gender,'gender')
+      // console.log(response.data.gender,'gender')
       let gender_data = []
       for (let i = 0; i < 10; i++) {
         const gender_state = response.data.gender[i].state;
@@ -299,12 +314,12 @@ export default new Vuex.Store({
           'name' : gender_name,
           'imgurl' : g_imgurl
         }
-        console.log(gender_input, 'gender_input')
+        // console.log(gender_input, 'gender_input')
         gender_data.push(gender_input)
       }
       context.commit("GET_GENDER_RECOMMEND_AREA", gender_data);
       // 여기가 traveler부분
-      console.log(response.data.traveler,'traveler')
+      // console.log(response.data.traveler,'traveler')
       let traveler_data = []
       for (let i = 0; i < 10; i++) {
         const traveler_state = response.data.traveler[i].state;
@@ -332,19 +347,32 @@ export default new Vuex.Store({
           'name' : traveler_name,
           'imgurl' : t_imgurl
         }
-        console.log(traveler_input, 'traveler_input')
+        // console.log(traveler_input, 'traveler_input')
         traveler_data.push(traveler_input)
       }
       context.commit("GET_TRAVELER_RECOMMEND_AREA", traveler_data);
 
     },
-
-
     // 해당 spot 리뷰데이터 불러오기
     async GET_REVIEW(context, Spok_pk) {
-      const instance = createInstance3()
-      const response = await instance.get(`tour/detail/${Spok_pk}`)
+      const instance = createInstance2()
+      const response = await instance.get(`/tour/detail/${Spok_pk}/`)
+      console.log(response.data,'review')
+      context.commit("GET_REVIEW", response.data.review)
+      context.commit("SET_SELECT_LIKE",response.data.follow)
+    },
+    // 해당 spot 리뷰데이터 작성하기
+    async WRITE_REVIEW(context, data) {
+      const instance = createInstance2()
+      const response = await instance.post(`/tour/detail/${data.Spok_pk}/`, data.data)
       console.log(response.data)
+    },
+    // Spot 좋아요
+    async SPOT_LIKE(context, Spok_pk) {
+      const instance = createInstance2()
+      const response = await instance.post(`/accounts/follow/${Spok_pk}`)
+      console.log(response.data)
+      context.commit("SET_SELECT_LIKE",response.data.status)
     }
   }
 });
