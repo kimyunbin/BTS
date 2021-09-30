@@ -7,6 +7,8 @@
 <script>
 import * as d3 from 'd3';
 import { mapGetters, mapState } from "vuex";
+import { createInstance } from "@/api/index.js";
+
 const MAP_GEOJSON = require('./daejeon.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
@@ -44,7 +46,22 @@ export default {
     },
     move(city){
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
-        this.$router.replace("/map");      
+
+        const instance = createInstance();
+        instance.get("/tour/detail?code="+ city)
+        .then(
+            (response) => {
+                console.log(response.data);
+                this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
+                  this.$router.replace("/map");
+                });
+              }
+        )
+        .catch(() => {
+            alert("에러발생!");
+          //this.$router.push("/");
+        });
+              
       });
     },
     drawMap() {

@@ -7,6 +7,7 @@
 <script>
 import * as d3 from 'd3';
 import { mapGetters, mapState } from "vuex";
+import { createInstance } from "@/api/index.js";
 const MAP_GEOJSON = require('./busan.json'); // json 파일 입력시 해당지역 지도 출력
 
 export default {
@@ -31,10 +32,12 @@ export default {
   },
   mounted() {
     this.drawMap();
+    
   },
 
   methods: {
     // 선택된 지역
+    
     selectProvince(province) {
       this.province = province;
     },
@@ -44,7 +47,21 @@ export default {
     },
     move(city){
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
-        this.$router.replace("/map");      
+        const instance = createInstance();
+      
+        instance.get("/tour/detail?code="+ city)
+        .then(
+            (response) => {
+                  this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
+                  // const image_instance = imageInstance();
+                  this.$router.replace("/map");
+                });
+              }
+        )
+        .catch(error => {
+          console.log(error);
+        });
+              
       });
     },
     drawMap() {

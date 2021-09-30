@@ -28,6 +28,7 @@ import Vuetify2 from 'vuetify/lib'
 Vue.use(Vuex);
 Vue.use(Vuetify);
 Vue.use(Vuetify2);
+
 export default {
   name: "App",
   

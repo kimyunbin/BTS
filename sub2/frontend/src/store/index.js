@@ -16,6 +16,8 @@ export default new Vuex.Store({
     other_road: [], // 다른 사람들의 경로
     select_road: [], // Home.vue에서 선택된 경로
     select_map: null, //svg에서 선택된 경로
+    tour_detail: [],
+    tour_image:[],
   },
 
   getters: {
@@ -37,7 +39,7 @@ export default new Vuex.Store({
     select_road(state) {
       return state.select_road;
     },
-    select_budget(state) {
+    select_budget(state) {index
       return state.budget;
     },
     select_travelers(state) {
@@ -60,6 +62,12 @@ export default new Vuex.Store({
     },
     select_map(state) {
       return state.select_map;
+    },
+    tour_detail(state) {
+      return state.tour_detail;
+    },
+    tour_imaget(state) {
+      return state.tour_image;
     }
   },
   mutations: {
@@ -113,6 +121,12 @@ export default new Vuex.Store({
     },
     SET_SELECT_MAP(state, data) {
       state.select_map = data;
+    },
+    SET_TOUR_DETAIL(state, data) {
+      state.tour_detail = data;
+    },
+    SET_TOUR_IMAGE(state, data) {
+      state.tour_image = data;
     }
   },
   actions: {
@@ -186,6 +200,14 @@ export default new Vuex.Store({
     SET_SELECT_MAP(context, payload) {
       this.state.select_map = null;
       context.commit("SET_SELECT_MAP", payload);
+    },
+    SET_TOUR_DETAIL(context, payload) {
+      this.state.tour_detail = null;
+      context.commit("SET_TOUR_DETAIL", payload);
+    },
+    SET_TOUR_IMAGE(context, payload) {
+      this.state.tour_image = null;
+      context.commit("SET_TOUR_IMAGE", payload);
     }
   }
 });

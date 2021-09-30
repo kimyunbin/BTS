@@ -1,10 +1,38 @@
 <template>
     <div>
         <div class="map_wrap" ref="printMe">
-            <div id="map"  style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+            <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden; float: left; width: 80%;"></div>
+            
+            <div v-if="my_road.length" style ="float: left; width: 20%;">
+                <v-layout column class="mt-0 pt-0">
+                    <v-flex
+                        v-for="(road, idx) in this.my_road"
+                        :key="idx"
+                    >
+                    <v-layout column>
+                        <v-card column hover flat width="200" height="70">
+                            <v-card-title primary-title>
+                                <v-flex text-xs-center subheading font-weight-bold>{{road.title}}</v-flex>
+                                <v-btn  elevation="0" icon @click="deleteRoad(idx)"  color="pink white--text" ><v-icon>delete</v-icon></v-btn>
+                            </v-card-title>
+                            <!-- <div v-if="road.src === null">
+                                <v-img v-bind:src="thumbnail" width=90% height="0%" object-fit: cover></v-img>
+                            </div>
+                            <div v-else>
+                                <v-img :src="road.src" width=100% height="0%" object-fit: cover></v-img>
+                            </div> -->
+                            <v-card-title primary-title class="justify-center">
+                                <div class="txt_line">{{road.address}}</div>
+                            </v-card-title>
+                        </v-card>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </v-layout>
+                    </v-flex>
+                </v-layout>
+            </div>
 
-            <div id="menu_wrap" class="bg_white">
-                <div class="option">
+            <div id="menu_wrap" class="bg_white" style="display:none;">
+                <div class="option" >
                     <div>
                         <form>
                             <v-layout row wrap justify-center align-center>
@@ -29,59 +57,30 @@
                 <ul id="placesList"></ul>
                 <div id="pagination"></div>
             </div>
+
+            
         </div>
         <br><br>
-        <div  v-if="my_road.length">
-            <v-layout row justify-center align-center wrap class="mt-0 pt-0">
-            <v-flex
-                v-for="(road, idx) in this.my_road"
-                :key="idx"
-                xs12 sm6 md4 lg3 xl3
-            >
-
-            <v-layout row>
-                <v-card row hover flat width="220" height="230">
-                    <v-card-title primary-title class="justify-center">
-                        <v-flex text-xs-center subheading font-weight-bold>{{road.title}}</v-flex>
-                        <v-btn  elevation="0" icon @click="deleteRoad(idx)"  color="pink white--text" ><v-icon>delete</v-icon></v-btn>
-                    </v-card-title>
-                    <div v-if="road.src === null">
-                        <v-img v-bind:src="thumbnail" width=100% height="100%" object-fit: cover></v-img>
-                    </div>
-                    <div v-else>
-                        <v-img :src="road.src" width=100% height="130" object-fit: cover></v-img>
-                    </div>
-                    <v-card-title primary-title class="justify-center">
-                        <div class="txt_line">위도: {{road.lat}}</div>
-                    </v-card-title>
-                </v-card>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <v-icon>arrow_right_alt</v-icon>
-            </v-layout>
-
-            </v-flex>
-            </v-layout>
-        </div>
-
-        <!-- <v-btn @click="makeLine()"></v-btn> -->
-        <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제</v-btn>
-
-        <v-btn @click="storeMyRoad()">내 경로 저장하기</v-btn>
-        <v-btn @click="clearRoad()">경로 초기화</v-btn>
+        <v-btn @click="storeMyRoad()" color="primary">내 경로 저장하기</v-btn>
+        <v-btn @click="clearRoad()" color="error">경로 초기화</v-btn>
+        <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제(추후삭제)</v-btn>
+        <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn>
     </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-
+import { roadInstance } from "@/api/index.js";
+import { imageInstance} from "@/api/index.js";
 
 export default {
     created(){
+        this.makeImage();
         this.place = this.select_map;
     },
     computed:{
         ...mapGetters([
-            "other_road","CLEAR_OTHER_ROAD","select_map"
+            "other_road","CLEAR_OTHER_ROAD","select_map","tour_detail","user_info","token"
         ])
     },
     mounted() {
@@ -97,18 +96,35 @@ export default {
             ps : {},
             infowindow : {},
             place: "",
-            my_road :[
-
-            ],
+            my_road :[],
             my_road_title :[
 
             ],
             output: null,
             polyline :null,
             linePath :[],
+            image:[],
         };
     },
     methods: {
+        makeImage(){
+            const image_instance = imageInstance();
+            for(let i = 0; i< this.tour_detail.관광지.length; i++){
+                image_instance.get("/search/image?query="+this.tour_detail.관광지[i].title)
+                .then(
+                    (response) => {
+                        //console.log(response);
+                        this.image[i]=response.data.documents[0].image_url;
+                    }
+                )
+                .catch(() =>{
+
+                });
+            }
+        },
+        check(){
+            console.log(this.my_road);
+        },
         clearAllRoad(){
             this.$store.dispatch("CLEAR_OTHER_ROAD");
         },
@@ -119,11 +135,61 @@ export default {
             this.my_road= [];
         },
         storeMyRoad() {
-            this.other_road.push(this.my_road);
+           // console.log(this.token);
+            const instance = roadInstance(this.token);
+            console.log(this.my_road);
+            
+            // var title = prompt("경로이름을 입력해주세요");
+            var title='';
+
+            this.$prompt("Input your name").then((text) => {
+                title = text;
+                
+            
+            const data= [];
+            for(let i = 0; i < this.my_road.length;i++){
+                const road= {
+                    id : this.my_road[i].id,
+                    address : this.my_road[i].address,
+                    lat : this.my_road[i].lat,
+                    lng : this.my_road[i].lng,
+                    name : this.my_road[i].name,
+                    title : this.my_road[i].title
+                }
+                data.push(road)
+            }
+            const dto={
+                title: title,
+                spot: data
+            };
+            console.log(JSON.stringify(dto))
+            instance.post("/tour/route/", JSON.stringify(dto))
+                .then(
+                (response) => {
+                    console.log(response);
+                    // this.$store.commit("SET_TOKEN", token);
+                    // this.$store.commit("SET_USER_INFO", decoded.username);
+                    // this.$router.push("/");
+                }
+                )
+                .catch(() => {
+                    //alert("에러발생!");
+                    //this.$router.push("/");
+                });
+            //this.other_road.push(this.my_road);
             this.makeLine();
-            alert("저장이 완료되었습니다.");
-            this.my_road = [];
-            this.my_road_title = [];
+            //alert("저장이 완료되었습니다.");
+            //this.my_road = [];
+            //this.my_road_title = [];
+            })
+            
+            .catch(() => {
+                //console.log(title);
+                //if(title===''){
+                    this.$alert("경로이름을 입력해주세요!");
+                    return;
+                //}
+            });
         },
 
         makeLine(){
@@ -141,9 +207,7 @@ export default {
 
             this.polyline.setMap(this.map);
         },
-        check(){
-            this.print();
-        },
+        
         addKakaoMapScript() {
             const script = document.createElement("script");
             script.onload = () => kakao.maps.load(this.initMap);
@@ -180,8 +244,12 @@ export default {
             if (status === kakao.maps.services.Status.OK) {
 
             // 정상적으로 검색이 완료됐으면
-            // 검색 목록과 마커를 표출합니다
-            this.displayPlaces(data);
+            // 검색 목록과 마커를 표출합니다const image_instance = imageInstance();
+            //console.log(this.tour_detail.관광지);
+            
+            //console.log(this.imaget[0]);
+            
+            this.displayPlaces(this.tour_detail.관광지);
 
             // 페이지 번호를 표출합니다
             this.displayPagination(pagination);
@@ -195,7 +263,8 @@ export default {
             }
         },
 
-        displayInfowindow(title, infowindow, marker, address, src) {
+        displayInfowindow(title, infowindow, marker, address, id,url) {
+            url ="https://go-test-buket.s3.ap-northeast-2.amazonaws.com/aecf1e8d-4dcd-40a6-87d2-fc64e59ae473";
             var content =
                             '<div class="wrap3">' +
                             '    <div class="info3">' +
@@ -205,7 +274,7 @@ export default {
                             '        </div>' +
                             '        <div class="body3">' +
                             '            <div class="img3">' +
-                            '                <img src="https://i.ibb.co/gWBNgwm/image.jpg" width="73" height="70">' +
+                            '                <img src="' +url +'" width="73" height="70" />' +
                             '           </div>' +
                             '            <div class="desc3">' +
                             '                <div class="ellipsis3">'+
@@ -217,7 +286,7 @@ export default {
                             '        </div>' +
                             '    </div>' +
                             '</div>';
-
+            console.log(url);
             infowindow.setContent(content);
             infowindow.open(this.map, marker);
         },
@@ -240,13 +309,18 @@ export default {
             var map = this.map;
             var func = this.displayInfowindow;
             var addRoad = this.addmy_road;
-            for ( var i=0; i < places.length; i++ ) {
+            const _this = this;
+            //console.log("this.image ="+ _this.image);
+            var images = _this.image;
 
+            // console.log("============================");
+            //console.log(_this.images.length());            
+            for ( var i=0; i < places.length; i++ ) {
+            
                 // 마커를 생성하고 지도에 표시합니다
-                var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-                    marker = this.addMarker(placePosition, i),
+                var placePosition = new kakao.maps.LatLng(places[i].longitude, places[i].latitude),
+                    marker = this.addMarker(placePosition, i,places[i]),
                     itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-                    console.log(itemEl)
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다
                 bounds.extend(placePosition);
@@ -254,9 +328,9 @@ export default {
                 // 마커와 검색결과 항목에 mouseover 했을때
                 // 해당 장소에 인포윈도우에 장소명을 표시합니다
                 // mouseout 했을 때는   인포윈도우를 닫습니다
-                (function(marker, title, lat, lng, address) {
+                (function(marker, title, lat, lng, address,id, image) {
                     kakao.maps.event.addListener(marker, 'mouseover', function(){
-                        func(title,infowindow,marker,address);
+                        func(title,infowindow,marker,address, id, image);
 
                     });
 
@@ -266,7 +340,7 @@ export default {
                     });
 
                     kakao.maps.event.addListener(marker, 'click',  function(){
-                        addRoad(title,lat,lng, "abc");
+                        addRoad(title,lat,lng, id,address, image);
                     });
 
                     itemEl.onmouseover =  function () {
@@ -275,14 +349,11 @@ export default {
                         infowindow.open(map, marker);
 
                     };
-                    // itemEl.onclick = function(){
-                    //     func(title, infowindow, marker);
-                    // }
-
+                    
                     itemEl.onmouseout =  function () {
                         infowindow.close();
                     };
-                })(marker, places[i].place_name, places[i].x, places[i].y, places[i].address_name);
+                })(marker, places[i].title, places[i].latitude, places[i].longitude, places[i].address,places[i].id, _this.image[i]);
 
                 fragment.appendChild(itemEl);
             }
@@ -297,23 +368,20 @@ export default {
             var el = document.createElement('li'),
             itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                         '<div class="info2">' +
-                        '   <h5>' + places.place_name + '</h5>';
+                        '   <h5>' + places.title + '</h5>';
 
-            if (places.road_address_name) {
-                itemStr += '    <span>' + places.road_address_name + '</span>' +'&nbsp&nbsp'+
-                            '   <span class="jibun gray">' +  places.address_name  + '</span>';
-            } else {
-                itemStr += '    <span>' +  places.address_name  + '</span>';
-            }
+            
+                itemStr += '    <span>' + places.category + '</span>' +'&nbsp&nbsp'+
+                            '   <span class="jibun gray">' +  places.address  + '</span>'+'</div>';
+            
 
-            itemStr += '  <span class="tel">' + places.phone  + '</span>'+
-                        '</div>';
+                        
             el.innerHTML = itemStr;
             el.className = 'item';
 
             return el;
         },
-        addMarker(position, idx, title) {
+        addMarker(position, idx, place) {
             var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
                 imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
                 imgOptions =  {
@@ -325,11 +393,10 @@ export default {
                 marker = new kakao.maps.Marker({
                     position: position, // 마커의 위치
                     image: markerImage,
-                    title : title
+                    title : place.title
                 });
             marker.setMap(this.map); // 지도 위에 마커를 표출합니다
             this.markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-            console.log(this.markers)
             return marker;
         },
         removeMarker() {
@@ -373,18 +440,22 @@ export default {
             }
         },
 
-        addmy_road(title2, lat2, lng2, src){
+        addmy_road(title2, lat2, lng2, id2,adddress2, src2){
             if(this.my_road_title.indexOf(title2)>0){
                 alert("이미 경로에 포함되어있습니다.");
                 return;
             }
+            src2 = "https://go-test-buket.s3.ap-northeast-2.amazonaws.com/aecf1e8d-4dcd-40a6-87d2-fc64e59ae473";
             alert("추가되었습니다.");
+            console.log(this.user_info);
             const road ={
-                name: "sgs1159",
+                name: this.user_info,
                 title:title2,
                 lat : lat2,
                 lng: lng2,
-                src: "https://i.ibb.co/gWBNgwm/image.jpg"
+                id: id2,
+                address: adddress2,
+                src : src2
             }
             this.my_road_title.push(road.title);
             this.my_road.push(road);
