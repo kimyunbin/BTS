@@ -61,7 +61,7 @@
         <v-btn flat to="/myinteresting" active-class="blue--text headline"><b>관심지역</b></v-btn>
         <v-btn flat to="/map" active-class="blue--text headline"><b>지도(임시)</b></v-btn>
         <v-btn flat to="/satisfactionmap" active-class="blue--text headline"><b>만족도(임시)</b></v-btn>
-        <v-btn flat to="/login" @click.prevent="onClickLogout" active-class="blue--text headline"><b>로그아웃</b></v-btn>
+        <v-btn flat @click.prevent="onClickLogout" active-class="blue--text headline"><b>로그아웃</b></v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </div>
@@ -91,10 +91,8 @@ export default {
       this.$emit("changeTheme", this.goDark);
     },
     onClickLogout() {
-      let checkLogout = confirm("로그아웃 하시겠습니까?");
-      console.log(checkLogout);
-      if(checkLogout){
-      this.$store
+      this.$confirm("로그아웃 하시겠습니까?").then(() => {
+        this.$store
         .dispatch("LOGOUT")
         .then(() => {
           if (this.$route.path !== "/") this.$router.replace("/");
@@ -102,7 +100,12 @@ export default {
         .catch(() => {
           console.log("로그아웃 에러입니다.");
         });
-      }
+      })
+      // let checkLogout = confirm("로그아웃 하시겠습니까?");
+      // console.log(checkLogout);
+      // if(checkLogout){
+      
+      // }
     }
   }
 };

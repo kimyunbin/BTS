@@ -1,17 +1,17 @@
 <template>
   <v-card @click="setSelectPlace()" hover class="justify-center" >
         <v-img
-          :src="item.src"
+          :src="item.imgurl"
           width=100%
           height="200"
           object-fit: cover
         />
-        
+
         <v-card-title primary-title>
         <div>
-          <p class="headline mb-0"><b>{{item.title}}</b></p>
+          <p class="headline mb-0"><b>{{item.name}}</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{item.content}}</b></p>
+            <p class="green--text font-weight-medium"><b>{{item.state}}</b></p>
           </div>
         </div>
       </v-card-title>
@@ -29,11 +29,16 @@ export default {
   },
   computed:{
     ...mapGetters(["SET_SELECT_PLACE"]),
+    ...mapGetters(["SET_SELECT_INFO"])
   },
   methods: {
     setSelectPlace(){
-      this.$store.dispatch("SET_SELECT_PLACE", this.item).then(()=>{
-        this.$router.replace("/placedetail");      
+      this.$store.dispatch("SET_SELECT_PLACE", this.item.name).then(()=>{
+      this.$store.dispatch("SET_SELECT_INFO", this.item.name)
+      .then(()=>{
+
+        this.$router.replace("/placedetail");
+      })
       });
     }
   },

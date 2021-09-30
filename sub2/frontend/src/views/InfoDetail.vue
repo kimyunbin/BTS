@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-      <h2><b>{{select_info.title}}</b></h2>
+      <h2><b>{{select_detail.title}}</b></h2>
       <v-layout row justify-end data-aos="fade-right">
         <v-toolbar-title class="headline">
           <div @click="changeLike" style="display:inline-block">
@@ -25,7 +25,7 @@
       </v-layout>
     </v-layout>
     <v-layout row justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-    <img :src="select_info.src" width="500" height="500" style="display:inline-block"/>
+    <img :src="select_detail.src" width="500" height="500" style="display:inline-block"/>
     &nbsp;&nbsp;&nbsp;
       <div class="map_wrap">
         <div id="map" style="width:900;height:100%;position:relative;overflow:hidden;"></div>
@@ -70,7 +70,8 @@ export default {
   name: "TeamMain",
   computed: {
     ...mapGetters([
-      "select_info"
+      "select_info",
+      "select_detail"
     ]),
   },
   mounted() {
@@ -89,7 +90,8 @@ export default {
 
   },
   created() {
-    this.place = this.select_info.title;
+    this.place = this.select_detail.title;
+    // this.$store.dispatch("GET_REVIEW", this.$store.state.reviews)
   },
   data() {
     return {

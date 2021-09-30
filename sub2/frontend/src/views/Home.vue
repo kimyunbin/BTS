@@ -136,8 +136,8 @@
     <h1><b>차범희님을 위한 추천 여행지역</b></h1>
     <br>
     <section>
-      
-      <vue-horizontal-list :items="items" :options="options" >
+
+      <vue-horizontal-list :items="items2" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -145,13 +145,13 @@
         <template v-slot:nav-next>
           <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
-        
+
         <template v-slot:default="{ item }">
           <PlaceComponent
             :item="item"
-          />  
-        </template> 
-        
+          />
+        </template>
+
       </vue-horizontal-list>
     </section>
 
@@ -192,9 +192,9 @@
         </v-card>&nbsp;&nbsp;
       </v-layout>
     </section>
-    
 
-    
+
+
       <!-- <v-btn round dark @click="move('최신')" v-b-tooltip.hover title="click!" >
           최신
       </v-btn>
@@ -210,7 +210,7 @@
       <v-btn round  dark @click="move('여자끼리')" v-b-tooltip.hover title="click!" >
           여자끼리
       </v-btn> -->
-      <!-- <section style=""> 
+      <!-- <section style="">
       <vue-horizontal-list :items="other_road" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
@@ -223,7 +223,7 @@
         <template v-slot:default="{ item }">
           <OtherRoad
             :road="item"
-          />  
+          />
         </template>
       </vue-horizontal-list>
     </section> -->
@@ -349,10 +349,10 @@ export default{
       ],
       options: {
         item: {
-          padding: -20 
+          padding: -20
         },
         map:{
-          padding: -20 
+          padding: -20
         },
         responsive: [
           { end: 576, size: 1 },
@@ -361,7 +361,7 @@ export default{
           { size: 4 },
         ],
         list: {
-          
+
           windowed: 1200,
           padding: 30,
         },
@@ -386,8 +386,16 @@ export default{
         { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
         { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
+      items2: []
     };
   },
+  created() {
+    this.$store.dispatch("GET_RECOMMEND_AREA")
+    .then(()=>{
+     this.items2 =  this.$store.state.recom_area
+    })
+  },
+
   methods: {
     check(){
       console.log(this.is_login);
@@ -395,7 +403,7 @@ export default{
     },
     setDetailRoad(num){
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
-        this.$router.replace("/otherroad");      
+        this.$router.replace("/otherroad");
       });
     },
     checkOtherRoad(){
@@ -404,7 +412,7 @@ export default{
     },
     addKakaoMapScript() {
       const script = document.createElement("script");
-    
+
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
         "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=2308e0069ab87daa299bf6d8b3db30e6";
@@ -431,16 +439,16 @@ export default{
         }
         lat[j] /= this.other_road[j].length;
         lng[j] /= this.other_road[j].length;
-        
+
       }
-      
-    
+
+
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[0], lat[0]), //지도의 중심좌표.
         level: 8 //지도의 레벨(확대, 축소 정도)
       };
-  
+
       var options2 = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[1], lat[1]), //지도의 중심좌표.
@@ -453,57 +461,57 @@ export default{
         level: 8 //지도의 레벨(확대, 축소 정도)
       };
 
-      var map = new kakao.maps.Map(container, options); 
+      var map = new kakao.maps.Map(container, options);
       var map2 = new kakao.maps.Map(container2, options2);
       var map3 = new kakao.maps.Map(container3, options3);
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-      
+      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
       for (var i = 0; i < this.other_road[0].length; i++) {
-          
+
           // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new kakao.maps.Size(24, 35); 
-          
-          // 마커 이미지를 생성합니다    
-          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-          var latlng = new kakao.maps.LatLng(this.other_road[0][i].lng, this.other_road[0][i].lat); 
+          var imageSize = new kakao.maps.Size(24, 35);
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng = new kakao.maps.LatLng(this.other_road[0][i].lng, this.other_road[0][i].lat);
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
               title : this.other_road[0][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image : markerImage // 마커 이미지 
+              image : markerImage // 마커 이미지
           });
       }
       for (var i = 0; i < this.other_road[1].length; i++) {
-          
+
           // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new kakao.maps.Size(24, 35); 
-          
-          // 마커 이미지를 생성합니다    
-          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-          var latlng = new kakao.maps.LatLng(this.other_road[1][i].lng, this.other_road[1][i].lat); 
+          var imageSize = new kakao.maps.Size(24, 35);
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng = new kakao.maps.LatLng(this.other_road[1][i].lng, this.other_road[1][i].lat);
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map2, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
               title : this.other_road[1][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image : markerImage // 마커 이미지 
+              image : markerImage // 마커 이미지
           });
       }
       for (var i = 0; i < this.other_road[2].length; i++) {
-          
+
           // 마커 이미지의 이미지 크기 입니다
-          var imageSize = new kakao.maps.Size(24, 35); 
-          
-          // 마커 이미지를 생성합니다    
-          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-          var latlng = new kakao.maps.LatLng(this.other_road[2][i].lng, this.other_road[2][i].lat); 
+          var imageSize = new kakao.maps.Size(24, 35);
+
+          // 마커 이미지를 생성합니다
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng = new kakao.maps.LatLng(this.other_road[2][i].lng, this.other_road[2][i].lat);
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map3, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
               title : this.other_road[2][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image : markerImage // 마커 이미지 
+              image : markerImage // 마커 이미지
           });
       }
       this.makePolyLine(map, 0);
@@ -513,7 +521,7 @@ export default{
     makePolyLine(map, n){
 
       var linePath = [];
-            
+
       for(var i = 0; i< this.other_road[n].length; i++){
         linePath.push( new kakao.maps.LatLng(this.other_road[n][i].lng, this.other_road[n][i].lat));
       }
@@ -527,8 +535,8 @@ export default{
           strokeStyle: 'solid' // 선의 스타일입니다
       });
 
-      // 지도에 선을 표시합니다 
-      polyline.setMap(map);  
+      // 지도에 선을 표시합니다
+      polyline.setMap(map);
     }
   },
 };
@@ -548,6 +556,7 @@ export default{
 }
 
 </style>
+<<<<<<< HEAD
 <style scoped>
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
 
@@ -769,3 +778,5 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 //   background: #333;
 // }
 </style>
+=======
+>>>>>>> b47026525afafa48045ba7988578293f902a2137

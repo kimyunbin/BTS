@@ -10,14 +10,13 @@ function createInstance() {
   });
   return instance;
 }
-
-function roadInstance(token) {
+function createInstance2() {
+  const token =  localStorage.getItem('token')
   const instance = axios.create({
     baseURL: "http://j5c203.p.ssafy.io/api",
 
     headers: {
-      "Authorization": "JWT " + token,
-      "Content-Type": "application/json"
+      Authorization: `JWT ${token}`
     },
   });
   return instance;
@@ -36,4 +35,15 @@ function imageInstance() {
   return instance;
 }
 
-export { createInstance, roadInstance, imageInstance};
+
+function createInstance3() {
+  const instance = axios.create({
+    baseURL: "http://j5c203.p.ssafy.io/api",
+
+  });
+  return instance;
+}
+export { createInstance };
+export { createInstance2 };
+export { createInstance3 };
+export { imageInstance};

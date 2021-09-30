@@ -70,7 +70,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { roadInstance } from "@/api/index.js";
+import { createInstance2 } from "@/api/index.js";
 import { imageInstance} from "@/api/index.js";
 
 export default {
@@ -136,7 +136,7 @@ export default {
         },
         storeMyRoad() {
            // console.log(this.token);
-            const instance = roadInstance(this.token);
+            const instance = createInstance2();
             console.log(this.my_road);
             
             // var title = prompt("경로이름을 입력해주세요");

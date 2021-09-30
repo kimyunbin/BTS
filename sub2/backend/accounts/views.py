@@ -1,11 +1,12 @@
 from django.http.response import JsonResponse
+from rest_framework.serializers import Serializer
 from tour.models import Touristspot
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from .serializers import UserSerializer, CitySerializer, WishSerialzer
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializers import UserCreateSerializer, CitySerializer, UserLoginSerializer, WishSerialzer
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.conf import settings
@@ -65,20 +66,29 @@ def userSatis(request,user):
         
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def signup(request):
-	#1. UserSerializer를 통해 데이터 직렬화
-    serializer = UserSerializer(data=request.data)
-    print(request.data.get('budget'))
-	#2. validation 작업 진행 -> password도 같이 직렬화 진행
+    serializer = UserCreateSerializer(data=request.data)
+    print('---')
     if serializer.is_valid(raise_exception=True):
         user = serializer.save()
-        #4. 비밀번호 해싱 후 
-        user.set_password(request.data.get('password'))
-        user.save()
-        userSatis(request, user)
-        # print(user.password)
-    # password는 직렬화 과정에는 포함 되지만 → 표현(response)할 때는 나타나지 않는다.
-    return Response( {"status": "success"},status=status.HTTP_201_CREATED)
+        userSatis(request,user)
+        return Response({"status":"success"}, status=status.HTTP_201_CREATED)
+    return Response({"status":"fail"}, status = status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def login(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if not serializer.is_valid(raise_exception=True):
+        return Response({"status":"Request Body Error."}, status=status.HTTP_409_CONFLICT)
+    if serializer.validated_data['username'] == "None":
+        return Response({"status": "fail"}, status=status.HTTP_200_OK)
+    response = {
+        'success':True,
+        'token':serializer.data['token'],
+        'nickname': serializer.data['nickname']
+    }
+    return Response(response, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def checkusername(request):
@@ -92,11 +102,23 @@ def checkusername(request):
     else:
         return Response({"status":"success"},status=status.HTTP_201_CREATED)
 
+import requests
 @api_view(['POST'])
 def usertest(request):
-    print(request.user.get_username())
-    return Response({'sttus':'ss'})
     
+    url = 'https://img1.kakaocdn.net/relay/local/R640x320/?fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F99C9B2465BC59E95178EDA'
+        #해당 url로 서버에게 요청
+    img_response = requests.get(url)
+
+    #요청에 성공했다면,
+    if img_response.status_code == 200:
+        #print(img_response.content)
+    
+        print("========= [이미지 저장] =========")
+        with open("test.jpg", "wb") as fp:
+            fp.write(img_response.content)
+
+    return Response({"status":"ss"})
 @api_view(['GET','POST'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -175,4 +197,3 @@ def wishlist(request):
         'data': serializers.data
     }
     return Response(context,status=status.HTTP_200_OK)
-
