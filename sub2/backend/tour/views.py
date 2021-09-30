@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 import jwt
 from django.conf import settings
-from accounts.models import City
+from accounts.models import City,WishList
 from accounts.serializers import CitySerializer
 # Create your views here.
 
@@ -56,15 +56,22 @@ def tour_detail(request):
     return Response(context)
 
 @api_view(['GET','POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def tour_review(request, spot_pk):
+    user = finduser(request)
     if request.method =='GET':
         review = Review.objects.filter(Touristspot = spot_pk)
 
         serialer = reviewSerializer(data = review, many= True)
         print(serialer.is_valid())
-
+        if WishList.objects.filter(Touristspot = spot_pk , user = user).exists():
+            follow = True
+        else:
+            follow = False
         context ={
-            'review': serialer.data
+            'review': serialer.data,
+            'follow':follow
         }
         return Response(context)
     elif request.method =='POST':
@@ -73,7 +80,6 @@ def tour_review(request, spot_pk):
         '''
         rating = request.data.get('rating')
         content = request.data.get('content')
-        user = finduser(request)
         spot = get_object_or_404(Touristspot, pk = spot_pk)
         review = Review(user=user, Touristspot = spot, rating=rating, content=content)
         review.save()
