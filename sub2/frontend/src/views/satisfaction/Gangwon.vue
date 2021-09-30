@@ -188,8 +188,8 @@ export default {
         },
         {
           "name":"고성군",
-          "lat" : "38.37796111",
-          "lon" : "128.4701639"
+          "lat" : "38.32796111",
+          "lon" : "128.4651639"
         },
         {
           "name":"동해시",
@@ -238,8 +238,8 @@ export default {
         },
         {
           "name":"철원군",
-          "lat" : "38.14405556",
-          "lon" : "127.3157333"
+          "lat" : "38.16005556",
+          "lon" : "127.4157333"
         },
         {
           "name":"춘천시",
@@ -272,52 +272,34 @@ export default {
           "lon" : "127.9872222"
         },
       ];
-
+      
       // 아이콘 그리기
-      if(this.items[0]["score"] === 10) {
-        iconsLayer
-          .selectAll('svg')
-          .data(iconsInfo)
-          .enter()
-          .append("svg:image")
-          .attr("width", 60)
-          .attr("height", 60)
-          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
-          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
-          .attr('opacity', 1)
-          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
-          // .on('click', d => {
-          //   console.log(d)
-          // })
-          .transition()
-          .ease(d3.easeElastic)
-          .duration(2000)
-          .delay((d, i)=> i * 50)
-          .attr('opacity', 1)
-          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
-      } else {
-        iconsLayer
-          .selectAll('svg')
-          .data(iconsInfo)
-          .enter()
-          .append("svg:image")
-          .attr("width", 60)
-          .attr("height", 60)
-          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
-          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
-          .attr('opacity', 1)
-          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
-          // .on('click', d => {
-          //   console.log(d)
-          // })
-          .transition()
-          .ease(d3.easeElastic)
-          .duration(2000)
-          .delay((d, i)=> i * 50)
-          .attr('opacity', 1)
-          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
-
-      }
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        // .on('click', d => {
+        //   console.log(d)
+        // })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
