@@ -7,6 +7,7 @@ from .serializers import reviewSerializer, tourSerializer, RouteSerializer, Rout
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
+
 from django.contrib.auth import get_user_model
 import jwt
 from django.conf import settings
@@ -92,7 +93,7 @@ def route(request):
         route = Route(title=request.data['title'], user=user)
         route.save()
         for s in request.data['spot']:
-            spot = get_object_or_404(Touristspot, title = s)
+            spot = get_object_or_404(Touristspot, id = s['id'])
             temp = RouteTouristspot(route=route, touristspot=spot)
             temp.save()
         return Response({"status":"success"})
@@ -100,6 +101,14 @@ def route(request):
         route = get_list_or_404(Route, user=user)
 
         return Response(RouteSerializer(route, many=True).data)
+
+@api_view(['GET'])
+def route_random(request):
+    user = finduser(request)
+    route = get_list_or_404(Route.objects.exclude(user=user).order_by("?"))
+
+    return Response(RouteSerializer(route, many=True).data[:3])
+
 @api_view(('GET',))
 def tour_city(request):
     man = [32030, 37020, 39020, 31370, 34030, 32060, 39010, 36020, 37010, 21090, 34380, 32010, 38090, 38050, 38350, 31380, 35380, 35020, 36310, 35010, 34020, 38080, 33380, 35330, 31200, 23310, 23010, 21140, 34370, 38100]

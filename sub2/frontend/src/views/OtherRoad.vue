@@ -1,7 +1,7 @@
 <template>
   <div>
     <br>
-    <h1 data-aos="fade-up"><b>OOO님의 여행 경로입니다.</b></h1>
+    <h1 data-aos="fade-up"><b>{{select_road[0].name}}님의 여행 경로입니다.</b></h1>
     <div id="map" class="map"></div>
     <v-btn @click="check()"></v-btn>
   </div>      
@@ -115,10 +115,8 @@ export default {
                             '           </div>' + 
                             '            <div class="desc3">' + 
                             '                <div class="ellipsis3">'+
-                                            this.select_road[i].lat+
+                                            this.select_road[i].address+
                             '</div>' + 
-                            '                <div class="jibun3 ellipsis3">(우) 63309 (지번) 영평동 2181</div>' + 
-                            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
                             '            </div>' + 
                             '        </div>' + 
                             '    </div>' +    

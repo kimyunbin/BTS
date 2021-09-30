@@ -6,6 +6,8 @@
 
 <script>
 import * as d3 from 'd3';
+import { mapGetters, mapState } from "vuex";
+import { createInstance } from "@/api/index.js";
 
 const MAP_GEOJSON = require('./seoul.json'); // json 파일 입력시 해당지역 지도 출력
 
@@ -20,6 +22,12 @@ export default {
     }
   },
   computed: {
+     ...mapGetters([
+      "SET_SELECT_MAP"
+    ]),
+    ...mapState([
+      "select_map"
+    ])
   },
   created() {
   },
@@ -35,6 +43,26 @@ export default {
     partyColor(code) {
       let color = null;
       return color;
+    },
+    move(city){
+      this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
+
+        const instance = createInstance();
+        instance.get("/tour/detail?code="+ city)
+        .then(
+            (response) => {
+                console.log(response.data);
+                this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
+                  this.$router.replace("/map");
+                });
+              }
+        )
+        .catch(() => {
+            alert("에러발생!");
+          //this.$router.push("/");
+        });
+              
+      });
     },
     drawMap() {
       // 지도정보
@@ -110,6 +138,7 @@ export default {
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "서울특별시 " + name
           console.log(name)
+          _this.move(name);
       }
 
       function mouseover(d){

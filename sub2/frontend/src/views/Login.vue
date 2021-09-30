@@ -5,7 +5,7 @@
 
       <v-flex xs12 sm12 md6 lg6 xl6>
         <h2 class="pb-4 mb-4">
-          <span>로그인</span>
+          <span><b>로그인</b></span>
         </h2>
 
         
