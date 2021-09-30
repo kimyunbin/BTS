@@ -1,7 +1,5 @@
 <template>
-  <div id="map-wrapper" class="map-wrapper">
-
-  </div>
+  <div id="map-wrapper" class="map-wrapper"></div>
 </template>
 
 <script>
