@@ -11,7 +11,7 @@
         </h2>
 
         <form>
-          <v-layout row wrap justify-center align-center>
+          
           <v-text-field
             name="name"
             color="blue"
@@ -21,8 +21,6 @@
             required
             @blur="$v.name.$touch()"
           ></v-text-field>
-          <v-btn @click="authentic()" color="blue" class="white--text">인증하기</v-btn>
-          </v-layout>
           
           <v-text-field
             type="email"
@@ -34,6 +32,7 @@
             required
             @blur="$v.email.$touch()"
           ></v-text-field>
+          <v-btn @click="authentic()" color="blue" class="buttons white--text">인증하기</v-btn>
           
           <v-text-field
             :type="'password'"
@@ -81,7 +80,6 @@
             :disabled=" (form.username=='' || form.email=='' || form.password=='' || form.password !== password_confirm || form.gender=='' || form.age=='')"
           >다음으로</v-btn>
 
-          <v-btn @click="check">체크</v-btn>
           
           <v-btn @click="clear">초기화</v-btn>
           <!-- <v-btn @click="fakeSignUp"></v-btn> -->
@@ -190,6 +188,25 @@ export default {
       this.isSubmit = isSubmit;
     },
     authentic(){
+      const body = {
+        username: this.form.username,
+        nickname: this.form.nickname
+      };
+      const instance = createInstance();
+      instance.post("/accounts/check/", JSON.stringify(body))
+        .then(
+          (response) => {
+            console.log(response);
+            if (response.data.status === "success") {
+              alert("인증완료")
+            } else {
+              alert("인증실패")
+            }
+          }
+        )
+        .catch(() => {
+          alert("에러");
+        })
 
     },
     setUserSignup(){
@@ -206,4 +223,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.buttons {
+  position: relative;
+  left: 80%;
+}
 </style>

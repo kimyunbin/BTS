@@ -3,8 +3,8 @@
         <h5><b>당신이 선호하는 여행활동은 무엇인가요?</b></h5>
         <br>
         <div class="field">
-            <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 11" :key="index" @click="filter(); onClick(index)">
+            <sequential-entrance class="field" fromRight>
+                    <div name="budget" required class="box" v-for="index in 11" :key="index" @click="onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -102,7 +102,18 @@
                 this.$emit('can-continue', {value: true});
             } else {
                 this.$emit('can-continue', {value: true});
-            }
+            };
+            $(document).ready(function() {
+                $(".card").each(function () {
+                    $(this).on('click', function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            });
         },
         computed:{
             ...mapGetters(["SET_SELECT_ACTIVITY"]),
@@ -168,6 +179,7 @@
 .field{
     display: flex;
     justify-content: center;
+    align-content: center;
 }
 .box {
     display: inline-block;

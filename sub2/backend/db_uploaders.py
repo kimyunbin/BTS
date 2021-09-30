@@ -144,4 +144,44 @@ def images():
 # tourist_youngje()
 # tourist_gwuanghun()
 # review()
-images()
+# images()
+
+import requests
+import boto3
+import uuid
+from PIL import Image
+from io  import BytesIO
+def test():
+    for i in range(80998,125263):
+        print(i)
+        img=ToruistImg.objects.get(id = i)
+        url = 'https:' +img.images
+        img_response = requests.get(url,verify=False)
+        
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
+            aws_secret_access_key = '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'
+        )
+        # print(img_response.content)
+        if img_response.status_code == 200:
+            #print(img_response.content)
+
+            print("========= [이미지 저장] =========")
+            with open('test.jpg', 'wb') as fp:
+                fp.write(img_response.content)
+
+            image = Image.open("test.jpg")
+            buffer = BytesIO()
+            image = image.convert("RGB")
+            image.save(buffer, "JPEG")
+            buffer.seek(0)
+            url_generator = str(uuid.uuid4())
+            img.awsimages = url_generator
+            img.save()
+
+            print(url_generator)
+            s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
+        
+
+test()
