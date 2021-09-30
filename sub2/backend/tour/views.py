@@ -84,6 +84,8 @@ def tour_review(request, spot_pk):
         spot = get_object_or_404(Touristspot, pk = spot_pk)
         review = Review(user=user, Touristspot = spot, rating=rating, content=content)
         review.save()
+        spot.counting += 1
+        spot.save()
         return Response({"status":"success"}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET','POST'])
