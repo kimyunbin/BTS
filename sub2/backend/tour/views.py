@@ -126,26 +126,26 @@ def tour_city(request):
     budgets = user.budget
     companions = user.companion
     if genders == True :
-        gender = City.objects.filter(code__in = man,user=user).order_by('-satis')[:10]
+        gender = City.objects.filter(code__in = man,user=user).order_by('?')[:10]
     else:
-        gender = City.objects.filter(code__in = woman,user=user).order_by('-satis')[:10]
+        gender = City.objects.filter(code__in = woman,user=user).order_by('?')[:10]
 
     if travelers == 1:
-        traveler = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
+        traveler = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
     else :
-        traveler = City.objects.filter(code__in =multi,user=user).order_by('-satis')[:10]
+        traveler = City.objects.filter(code__in =multi,user=user).order_by('?')[:10]
     
     if budgets <= 100000:
-        budget = City.objects.filter(code__in =poor,user=user).order_by('-satis')[:10]
+        budget = City.objects.filter(code__in =poor,user=user).order_by('?')[:10]
     else:
-        budget = City.objects.filter(code__in =rich,user=user).order_by('-satis')[:10]
+        budget = City.objects.filter(code__in =rich,user=user).order_by('?')[:10]
 
     if companions == True:
-        companion = City.objects.filter(code__in =family,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =family,user=user).order_by('?')[:10]
     elif companions == False:
-        companion = City.objects.filter(code__in =friend,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =friend,user=user).order_by('?')[:10]
     else:
-        companion = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
 
     genderserializer = CitySerializer(data=gender, many=True)
     travelerserializer = CitySerializer(data=traveler, many=True)
