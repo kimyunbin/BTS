@@ -8,6 +8,7 @@
 import * as d3 from 'd3';
 import { mapGetters, mapState } from "vuex";
 import { createInstance } from "@/api/index.js";
+import one from "../../assets/img/만족도/1.png"
 
 const MAP_GEOJSON = require('./gangwon.json'); // json 파일 입력시 해당지역 지도 출력
 
@@ -19,6 +20,7 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: []
     }
   },
   computed: {
@@ -26,16 +28,35 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    console.log(this.items)
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "강원도") {
+          this.items.push(this.satis_area[i])
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -185,6 +206,145 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+
+      const iconsInfo = [
+        {
+          "name":"강릉시",
+          "lat" : "37.74913611",
+          "lon" : "128.8784972"
+        },
+        {
+          "name":"고성군",
+          "lat" : "38.37796111",
+          "lon" : "128.4701639"
+        },
+        {
+          "name":"동해시",
+          "lat" : "37.52193056",
+          "lon" : "129.1166333"
+        },
+        {
+          "name":"삼척시",
+          "lat" : "37.44708611",
+          "lon" : "129.1674889"
+        },
+        {
+          "name":"속초시",
+          "lat" : "38.204275",
+          "lon" : "128.5941667"
+        },
+        {
+          "name":"양구군",
+          "lat" : "38.10729167",
+          "lon" : "127.9922444"
+        },
+        {
+          "name":"양양군",
+          "lat" : "38.07283333",
+          "lon" : "128.6213556"
+        },
+        {
+          "name":"영월군",
+          "lat" : "37.18086111",
+          "lon" : "128.4640194"
+        },
+        {
+          "name":"원주시",
+          "lat" : "37.33908333",
+          "lon" : "127.9220556"
+        },
+        {
+          "name":"인제군",
+          "lat" : "38.06697222",
+          "lon" : "128.1726972"
+        },
+        {
+          "name":"정선군",
+          "lat" : "37.37780833",
+          "lon" : "128.6630861"
+        },
+        {
+          "name":"철원군",
+          "lat" : "38.14405556",
+          "lon" : "127.3157333"
+        },
+        {
+          "name":"춘천시",
+          "lat" : "37.87854167",
+          "lon" : "127.7323111"
+        },
+        {
+          "name":"태백시",
+          "lat" : "37.16122778",
+          "lon" : "128.9879972"
+        },
+        {
+          "name":"평창군",
+          "lat" : "37.36791667",
+          "lon" : "128.3923528"
+        },
+        {
+          "name":"홍천군",
+          "lat" : "37.69442222",
+          "lon" : "127.8908417"
+        },
+        {
+          "name":"화천군",
+          "lat" : "38.10340833",
+          "lon" : "127.7103556"
+        },
+        {
+          "name":"횡성군",
+          "lat" : "37.48895833",
+          "lon" : "127.9872222"
+        },
+      ];
+
+      // 아이콘 그리기
+      if(this.items[0]["score"] === 10) {
+        iconsLayer
+          .selectAll('svg')
+          .data(iconsInfo)
+          .enter()
+          .append("svg:image")
+          .attr("width", 60)
+          .attr("height", 60)
+          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+          .attr('opacity', 1)
+          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
+          // .on('click', d => {
+          //   console.log(d)
+          // })
+          .transition()
+          .ease(d3.easeElastic)
+          .duration(2000)
+          .delay((d, i)=> i * 50)
+          .attr('opacity', 1)
+          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
+      } else {
+        iconsLayer
+          .selectAll('svg')
+          .data(iconsInfo)
+          .enter()
+          .append("svg:image")
+          .attr("width", 60)
+          .attr("height", 60)
+          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+          .attr('opacity', 1)
+          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
+          // .on('click', d => {
+          //   console.log(d)
+          // })
+          .transition()
+          .ease(d3.easeElastic)
+          .duration(2000)
+          .delay((d, i)=> i * 50)
+          .attr('opacity', 1)
+          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
+
+      }
 
     }
   }
