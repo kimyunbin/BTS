@@ -1,6 +1,5 @@
 <template>
   <div id="map-wrapper" class="map-wrapper">
-
   </div>
 </template>
 
@@ -20,7 +19,8 @@ export default {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
       items: [],
-      names: []
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -34,7 +34,9 @@ export default {
   created() {
     this.store()
     // this.check()
-    console.log(this.items)
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
@@ -164,8 +166,14 @@ export default {
       }
 
       function mouseover(d){
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        name = "강원도 " + name
+        // arlert(name)
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
+        // this.cityname = name
+        // alert(this.cityname)
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -179,6 +187,7 @@ export default {
           .style('fill', (d) => {
             return centered && d===centered ? '#D5708B' : fillFn(d);
           });
+        // this.cityname = "";
       }
 
       // Get province name length

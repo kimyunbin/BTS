@@ -167,6 +167,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);

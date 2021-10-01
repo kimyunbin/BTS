@@ -19,6 +19,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -26,16 +29,39 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    // for(var i=0; i<this.items.length; i++) {
+    //   console.log(this.items[i]["city"])
+    // }
+    console.log(this.items)
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "세종특별자치시") {
+          this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -58,7 +84,7 @@ export default {
               }
         )
         .catch(() => {
-            alert("에러발생!");
+            // alert("에러발생!");
           //this.$router.push("/");
         });
               
@@ -119,7 +145,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -144,6 +170,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -185,6 +212,39 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"세종특별자치시",
+          "lat" : "36.6000000",
+          "lon" : "127.2400000"
+        },
+      ];
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -248,8 +308,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }

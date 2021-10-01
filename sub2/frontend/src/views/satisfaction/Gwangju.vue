@@ -19,7 +19,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
-      items: []
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -32,7 +34,10 @@ export default {
   },
   created() {
     this.store()
-    console.log(this.items)
+    // this.check()
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
@@ -41,8 +46,18 @@ export default {
   methods: {
     store() {
       for(var i=0; i < this.satis_area.length; i++) {
-        if(this.satis_area[i]["state"] === "경기도") {
+        if(this.satis_area[i]["state"] === "광주광역시") {
           this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
         }
       }
     },
@@ -154,6 +169,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -195,6 +211,59 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"광산구",
+          "lat" : "35.15995836",
+          "lon" : "126.763668"
+        },
+        {
+          "name":"남구",
+          "lat" : "35.08801749",
+          "lon" : "126.8725572"
+        },
+        {
+          "name":"동구",
+          "lat" : "35.11627776",
+          "lon" : "126.9630903"
+        },
+        {
+          "name":"북구",
+          "lat" : "35.1912138",
+          "lon" : "126.9210806"
+        },
+        {
+          "name":"서구",
+          "lat" : "35.1325164",
+          "lon" : "126.8695063"
+        },
+      ];
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -258,8 +327,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }
