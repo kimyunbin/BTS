@@ -241,7 +241,7 @@ def route_follow(request,route_pk):
 
     return Response({"status":follow }, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def recommendspot(request):
@@ -252,7 +252,7 @@ def recommendspot(request):
     df1 = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/df1.pkl'))
     for i in review:
         try:
-            tmp.loc[1][i] = d[i]-3
+            tmp.loc[1][i.Touristspot.pk] = i.rating-3
         except:
             pass
     tmp = tmp.fillna(0)
@@ -261,4 +261,7 @@ def recommendspot(request):
     item_sim = cosine_similarity(df2,df2)
     item_sim_df = pd.DataFrame(item_sim, index=df1_T.columns, columns=df1_T.columns)
     recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:10]
-    return Response(recommend)
+
+    spot = Touristspot.objects.filter(pk__in = recommend).order_by('?')
+    
+    return Response(tourSerializer(spot, many=True).data)
