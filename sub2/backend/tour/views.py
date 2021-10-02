@@ -13,6 +13,11 @@ import jwt
 from django.conf import settings
 from accounts.models import City,WishList
 from accounts.serializers import CitySerializer
+
+import joblib
+import os
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 # Create your views here.
 
 def finduser(request):
@@ -235,3 +240,28 @@ def route_follow(request,route_pk):
         follow = True
 
     return Response({"status":follow }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def recommendspot(request):
+    user = finduser(request)
+    review = Review.objects.filter(user=user)
+    df_svd_preds = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/df_svd_preds.pkl'))
+    tmp = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/tmp.pkl'))
+    df1 = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/df1.pkl'))
+    for i in review:
+        try:
+            tmp.loc[1][i.Touristspot.pk] = i.rating-3
+        except:
+            pass
+    tmp = tmp.fillna(0)
+    df2=df1.append(tmp)
+    df1_T = df2.transpose()
+    item_sim = cosine_similarity(df2,df2)
+    item_sim_df = pd.DataFrame(item_sim, index=df1_T.columns, columns=df1_T.columns)
+    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:10]
+
+    spot = Touristspot.objects.filter(pk__in = recommend).order_by('?')
+    
+    return Response(tourSerializer(spot, many=True).data)
