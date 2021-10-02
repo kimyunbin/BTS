@@ -35,7 +35,7 @@ friend = [37370, 11170, 11090, 31040, 36430, 31170, 37080, 11130, 31160, 33390, 
 
 def userSatis(request,user):
     budget, travelers, companion, transportation, selection, age, activity = int(request.data.get('budget')), int(request.data.get('travelers')), request.data.get('companion'), request.data.get('transportation'), request.data.get('selection'), request.data.get('age'), request.data.get('activity')
-    forest = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'accounts/forest.pkl'))
+    forest = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/forest.pkl'))
     sample = [budget, budget//travelers, travelers]
     sample += list(map(int, list(activity)))
     if companion=='true':
