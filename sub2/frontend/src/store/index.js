@@ -26,9 +26,12 @@ export default new Vuex.Store({
     recom_area: [], // Home.vue에서 보여주는 추천지역
     satis_area: [], // 만족도 높은 순 지역 결과
     gender_recom_area: [], // Home.vue에서 보여주는 성별 별 추천지역
-    traveler_recom_area: [], //Home.vue에서 보여주는 저희가 추천하는 추천지역
+    traveler_recom_area: [], //Home.vue에서 보여주는 다른유저가 추천하는 추천지역
+    budget_recom_area: [],//Home.vue에서 보여주는 예산 별 추천지역
+    companion_recom_area: [],//Home.vue에서 보여주는 동행자별 추천지역
     reviews: [],
     select_like: Boolean,
+    wishlist: []
   },
 
   getters: {
@@ -86,11 +89,20 @@ export default new Vuex.Store({
     get_traveler_recom_area(state) {
       return state.traveler_recom_area;
     },
+    get_budget_recom_area(state) {
+      return state.budget_recom_area;
+    },
+    get_companion_recom_area(state) {
+      return state.companion_recom_area;
+    },
     get_review(state) {
       return state.reviews;
     },
     get_select_like(state) {
       return state.select_like;
+    },
+    get_wishlist(state) {
+      return state.wishlist
     }
   },
   mutations: {
@@ -157,13 +169,23 @@ export default new Vuex.Store({
     GET_TRAVELER_RECOMMEND_AREA(state, data) {
       state.traveler_recom_area = data;
     },
+    GET_BUDGET_RECOMMEND_AREA(state, data) {
+      state.budget_recom_area = data;
+    },
+    GET_COMPANION_RECOMMEND_AREA(state, data) {
+      state.companion_recom_area = data;
+    },
     GET_REVIEW(state, data) {
       state.reviews = data;
     },
     SET_SELECT_LIKE(state, data) {
       state.select_like = data;
+    },
+    GET_WISHLIST(state, data) {
+      state.wishlist = data;
     }
   },
+  //////////////////////////////////////////
   actions: {
     async GET_USER_INFO({ commit }, token) {
       let decode = jwt_decode(token);
@@ -200,7 +222,7 @@ export default new Vuex.Store({
       context.commit("SET_SELECT_INFO", response.data);
     },
     SET_SELECT_DETAIL(context, payload) {
-      this.state.select_detail = {};
+      // this.state.select_detail = {};
       context.commit("SET_SELECT_DETAIL", payload);
     },
     SET_SELECT_ROAD(context, payload) {
@@ -318,6 +340,7 @@ export default new Vuex.Store({
         gender_data.push(gender_input)
       }
       context.commit("GET_GENDER_RECOMMEND_AREA", gender_data);
+
       // 여기가 traveler부분
       // console.log(response.data.traveler,'traveler')
       let traveler_data = []
@@ -352,6 +375,71 @@ export default new Vuex.Store({
       }
       context.commit("GET_TRAVELER_RECOMMEND_AREA", traveler_data);
 
+      // 여기가 budget 부분
+      let budget_data = []
+      for (let i = 0; i < 10; i++) {
+        const budget_state = response.data.budget[i].state;
+        const budget_name = response.data.budget[i].city;
+        var b_imgurl = null
+        for (let index = 0; index < thumbnail.data.length; index++) {
+          const state_ch = thumbnail.data[index].state;
+          if (state_ch == budget_state) {
+            // console.log(state,'state')
+            for (let index2 = 0; index2 < thumbnail.data[index].city.length; index2++) {
+              const city_ch = thumbnail.data[index].city[index2].name;
+
+              if (city_ch == budget_name) {
+                b_imgurl = thumbnail.data[index].city[index2].url
+                // console.log(imgurl,'img')
+                break
+              }
+            }
+            break
+          }
+        }
+        const budget_input =
+        {
+          'state': budget_state,
+          'name' : budget_name,
+          'imgurl' : b_imgurl
+        }
+        // console.log(traveler_input, 'traveler_input')
+        budget_data.push(budget_input)
+      }
+      context.commit("GET_BUDGET_RECOMMEND_AREA", budget_data);
+
+      // 여기가 companinon 부분
+      let companion_data = []
+      for (let i = 0; i < 10; i++) {
+        const companion_state = response.data.companion[i].state;
+        const companion_name = response.data.companion[i].city;
+        var c_imgurl = null
+        for (let index = 0; index < thumbnail.data.length; index++) {
+          const state_ch = thumbnail.data[index].state;
+          if (state_ch == companion_state) {
+            // console.log(state,'state')
+            for (let index2 = 0; index2 < thumbnail.data[index].city.length; index2++) {
+              const city_ch = thumbnail.data[index].city[index2].name;
+
+              if (city_ch == companion_name) {
+                c_imgurl = thumbnail.data[index].city[index2].url
+                // console.log(imgurl,'img')
+                break
+              }
+            }
+            break
+          }
+        }
+        const companion_input =
+        {
+          'state': companion_state,
+          'name' : companion_name,
+          'imgurl' : c_imgurl
+        }
+        // console.log(traveler_input, 'traveler_input')
+        companion_data.push(companion_input)
+      }
+      context.commit("GET_COMPANION_RECOMMEND_AREA", companion_data);
     },
     // 해당 spot 리뷰데이터 불러오기
     async GET_REVIEW(context, Spok_pk) {
@@ -370,9 +458,16 @@ export default new Vuex.Store({
     // Spot 좋아요
     async SPOT_LIKE(context, Spok_pk) {
       const instance = createInstance2()
-      const response = await instance.post(`/accounts/follow/${Spok_pk}`)
+      const response = await instance.post(`/accounts/follow/${Spok_pk}/`)
       console.log(response.data)
       context.commit("SET_SELECT_LIKE",response.data.status)
+    },
+    // 위시리스트(관심Spot) 불러오기
+    async GET_WISHLIST(context) {
+      const instance = createInstance2()
+      const response = await instance.get("accounts/wishlist/")
+      console.log(response.data)
+      context.commit("GET_WISHLIST",response.data.data)
     }
   }
 });

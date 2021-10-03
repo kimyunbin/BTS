@@ -151,10 +151,54 @@
 
     <br>
     <br>
-    <h1><b>저희가 추천하는 여행지역</b></h1>
+    <h1><b>다른 유저가 추천하는 여행지역</b></h1>
     <br>
     <section style="">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
+        <template v-slot:nav-prev>
+          <div><v-icon>arrow_back_ios</v-icon></div>
+        </template>
+
+        <template v-slot:nav-next>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
+        </template>
+
+        <template v-slot:default="{ item }">
+          <PlaceComponent
+            :item="item"
+          />
+        </template>
+      </vue-horizontal-list>
+    </section>
+
+    <br>
+    <br>
+    <h1><b>예산 추천 여행지역</b></h1>
+    <br>
+    <section style="">
+      <vue-horizontal-list :items="budget_recom_area" :options="options" >
+        <template v-slot:nav-prev>
+          <div><v-icon>arrow_back_ios</v-icon></div>
+        </template>
+
+        <template v-slot:nav-next>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
+        </template>
+
+        <template v-slot:default="{ item }">
+          <PlaceComponent
+            :item="item"
+          />
+        </template>
+      </vue-horizontal-list>
+    </section>
+
+    <br>
+    <br>
+    <h1><b>동행자 추천 여행지역</b></h1>
+    <br>
+    <section style="">
+      <vue-horizontal-list :items="companion_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -188,7 +232,8 @@ export default{
       "other_road","SET_SELECT_ROAD"
     ]),
     ...mapState([
-      "is_login", "user_info", "gender_recom_area", "traveler_recom_area"
+      "is_login", "user_info", "gender_recom_area", "traveler_recom_area",
+      "budget_recom_area", "companion_recom_area"
     ])
   },
   mounted() {
@@ -237,6 +282,7 @@ export default{
       ],
       items2: [],
       genderItems: [],
+      username: '',
     };
   },
   created() {
