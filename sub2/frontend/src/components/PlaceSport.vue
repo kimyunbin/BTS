@@ -41,6 +41,7 @@ export default {
     ...mapGetters(["SET_SELECT_INFO"]),
   },
   methods: {
+
     setSelectInfo(){
       this.$store.dispatch("SET_SELECT_DETAIL", this.item).then(()=>{
         this.$router.replace("/infodetail");

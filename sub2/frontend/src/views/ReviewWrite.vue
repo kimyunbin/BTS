@@ -3,16 +3,16 @@
     <v-layout row justify-center align-center wrap class="mt-4 pt-2">
       <v-flex xs12 sm12 md6 lg6 xl6>
         <h2 class="pb-4 mb-0"><b>리뷰작성</b></h2>
-        <h4><b>당신의 리뷰를 남겨주세요.</b></h4>        
+        <h4><b>당신의 리뷰를 남겨주세요.</b></h4>
         <form>
-      <v-text-field
+      <!-- <v-text-field
         name="review.title"
         color="blue"
         background-color="transparent"
         v-model="review.title"
         label="제목"
         data-aos="fade-right"
-      ></v-text-field>
+      ></v-text-field> -->
 
       <v-textarea
         color="blue"
@@ -28,15 +28,15 @@
     <br>
           <v-btn @click="submit()" type="submit" color="primary" class="white--text"
             >등록하기</v-btn>
-            
+
           <v-btn to="/infodetail">
           <v-icon>arrow_back</v-icon>취소하기
         </v-btn>
       </v-flex>
     </v-layout>
   </v-container>
-  
-  
+
+
 </template>
 
 <script>
@@ -47,15 +47,16 @@ export default {
   name: "TeamMain",
   computed: {
     ...mapGetters([
-      "select_info"
+      "select_info",
+      "select_detail"
     ]),
   },
   mounted() {
-    
+
   },
   components: {
     StarRating
-    
+
   },
   created() {
   },
@@ -66,18 +67,37 @@ export default {
         title :"",
         contents :"",
         write_date:"",
-        evaluate:0,
+        evaluate: 0,
       }
     };
   },
-  
+
   methods: {
     submit(){
-      //등록로직이 들어가면 됩니다.
-      alert("미구현");
+        if (this.review.contents == "") {
+          alert('리뷰 내용을 작성해주세요')
+        } else if (this.review.evaluate == 0) {
+          alert('별점을 입력해주세요')
+        } else {
+          const data = {
+            'Spok_pk' : this.select_detail.id,
+            'data' : {
+              'content': this.review.contents,
+              'rating' : this.review.evaluate
+            }
+          }
+
+          this.$store.dispatch("WRITE_REVIEW", data)
+          .then(()=>{
+            alert('리뷰작성 성공!')
+            this.$router.replace("/infodetail");
+          })
+
+        }
+
     }
-        
-    
+
+
   }
 }
 </script>

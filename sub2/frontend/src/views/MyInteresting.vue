@@ -4,12 +4,11 @@
     <v-layout>
       <h1 data-aos="fade-up"><b>관심spot 리스트</b></h1>
     </v-layout>
-
     <v-layout col data-aos="fade-up">
       <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
         <div>
           <WishDetail
-            v-for="(wishDetail,key) in wishDetails"
+            v-for="(wishDetail,key) in wishlist"
             :key = key
             :wishDetail = wishDetail
           />
@@ -21,6 +20,7 @@
 
 <script>
 import WishDetail from "@/components/WishDetail";
+import { mapGetters, mapState } from "vuex";
 
 
 export default {
@@ -50,6 +50,14 @@ export default {
       ],
     }
   },
+  computed: {
+  ...mapState([
+    "wishlist",
+    ]),
+  },
+  created() {
+    this.$store.dispatch("GET_WISHLIST")
+  }
 };
 </script>
 

@@ -7,7 +7,7 @@
           <div @click="changeLike" style="display:inline-block">
             <img
               class="likeBtn"
-              v-if="this.isLike == true"
+              v-if="select_like == true"
               src="@/assets/heart.png"
             />
             <img class="likeBtn" v-else src="@/assets/heart_b.png" />
@@ -25,7 +25,7 @@
       </v-layout>
     </v-layout>
     <v-layout row justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-    <img :src="select_detail.src" width="500" height="500" style="display:inline-block"/>
+    <img :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${select_detail.img[0].awsimages}`" width="500" height="500" style="display:inline-block"/>
     &nbsp;&nbsp;&nbsp;
       <div class="map_wrap">
         <div id="map" style="width:900;height:100%;position:relative;overflow:hidden;"></div>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
 import PlaceFun from "@/components/PlaceFun";
@@ -71,7 +71,12 @@ export default {
   computed: {
     ...mapGetters([
       "select_info",
-      "select_detail"
+      "select_detail",
+      "select_like"
+    ]),
+    ...mapState([
+      "reviews",
+      "select_like"
     ]),
   },
   mounted() {
@@ -91,7 +96,8 @@ export default {
   },
   created() {
     this.place = this.select_detail.title;
-    // this.$store.dispatch("GET_REVIEW", this.$store.state.reviews)
+    this.$store.dispatch("GET_REVIEW", this.select_detail.id)
+
   },
   data() {
     return {
@@ -101,36 +107,36 @@ export default {
       ps : {},
       infowindow : {},
       place: "강남",
-      reviews:[
-        {
-          userid: "abc1234",
-          title: "의정부에서 부대찌개를 먹으려면 여기로",
-          contents:"맛있어용abcdqwewqewqedsgmdsalgmlsadgadgmsdfasfasfmasdlfgma",
-          write_date: "2020-07-20",
-          evaluate: 3,
-        },
-        {
-          userid: "def1235",
-          title: "부대찌개의 진리",
-          contents:"맛없어용",
-          write_date: "2021-05-10",
-          evaluate: 1,
-        },
-        {
-          userid: "qwe1234",
-          title: "나다싶으면 여기로 컴온",
-          contents:"맛있어용",
-          write_date: "2012-04-20",
-          evaluate: 4,
-        },
-        {
-          userid: "sgs123",
-          title: "존맛탱구리",
-          contents:"맛있어용",
-          write_date: "2020-07-20",
-          evaluate: 2,
-        },
-      ]
+      // reviews:[
+      //   {
+      //     userid: "abc1234",
+      //     title: "의정부에서 부대찌개를 먹으려면 여기로",
+      //     contents:"맛있어용abcdqwewqewqedsgmdsalgmlsadgadgmsdfasfasfmasdlfgma",
+      //     write_date: "2020-07-20",
+      //     evaluate: 3,
+      //   },
+      //   {
+      //     userid: "def1235",
+      //     title: "부대찌개의 진리",
+      //     contents:"맛없어용",
+      //     write_date: "2021-05-10",
+      //     evaluate: 1,
+      //   },
+      //   {
+      //     userid: "qwe1234",
+      //     title: "나다싶으면 여기로 컴온",
+      //     contents:"맛있어용",
+      //     write_date: "2012-04-20",
+      //     evaluate: 4,
+      //   },
+      //   {
+      //     userid: "sgs123",
+      //     title: "존맛탱구리",
+      //     contents:"맛있어용",
+      //     write_date: "2020-07-20",
+      //     evaluate: 2,
+      //   },
+      // ]
     };
   },
 
@@ -140,8 +146,14 @@ export default {
     },
 
     changeLike(){
-      this.isLike = !this.isLike;
-      alert("관심목록에 추가되었습니다.");
+      // this.isLike = !this.isLike;
+      console.log(this.select_detail.id)
+      this.$store.dispatch("SPOT_LIKE", this.select_detail.id)
+      .then(()=>{
+        this.$store.state.select_like
+        console.log(this.select_like,'ccc')
+        alert("관심목록에 추가되었습니다.");
+      })
     },
 
     share(){

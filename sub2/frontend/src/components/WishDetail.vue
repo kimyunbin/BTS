@@ -9,36 +9,35 @@
         <v-btn round dark @click="deleteReview()"  style="position:absolute;right:5px;"><v-icon>delete</v-icon></v-btn>
 
         <p class="headline mb-3">
-          <b>{{wishDetail.title}}</b>
+          <b>{{wishDetail.Touristspot.title}}</b>
         </p>
 
         <star-rating v-model="rating" read-only v-bind:star-size="30"></star-rating>
-        <span style="padding-bottom:2px">리뷰 수: {{wishDetail.reviewCnt}}</span>
+        <span style="padding-bottom:2px">리뷰 수: {{wishDetail.Touristspot.counting}}</span>
         <br>
         <br>
 
 
 
         <div>
-          <p class="green--text font-weight-medium"><b>{{wishDetail.address}}</b></p>
+          <p class="green--text font-weight-medium"><b>{{wishDetail.Touristspot.address}}</b></p>
         </div>
-        <h6>연락처: {{wishDetail.tel}}</h6>
+        <!-- <h6>연락처: {{wishDetail.tel}}</h6> -->
       </div>
 
     </v-card-title>
-      <div>
+      <div class="img-box">
        <v-img
           width=100%
-          height="70%"
-          object-fit: cover
-          :src="wishDetail.img"
+
+          :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${wishDetail.Touristspot.img[0].awsimages}`"
         ></v-img>
         <br>
       </div>
     <br>
   </v-card>
   <hr>
-  <div style="height:50px">
+  <div style="height:100px">
 
   </div>
 </v-flex>
@@ -109,6 +108,7 @@
 
 <script>
 import StarRating from 'vue-star-rating'
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: 'WishDetail',
@@ -127,19 +127,43 @@ export default {
       eval:0,
     }
   },
+  computed: {
+  ...mapGetters([
+    "select_info",
+    "select_detail",
+    "select_like"
+  ]),
+  },
   created() {
-    this.rating=this.wishDetail.rating;
+    this.rating=this.wishDetail.Touristspot.avg_rating;
   },
   methods: {
     setSelectInfo(){
-      this.$store.dispatch("SET_SELECT_INFO", this.wishDetail).then(()=>{
+      console.log(this.wishDetail.Touristspot.id)
+      this.$store.dispatch("SET_SELECT_DETAIL", this.wishDetail.Touristspot).then(()=>{
         this.$router.replace("/infodetail");
       });
+    },
+    deleteReview() {
+      this.$store.dispatch("SPOT_LIKE", this.select_detail.id)
+      .then(()=>{
+        // this.$store.state.select_like
+        // console.log(this.select_like,'ccc')
+        alert("관심목록에서 취소되었습니다.");
+        this.$router.replace("/myinteresting");
+      })
     }
   },
 }
 </script>
 
 <style>
+.img-box {
+  width: 100%;
+  max-height: 450px;
+  overflow: cover;
+  display: flex;
+  justify-content: center;
 
+}
 </style>
