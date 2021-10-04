@@ -217,7 +217,7 @@ export default {
             console.log(response);
             if (response.data.message === "success") {
               alert("회원가입 완료");
-              this.$router.push("/");
+              this.$router.push("/login");
             } else {
               alert("회원가입 실패");
             }

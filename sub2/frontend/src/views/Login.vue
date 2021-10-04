@@ -96,7 +96,7 @@ export default {
             //this.$store.commit("SET_IS_LOGIN", true);
             this.$store.commit("SET_TOKEN", token);
             this.$store.commit("SET_USER_INFO", decoded.username);
-            this.$router.push("/");
+            this.$router.push("/intro");
           }
         )
         .catch(() => {
@@ -106,16 +106,7 @@ export default {
       
     },
   },
-  computed: {
-    emailErrors() {
-      const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push("Must be valid e-mail");
-      !this.$v.email.required && errors.push("이메일을 입력해주세요.");
-      return errors;
-    },
-    
-  }
+  
 };
 </script>
 

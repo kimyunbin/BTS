@@ -2,8 +2,7 @@
   <v-app>
     <v-content>
       <v-container align-center>
-        <TheHeader />
-
+        <TheHeader v-if="$route.name !=='intro'" />
         <transition
           name="router-animation"
           mode="out-in"

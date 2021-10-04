@@ -49,11 +49,12 @@ export default {
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
         const instance = createInstance();
       
-        instance.get("/tour/detail?code="+ city)
+        instance.get("/tour/detail/?code="+ city)
         .then(
             (response) => {
+                  console.log(response);
                   this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
-                  // const image_instance = imageInstance();
+                  //const image_instance = imageInstance();
                   this.$router.replace("/map");
                 });
               }
