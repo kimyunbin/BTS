@@ -35,7 +35,8 @@ export default new Vuex.Store({
     reviews: [],
     select_like: Boolean,
     wishlist: [],
-    my_road:[],
+    my_road: [],
+    my_wish_road:[],
   },
 
   getters: {
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     },
     my_road(state) {
       return state.my_road;
+    },
+    my_wish_road(state) {
+      return state.my_wish_road;
     },
     select_road(state) {
       return state.select_road;
@@ -194,6 +198,9 @@ export default new Vuex.Store({
     SET_MY_ROAD(state, data) {
       state.my_road = data;
     },
+    SET_MY_WISH_ROAD(state, data) {
+      state.my_wish_road = data;
+    },
     GET_GENDER_RECOMMEND_AREA(state, data) {
       state.gender_recom_area = data;
     },
@@ -312,6 +319,10 @@ export default new Vuex.Store({
     SET_MY_ROAD(context, paylaod) {
       this.state.my_road = [];
       context.commit("SET_MY_ROAD", paylaod);
+    },
+    SET_MY_WISH_ROAD(context, paylaod) {
+      this.state.my_road = [];
+      context.commit("SET_MY_WISH_ROAD", paylaod);
     },
     async GET_RECOMMEND_AREA(context) {
       const instance = createInstance2()

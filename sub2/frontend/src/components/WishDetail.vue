@@ -145,8 +145,10 @@ export default {
       .then(()=>{
         // this.$store.state.select_like
         // console.log(this.select_like,'ccc')
-        alert("관심목록에서 취소되었습니다.");
-        this.$router.replace("/myinteresting");
+        this.$alert("취소되었습니다.").then(() =>{
+          this.$router.replace("/myinteresting");
+        })
+        
       })
     }
   },

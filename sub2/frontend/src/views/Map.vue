@@ -62,10 +62,12 @@
             
         </div>
         <br><br>
-        <v-btn @click="storeMyRoad()" color="primary">내 경로 저장하기</v-btn>
-        <v-btn @click="clearRoad()" color="error">경로 초기화</v-btn>
-        <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제(추후삭제)</v-btn>
-        <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn>
+        <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+            <v-btn large @click="storeMyRoad()" color="primary">내 경로 저장하기</v-btn>
+            <v-btn large @click="clearRoad()" color="green" class="white--text">경로 초기화</v-btn>
+            <!-- <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제(추후삭제)</v-btn>
+            <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn> -->
+        </v-layout>
     </div>
 </template>
 
@@ -114,10 +116,12 @@ export default {
             this.$store.dispatch("CLEAR_OTHER_ROAD");
         },
         deleteRoad(idx){
-            this.my_road.splice(idx,1);
+            this.my_road= [];
+            this.$router.go();
         },
         clearRoad(){
             this.my_road= [];
+            this.$router.go();
         },
         storeMyRoad() {
             const instance = createInstance2();
@@ -224,7 +228,10 @@ export default {
         },
         placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
-                this.displayPlaces(this.tour_detail.관광지);
+                console.log(this.tour_detail);
+                let newdata = this.tour_detail.관광지.concat(this.tour_detail.문화시설,this.tour_detail.레포츠,this.tour_detail.숙박,this.tour_detail.음식);
+                console.log(newdata)
+                this.displayPlaces(newdata);
 
             // 페이지 번호를 표출합니다
             this.displayPagination(pagination);
@@ -296,10 +303,10 @@ export default {
                 }else{
                     imgurl = places[i].img[0].awsimages
                 }
-            
+                
                 // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].longitude, places[i].latitude),
-                    marker = this.addMarker(placePosition, i,places[i]),
+                    marker = this.addMarker(placePosition, i, places[i]),
                     itemEl = this.getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
                 // LatLngBounds 객체에 좌표를 추가합니다
@@ -345,7 +352,7 @@ export default {
 
         getListItem(index, places) {
             var el = document.createElement('li'),
-            itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+            itemStr = '<span class="markerbg marker_' + (index) + '"></span>' +
                         '<div class="info2">' +
                         '   <h5>' + places.title + '</h5>';
 
@@ -361,14 +368,27 @@ export default {
             return el;
         },
         addMarker(position, idx, place) {
-            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-                imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-                imgOptions =  {
-                    spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-                    spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-                    offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-                },
-                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            console.log(place);
+            var imageSrc = '';
+            var imageSize ='';
+            if(place.category=='음식'){
+                imageSrc ='https://i.ibb.co/ggQW2MQ/food.png';
+                imageSize = new kakao.maps.Size(45, 35);
+            }else if(place.category=='숙박'){
+                imageSrc = 'https://i.ibb.co/RSNfGYd/hotel.png';
+                imageSize = new kakao.maps.Size(35, 35);
+            }else if(place.category=='문화시설'){
+                imageSrc = 'https://i.ibb.co/T2bvjBg/culture.png';
+                imageSize = new kakao.maps.Size(35, 35);
+            }
+            else{
+                imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+                imageSize = new kakao.maps.Size(24, 35);
+            }
+            
+                //imageSize = new kakao.maps.Size(24, 35),  // 마커 이미지의 크기
+                
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
                 marker = new kakao.maps.Marker({
                     position: position, // 마커의 위치
                     image: markerImage,
@@ -427,7 +447,6 @@ export default {
                 return;
             }
             var src3 = "https://go-test-buket.s3.ap-northeast-2.amazonaws.com/"+ src2;
-            alert("추가되었습니다.");
             this.$alert("추가되었습니다.").then(() => {
                     
             })

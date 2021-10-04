@@ -11,16 +11,7 @@
       >키워드검색&nbsp;<i class="fas fa-plus"></i>
       </v-btn>
 
-      <v-btn
-        @click="checkOtherRoad()"
-        color="primary"
-        elevation="3"
-        large
-        class="justify-center"
-      >다른사람경로보기&nbsp;<i class="fas fa-plus"></i>
-      </v-btn>
-
-      <v-btn @click="check()"></v-btn>
+      <!-- <v-btn @click="check()"></v-btn> -->
     </v-layout>
     <ul class="slides">
     <input type="radio" name="radio-btn" id="img-1" checked />
@@ -365,16 +356,20 @@ export default{
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
+    const instance2 = createInstance2();
+          instance2.get("/tour/route/follow/").then(
+            (response) =>{
+              this.$store.dispatch("SET_MY_WISH_ROAD", response.data.data).then(()=>{
+                
+              })
+          })
 
   },
 
   methods: {
     check(){
-      //console.log(this.user_info);
-      console.log(this.other_road);
-      console.log(this.other_road[0].spots[0].touristspot.title+" "+this.other_road[0].spots[1].touristspot.title);
-      console.log(this.other_road[1].spots[0].touristspot.title+" "+this.other_road[1].spots[1].touristspot.title);
-      console.log(this.other_road[2].spots[0].touristspot.title+" "+this.other_road[2].spots[1].touristspot.title);
+      console.log(this.my_wish_road);
+
     },
     setDetailRoad(num){
       console.log(this.other_road[num].spots);

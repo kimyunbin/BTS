@@ -1,17 +1,22 @@
 <template>
   <div>
     <br>
-    <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b></h1>
-    <v-btn @click="check()"></v-btn>
-    <div id="map" class="map"></div>
-    <v-btn large to="/home" flat class="blue--text">
+    
+    <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large to="/home" flat class="blue--text">
         <v-icon>arrow_back</v-icon>뒤로가기
-    </v-btn>
+    </v-btn></h1>
+
+    <v-btn @click="storeMyRoad()"></v-btn>
+    
+    <div id="map" class="map"></div>
+    
   </div>      
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import { createInstance2 } from "@/api/index.js";
+
 export default {
   mounted() {
     window.kakao && window.kakao.maps
@@ -19,7 +24,7 @@ export default {
       : this.addKakaoMapScript();
   },
   computed:{
-    ...mapGetters(["select_road"]),
+    ...mapGetters(["select_road","user_info"]),
   },
   methods: {
     check(){
@@ -153,7 +158,50 @@ export default {
               infowindow.close();
           };
       }
-    }
+    },
+    storeMyRoad() {
+            const instance = createInstance2();
+            var title='';
+            //console.log(this.user_info);
+            //this.$prompt("경로이름을 등록하여주세요!").then((text) => {
+                //title = text;
+                //const data= [];
+                //data.push(this.select_road.spots);
+                // for(let i = 0; i < this.select_road.spots.length;i++){
+                //     const road= {
+                //         address : this.select_road.spots[i].touristspot.address,
+                //         id : this.select_road.spots[i].touristspot.id,
+                //         lat : this.select_road.spots[i].touristspot.latitude,
+                //         lng : this.select_road.spots[i].touristspot.longitude,
+                //         name : this.user_info,
+                //         title : this.select_road.spots[i].touristspot.title
+                //     }
+                //     data.push(road)
+                // }
+                // const dto={
+                //     "title": title,
+                //     "spot": data
+                // };
+                console.log(this.select_road.id);
+                instance.post("/tour/route/follow/"+this.select_road.id+"/")
+                    .then(
+                        (response) => {
+                            console.log(response);
+                            this.$alert("저장이 완료되었습니다.").then(() => {
+                                this.$router.push("/home");
+                            })
+                        }
+                    )
+                    .catch(() => {
+                    
+                    });
+            //   })
+            
+            // .catch(() => {
+            //     this.$alert("경로이름을 입력해주세요!");
+            //     return;
+            // });
+        },
   },
 };
 </script>

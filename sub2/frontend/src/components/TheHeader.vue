@@ -53,7 +53,7 @@
         <v-btn flat to="/home" active-class="blue--text headline"><b>메인</b></v-btn>
         <v-btn flat @click.prevent="onClickMypage" active-class="blue--text headline"><b>마이페이지</b></v-btn>
         <v-btn flat to="/myinteresting" active-class="blue--text headline"><b>관심지역</b></v-btn>
-        <v-btn flat to="/satisfactionmap" active-class="blue--text headline"><b>만족도(임시)</b></v-btn>
+        <v-btn flat to="/satisfactionmap" active-class="blue--text headline"><b>전국 만족도</b></v-btn>
         <v-btn flat @click.prevent="onClickLogout" active-class="blue--text headline"><b>로그아웃</b></v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -103,7 +103,8 @@ export default {
         (response) =>{
           console.log(response);
           this.$store.dispatch("SET_MY_ROAD", response.data).then(()=>{
-          this.$router.replace("/mypage");
+            this.$router.replace("/mypage");
+          
         })
       })
     }
