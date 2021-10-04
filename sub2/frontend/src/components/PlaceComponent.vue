@@ -33,11 +33,13 @@ export default {
   },
   methods: {
     setSelectPlace(){
-      this.$store.dispatch("SET_SELECT_PLACE", this.item.name).then(()=>{
-      this.$store.dispatch("SET_SELECT_INFO", this.item.name)
+      // console.log(this.item.state + ' ' + this.item.name)
+      const name = this.item.state + ' ' + this.item.name
+      this.$store.dispatch("SET_SELECT_PLACE", name).then(()=>{
+      this.$store.dispatch("SET_SELECT_INFO", name)
       .then(()=>{
 
-        this.$router.replace("/placedetail");
+        this.$router.push("/placedetail");
       })
       });
     }
