@@ -78,7 +78,7 @@ export default {
             (response) => {
                 console.log(response.data);
                 this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
-                  this.$router.replace("/map");
+                  this.$router.push("/map");
                 });
               }
         )

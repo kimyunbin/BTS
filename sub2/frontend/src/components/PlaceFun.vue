@@ -46,7 +46,7 @@ export default {
     setSelectInfo(){
       console.log(this.item)
       this.$store.dispatch("SET_SELECT_DETAIL", this.item).then(()=>{
-        this.$router.replace("/infodetail");
+        this.$router.push("/infodetail");
       });
     }
   },

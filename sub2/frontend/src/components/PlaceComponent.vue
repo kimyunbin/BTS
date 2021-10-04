@@ -37,7 +37,7 @@ export default {
       this.$store.dispatch("SET_SELECT_INFO", this.item.name)
       .then(()=>{
 
-        this.$router.replace("/placedetail");
+        this.$router.push("/placedetail");
       })
       });
     }

@@ -81,7 +81,7 @@ export default {
                   console.log(response);
                   this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
                   //const image_instance = imageInstance();
-                  this.$router.replace("/map");
+                  this.$router.push("/map");
                 });
               }
         )
