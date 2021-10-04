@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="filter(); onClick(index)">
+                    <div name="budget" required class="box" v-for="index in 5" :key="index" @click="onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -84,7 +84,18 @@
                 this.$emit('can-continue', {value: true});
             } else {
                 this.$emit('can-continue', {value: true});
-            }
+            };
+            $(document).ready(function() {
+                $(".card").each(function () {
+                    $(this).on('click', function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            });
         },
         computed:{
             ...mapGetters(["SET_SELECT_TRANSPORTATIONS"]),
@@ -134,6 +145,7 @@
     justify-content: center;
 }
 .box {
+    cursor: pointer;
     display: inline-block;
     border-radius: 10px;
     width: 160px;
@@ -141,6 +153,7 @@
     margin: 1rem;
 }
 .card {
+    border-style: none;
     width: 160px;
     height: 100px;
 }

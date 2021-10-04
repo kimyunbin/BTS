@@ -4,7 +4,7 @@
         <br>
         <div class="field">
             <sequential-entrance fromRight>
-                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="filter(); onClick(index)">
+                    <div name="budget" required class="box" v-for="index in 3" :key="index" @click="onClick(index)">
                         <img class="card filter" :src="img[index-1]" alt="">
                         <br>
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
@@ -40,7 +40,7 @@
                 ],
                 tooltip:[
                     "혼자서",
-                    "연인이랑",
+                    "친구/연인이랑",
                     "가족이랑",
                 ],
                 companion : '',
@@ -78,7 +78,18 @@
                 this.$emit('can-continue', {value: true});
             } else {
                 this.$emit('can-continue', {value: true});
-            }
+            };
+            $(document).ready(function() {
+                $(".card").each(function () {
+                    $(this).on('click', function () {
+                        if($(this).hasClass('filter')) {
+                            $(this).removeClass('filter');
+                        } else {
+                            $(this).addClass('filter')
+                        }
+                    })
+                })
+            });
         },
         computed:{
             ...mapGetters(["SET_SELECT_COMPANION"]),
@@ -122,6 +133,7 @@
     justify-content: center;
 }
 .box {
+    cursor: pointer;
     display: inline-block;
     border-radius: 10px;
     width: 160px;
@@ -129,6 +141,7 @@
     margin: 1rem 3rem;
 }
 .card {
+    border-style: none;
     width: 160px;
     height: 100px;
 }

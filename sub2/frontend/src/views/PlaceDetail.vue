@@ -32,7 +32,7 @@
     <h1><b>숙소</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="stays" :options="options" >
+      <vue-horizontal-list :items="Accommodation" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -54,7 +54,7 @@
     <h1><b>맛집</b></h1>
     <br>
     <section style="">
-      <vue-horizontal-list :items="items" :options="options" >
+      <vue-horizontal-list :items="Food" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -70,6 +70,51 @@
         </template>
       </vue-horizontal-list>
     </section>
+
+
+    <br>
+    <br>
+    <h1><b>레포츠</b></h1>
+    <br>
+    <section style="">
+      <vue-horizontal-list :items="Sport" :options="options" >
+        <template v-slot:nav-prev>
+          <div><v-icon>arrow_back_ios</v-icon></div>
+        </template>
+
+        <template v-slot:nav-next>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
+        </template>
+
+        <template v-slot:default="{ item }">
+          <PlaceSport
+            :item="item"
+          />
+        </template>
+      </vue-horizontal-list>
+    </section>
+
+    <br>
+    <br>
+    <h1><b>문화시설</b></h1>
+    <br>
+    <section style="">
+      <vue-horizontal-list :items="Culture" :options="options" >
+        <template v-slot:nav-prev>
+          <div><v-icon>arrow_back_ios</v-icon></div>
+        </template>
+
+        <template v-slot:nav-next>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
+        </template>
+
+        <template v-slot:default="{ item }">
+          <PlaceCulture
+            :item="item"
+          />
+        </template>
+      </vue-horizontal-list>
+    </section>
   </div>
 </template>
 
@@ -80,6 +125,8 @@ import PlaceComponent from "@/components/PlaceComponent";
 import PlaceFun from "@/components/PlaceFun";
 import PlaceStay from "@/components/PlaceStay";
 import PlaceFood from "@/components/PlaceFood";
+import PlaceSport from "@/components/PlaceFood";
+import PlaceCulture from "@/components/PlaceFood";
 
 export default {
   name: "TeamMain",
@@ -93,7 +140,9 @@ export default {
     PlaceComponent,
     PlaceFun,
     PlaceStay,
-    PlaceFood
+    PlaceFood,
+    PlaceSport,
+    PlaceCulture
   },
   data() {
     return {
@@ -146,10 +195,17 @@ export default {
         { id:"9", title: "Item 0", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
       touristSpots: [],
+      Accommodation: [],
+      Food: [],
     };
   },
   created() {
     this.touristSpots =  this.$store.state.select_info.관광지
+    this.Accommodation =  this.$store.state.select_info.숙박
+    this.Food =  this.$store.state.select_info.음식
+    this.Sport =  this.$store.state.select_info.레포츠
+    this.Culture =  this.$store.state.select_info.문화시설
+
   },
   methods: {
     check(){

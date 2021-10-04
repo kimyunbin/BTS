@@ -9,6 +9,10 @@
           "url": "https://i.ibb.co/pjdY05W/01.jpg"
         },
         {
+          "name": "강북구",
+          "url": "https://i.ibb.co/pjdY05W/01.jpg"
+        },
+        {
           "name": "광진구",
           "url": "https://i.ibb.co/pjdY05W/01.jpg"
         },
@@ -271,6 +275,10 @@
       "state": "인천광역시",
       "city":[
         {
+          "name": "서구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
           "name": "북구",
           "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
         },
@@ -284,6 +292,34 @@
         },
         {
           "name": "동구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "미추홀구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "연수구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "남동구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "부평구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "계양구",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "강화군",
+          "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
+        },
+        {
+          "name": "옹진군",
           "url": "https://i.ibb.co/0MW1VHW/story-pic-01.jpg"
         }
       ]

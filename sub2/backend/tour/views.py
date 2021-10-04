@@ -3,13 +3,21 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Review, Route, RouteTouristspot, Routelike, ToruistImg, Touristspot, RouteTouristspot
-from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer
-from rest_framework.decorators import api_view
-from django.conf import settings
+from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 from django.contrib.auth import get_user_model
 import jwt
-from accounts.models import City
+from django.conf import settings
+from accounts.models import City,WishList
 from accounts.serializers import CitySerializer
+
+import joblib
+import os
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 # Create your views here.
 
 def finduser(request):
@@ -54,15 +62,22 @@ def tour_detail(request):
     return Response(context)
 
 @api_view(['GET','POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def tour_review(request, spot_pk):
+    user = finduser(request)
     if request.method =='GET':
         review = Review.objects.filter(Touristspot = spot_pk)
 
         serialer = reviewSerializer(data = review, many= True)
         print(serialer.is_valid())
-
+        if WishList.objects.filter(Touristspot = spot_pk , user = user).exists():
+            follow = True
+        else:
+            follow = False
         context ={
-            'review': serialer.data
+            'review': serialer.data,
+            'follow':follow
         }
         return Response(context)
     elif request.method =='POST':
@@ -71,10 +86,11 @@ def tour_review(request, spot_pk):
         '''
         rating = request.data.get('rating')
         content = request.data.get('content')
-        user = finduser(request)
         spot = get_object_or_404(Touristspot, pk = spot_pk)
         review = Review(user=user, Touristspot = spot, rating=rating, content=content)
         review.save()
+        spot.counting += 1
+        spot.save()
         return Response({"status":"success"}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET','POST'])
@@ -117,26 +133,26 @@ def tour_city(request):
     budgets = user.budget
     companions = user.companion
     if genders == True :
-        gender = City.objects.filter(code__in = man,user=user).order_by('-satis')[:10]
+        gender = City.objects.filter(code__in = man,user=user).order_by('?')[:10]
     else:
-        gender = City.objects.filter(code__in = woman,user=user).order_by('-satis')[:10]
+        gender = City.objects.filter(code__in = woman,user=user).order_by('?')[:10]
 
     if travelers == 1:
-        traveler = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
+        traveler = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
     else :
-        traveler = City.objects.filter(code__in =multi,user=user).order_by('-satis')[:10]
+        traveler = City.objects.filter(code__in =multi,user=user).order_by('?')[:10]
     
     if budgets <= 100000:
-        budget = City.objects.filter(code__in =poor,user=user).order_by('-satis')[:10]
+        budget = City.objects.filter(code__in =poor,user=user).order_by('?')[:10]
     else:
-        budget = City.objects.filter(code__in =rich,user=user).order_by('-satis')[:10]
+        budget = City.objects.filter(code__in =rich,user=user).order_by('?')[:10]
 
     if companions == True:
-        companion = City.objects.filter(code__in =family,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =family,user=user).order_by('?')[:10]
     elif companions == False:
-        companion = City.objects.filter(code__in =friend,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =friend,user=user).order_by('?')[:10]
     else:
-        companion = City.objects.filter(code__in =single,user=user).order_by('-satis')[:10]
+        companion = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
 
     genderserializer = CitySerializer(data=gender, many=True)
     travelerserializer = CitySerializer(data=traveler, many=True)
@@ -153,3 +169,99 @@ def tour_city(request):
     }
     return Response(context)
     # return Response({"context":genderserializer.data})
+
+import requests
+import boto3
+import uuid
+from PIL import Image
+from io  import BytesIO
+@api_view(('POST',))
+def test(request):
+    for i in range(60604,125263):
+        print(i)
+        img=ToruistImg.objects.get(id = i)
+        url = 'https:' +img.images
+        img_response = requests.get(url,verify=False)
+        
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
+            aws_secret_access_key = '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'
+        )
+        # print(img_response.content)
+        if img_response.status_code == 200:
+            #print(img_response.content)
+
+            print("========= [이미지 저장] =========")
+            with open('test.jpg', 'wb') as fp:
+                fp.write(img_response.content)
+
+            image = Image.open("test.jpg")
+            buffer = BytesIO()
+            image = image.convert("RGB")
+            image.save(buffer, "JPEG")
+            buffer.seek(0)
+            url_generator = str(uuid.uuid4())
+            img.awsimages = url_generator
+            img.save()
+
+            print(url_generator)
+            s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
+        
+    return Response({'image_url' : url_generator}, status = 200)
+
+    # test = {
+    #     'image': image,
+    #     'testfield': 's'
+    # }
+    
+    # serializer = PhotoSerializer(data = test)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #     return Response(serializer.data,status=status.HTTP_200_OK)
+    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def route_follow(request,route_pk):
+    '''
+    userid는 jwt로 spot_id 는 url로 받는다. 
+    버튼에서 눌렸을때 whishlist에서 있으면 삭제
+    없으면 생성해서 가지고 있는다.  
+    '''
+    user = finduser(request)
+
+    route = Route.objects.get(pk=route_pk)
+    if Routelike.objects.filter(user=user,route=route).exists():
+        Routelike.objects.filter(user=user,route=route).delete()
+        follow = False
+    else:
+        Routelike.objects.create(user=user,route=route)
+        follow = True
+
+    return Response({"status":follow }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def recommendspot(request):
+    user = finduser(request)
+    review = Review.objects.filter(user=user)
+    df_svd_preds = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/df_svd_preds.pkl'))
+    tmp = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/tmp.pkl'))
+    df1 = joblib.load(os.path.join(os.path.dirname(os.path.dirname(__file__)),'bigdata/df1.pkl'))
+    for i in review:
+        try:
+            tmp.loc[1][i.Touristspot.pk] = i.rating-3
+        except:
+            pass
+    tmp = tmp.fillna(0)
+    df2=df1.append(tmp)
+    df1_T = df2.transpose()
+    item_sim = cosine_similarity(df2,df2)
+    item_sim_df = pd.DataFrame(item_sim, index=df1_T.columns, columns=df1_T.columns)
+    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:10]
+
+    spot = Touristspot.objects.filter(pk__in = recommend).order_by('?')
+    
+    return Response(tourSerializer(spot, many=True).data)

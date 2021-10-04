@@ -18,6 +18,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed:{
@@ -25,10 +28,16 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    // for(var i=0; i<this.items.length; i++) {
+    //   console.log(this.items[i]["city"])
+    // }
+    console.log(this.items)
   },
   mounted() {
     this.drawMap();
@@ -36,6 +45,23 @@ export default {
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "부산광역시") {
+          this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     
     selectProvince(province) {
@@ -60,7 +86,7 @@ export default {
               }
         )
         .catch(error => {
-          console.log(error);
+          // console.log(error);
         });
               
       });
@@ -120,7 +146,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
 
@@ -140,13 +166,14 @@ export default {
         
         let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "부산광역시 " + name
-        //console.log(name);
+        console.log(name);
         _this.move(name);
       }
 
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -189,6 +216,134 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"강서구",
+          "lat" : "35.14916389",
+          "lon" : "128.9129083"
+        },
+        {
+          "name":"금정구",
+          "lat" : "35.25007778",
+          "lon" : "129.0943194"
+        },
+        {
+          "name":"남구",
+          "lat" : "35.11340833",
+          "lon" : "129.0965"
+        },
+        {
+          "name":"동구",
+          "lat" : "35.11589444",
+          "lon" : "129.049175"
+        },
+        {
+          "name":"동래구",
+          "lat" : "35.19687222",
+          "lon" : "129.0858556"
+        },
+        {
+          "name":"부산진구",
+          "lat" : "35.15995278",
+          "lon" : "129.0453194"
+        },
+        {
+          "name":"북구",
+          "lat" : "35.22418056",
+          "lon" : "129.032475"
+        },
+        {
+          "name":"사하구",
+          "lat" : "35.08142778",
+          "lon" : "128.9770417"
+        },
+        {
+          "name":"서구",
+          "lat" : "35.09483611",
+          "lon" : "129.0263778"
+        },
+        {
+          "name":"수영구",
+          "lat" : "35.15246667",
+          "lon" : "129.118375"
+        },
+        {
+          "name":"연제구",
+          "lat" : "35.17018611",
+          "lon" : "129.092075"
+        },
+        // {
+        //   "name":"영도구",
+        //   "lat" : "35.08811667",
+        //   "lon" : "129.0701861"
+        // },
+        // {
+        //   "name":"중구",
+        //   "lat" : "35.10321667",
+        //   "lon" : "129.0345083"
+        // },
+        {
+          "name":"해운대구",
+          "lat" : "35.19001944",
+          "lon" : "129.1658083"
+        },
+        {
+          "name":"기장군",
+          "lat" : "35.28877541",
+          "lon" : "129.2122873"
+        },
+      ];
+      const iconsInfo2 = [
+        {
+          "name":"사상구",
+          "lat" : "35.14946667",
+          "lon" : "128.9933333"
+        },
+      ]
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+      
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo2)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href", require("../../assets/img/만족도/5.png"))
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -252,8 +407,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }

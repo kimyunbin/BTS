@@ -1,14 +1,14 @@
 <template>
   <v-container grid-list-xl>
     <v-layout row justify-center align-center wrap class="mt-4 pt-2">
-      
+
 
       <v-flex xs12 sm12 md6 lg6 xl6>
         <h2 class="pb-4 mb-4">
           <span><b>로그인</b></span>
         </h2>
 
-        
+
           <v-text-field
             type="email"
             color="blue"
@@ -35,7 +35,7 @@
             :disabled="(member.username==''||member.password=='')"
           >로그인</v-btn>
           <v-btn @click="clear">초기화</v-btn>
-        
+
       </v-flex>
     </v-layout>
   </v-container>
@@ -52,7 +52,7 @@ import {
   username,
 } from "vuelidate/lib/validators";
 export default {
-  
+
   mixins: [validationMixin],
   validations: {
     name: { required, maxLength: maxLength(8) },
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     submit() {
-      
+
     },
     clear() {
       this.$v.$reset();
@@ -103,10 +103,19 @@ export default {
           alert("에러발생!");
           //this.$router.push("/");
         });
-      
+
     },
   },
-  
+  computed: {
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      !this.$v.email.email && errors.push("Must be valid e-mail");
+      !this.$v.email.required && errors.push("이메일을 입력해주세요.");
+      return errors;
+    },
+
+  }
 };
 </script>
 

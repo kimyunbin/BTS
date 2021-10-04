@@ -3,17 +3,17 @@
   <v-card hover class="justify-center" width=550px height=250px>
     <v-card-title primary-title>
       <div>
-        <span style="padding-bottom:2px">{{review.userid}}</span>
+        <span style="padding-bottom:2px">{{review.user.nickname}}</span>
         <v-btn round dark @click="deleteReview()"  style="position:absolute;right:5px;"><v-icon>delete</v-icon></v-btn>
         <star-rating v-model="rating" read-only v-bind:star-size="30"></star-rating>
         <br>
-        <p class="headline mb-3"><b>{{review.title}}</b></p>
         <div>
-          <p class="green--text font-weight-medium"><b>{{review.contents}}</b></p>
+          <p class="headline mb-3 word"><b>{{review.content}}</b></p>
+          <!-- <p class="green--text font-weight-medium"><b>{{review.content}}</b></p> -->
         </div>
-        
-        <h6>작성일: {{review.write_date}}</h6>
-        <h6>이 리뷰는 {{review.userid}}님의 개인 의견이며 저희 서비스 의견과 무관합니다.</h6>
+        <br>
+        <h6>작성일: {{createtime}}</h6>
+        <h6>이 리뷰는 {{review.user.nickname}}님의 개인 의견이며 저희 서비스 의견과 무관합니다.</h6>
       </div>
     </v-card-title>
     <br>
@@ -34,19 +34,27 @@ export default {
     }
   },
   created() {
-    this.rating=this.review.evaluate;
+    // this.rating=this.review.rating
+    var time = new Date(this.review.created_at)
+    var year = time.getFullYear();
+    var month = ('0' + (time.getMonth() + 1)).slice(-2);
+    var day = ('0' + time.getDate()).slice(-2);
+
+    var dateString = year + '-' + month  + '-' + day;
+    this.createtime = dateString
   },
   data() {
     return {
-      rating:0,
+      rating:this.review.rating,
       eval:0,
+      createtime:''
     }
   },
   components: {
     StarRating
   },
   computed:{
-    
+
   },
   methods: {
     deleteReview(){
@@ -58,4 +66,20 @@ export default {
 </script>
 
 <style scoped>
+.word {
+  display: block;
+  color: black;
+  font-size: 20px;
+  font-weight: bolder !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.2;
+/*        height: 4.8em;*/
+  text-align: left;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2 ;
+  -webkit-box-orient: vertical;
+}
 </style>

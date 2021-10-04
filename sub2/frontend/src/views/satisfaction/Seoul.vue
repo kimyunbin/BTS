@@ -19,6 +19,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: [],
+      names: [],
+      cityname: "",
     }
   },
   computed: {
@@ -26,16 +29,38 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "서울특별시") {
+          this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -58,7 +83,7 @@ export default {
               }
         )
         .catch(() => {
-            alert("에러발생!");
+            // alert("에러발생!");
           //this.$router.push("/");
         });
               
@@ -119,7 +144,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -144,6 +169,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -186,9 +212,193 @@ export default {
         .on('mouseout', mouseout)
         .on('click', clicked);
 
+      const iconsInfo = [
+        {
+          "name":"강남구",
+          "lat" : "37.494575",
+          "lon" : "127.0585556"
+        },
+        {
+          "name":"강동구",
+          "lat" : "37.53736667",
+          "lon" : "127.1458639"
+        },
+        {
+          "name":"강북구",
+          "lat" : "37.63695556",
+          "lon" : "127.0077194"
+        },
+        {
+          "name":"강서구",
+          "lat" : "37.54815556",
+          "lon" : "126.851675"
+        },
+        {
+          "name":"관악구",
+          "lat" : "37.45938611",
+          "lon" : "126.9538444"
+        },
+        {
+          "name":"광진구",
+          "lat" : "37.53573889",
+          "lon" : "127.0845333"
+        },
+        {
+          "name":"구로구",
+          "lat" : "37.49265",
+          "lon" : "126.8595972"
+        },
+        {
+          "name":"금천구",
+          "lat" : "37.44910833",
+          "lon" : "126.9041972"
+        },
+        {
+          "name":"노원구",
+          "lat" : "37.64146111",
+          "lon" : "127.0783889"
+        },
+        {
+          "name":"도봉구",
+          "lat" : "37.66583333",
+          "lon" : "127.0395222"
+        },
+        {
+          "name":"동대문구",
+          "lat" : "37.571625",
+          "lon" : "127.0621417"
+        },
+        // {
+        //   "name":"동작구",
+        //   "lat" : "37.50965556",
+        //   "lon" : "126.941575"
+        // },
+        {
+          "name":"마포구",
+          "lat" : "37.56070556",
+          "lon" : "126.9005306"
+        },
+        {
+          "name":"서대문구",
+          "lat" : "37.57636667",
+          "lon" : "126.9388972"
+        },
+        {
+          "name":"서초구",
+          "lat" : "37.48078611",
+          "lon" : "127.0148111"
+        },
+        {
+          "name":"성동구",
+          "lat" : "37.54061111",
+          "lon" : "127.03955"
+        },
+        {
+          "name":"성북구",
+          "lat" : "37.59638333",
+          "lon" : "127.0203333"
+        },
+        {
+          "name":"송파구",
+          "lat" : "37.51175556",
+          "lon" : "127.1079306"
+        },
+        {
+          "name":"양천구",
+          "lat" : "37.51423056",
+          "lon" : "126.8587083"
+        },
+        {
+          "name":"영등포구",
+          "lat" : "37.51361111",
+          "lon" : "126.9083417"
+        },
+        {
+          "name":"용산구",
+          "lat" : "37.52609444",
+          "lon" : "126.9875222"
+        },
+        {
+          "name":"은평구",
+          "lat" : "37.60996944",
+          "lon" : "126.9312417"
+        },
+        {
+          "name":"종로구",
+          "lat" : "37.57837778",
+          "lon" : "126.9816417"
+        },
+        {
+          "name":"중구",
+          "lat" : "37.55100278",
+          "lon" : "126.9996417"
+        },
+        // {
+        //   "name":"중랑구",
+        //   "lat" : "37.60380556",
+        //   "lon" : "127.0947778"
+        // },
+      ];
+      const iconInfo2 = [
+        {
+          "name":"동작구",
+          "lat" : "37.49565556",
+          "lon" : "126.961575"
+        },
+        {
+          "name":"중랑구",
+          "lat" : "37.59380556",
+          "lon" : "127.0947778"
+        },
+      ]
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+
+        iconsLayer
+        .selectAll('svg')
+        .data(iconInfo2)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href", require("../../assets/img/만족도/5.png"))
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+
+      }
     }
   }
-}
+
 
 </script>
 
@@ -248,8 +458,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }
