@@ -10,6 +10,7 @@
                         <p align="center"><b>{{tooltip[index-1]}}</b></p>
                     </div>
             </sequential-entrance>
+            <!-- <v-btn @click="check()">dd</v-btn> -->
             <!-- <label class="label">Username</label>
             <div class="control">
                 <input :class="['input', ($v.form.username.$error) ? 'is-danger' : '']" type="text" placeholder="Text input"
@@ -85,9 +86,11 @@
                 this.$emit('can-continue', {value: true});
             };
             $(document).ready(function() {
+                console.log(this.budget)
                 $(".card").each(function () {
                     $(this).on('click', function () {
                         if($(this).hasClass('filter')) {
+                            $(".card").addClass('filter')
                             $(this).removeClass('filter');
                         } else {
                             $(this).addClass('filter')
@@ -120,20 +123,23 @@
                 this.setBudget(this.budget)
                 console.log(this.budget)
             },
-            filter() {
-                $(".card").each(function () {
-                    $(this).on('click', function () {
-                        if($(this).hasClass('filter')) {
-                            $(this).removeClass('filter');
-                        } else {
-                            $(this).addClass('filter')
-                        }
-                    })
-                })
-            },
+            // filter() {
+            //     $(".card").each(function () {
+            //         $(this).on('click', function () {
+            //             if($(this).hasClass('filter')) {
+            //                 $(this).removeClass('filter');
+            //             } else {
+            //                 $(this).addClass('filter')
+            //             }
+            //         })
+            //     })
+            // },
             setBudget(budget){
                 this.$store.dispatch("SET_SELECT_BUDGET", budget);
             },
+            check() {
+                console.log(this.budget)
+            }
         },
     }
 </script>

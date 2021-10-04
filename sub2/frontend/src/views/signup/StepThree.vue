@@ -80,9 +80,11 @@
                 this.$emit('can-continue', {value: true});
             };
             $(document).ready(function() {
+                console.log(this.budget)
                 $(".card").each(function () {
                     $(this).on('click', function () {
                         if($(this).hasClass('filter')) {
+                            $(".card").addClass('filter')
                             $(this).removeClass('filter');
                         } else {
                             $(this).addClass('filter')

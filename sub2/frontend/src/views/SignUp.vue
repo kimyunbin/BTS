@@ -198,14 +198,20 @@ export default {
           (response) => {
             console.log(response);
             if (response.data.status === "success") {
-              alert("인증완료")
+              this.$alert("인증완료").then(() => {
+                    
+              });
             } else {
-              alert("인증실패")
+              this.$alert("인증실패").then(() => {
+                    
+              });
             }
           }
         )
         .catch(() => {
-          alert("에러");
+          this.$alert("인증실패").then(() => {
+                    
+              });
         })
 
     },
