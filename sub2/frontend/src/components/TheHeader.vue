@@ -87,7 +87,7 @@ export default {
         this.$store
         .dispatch("LOGOUT")
         .then(() => {
-          if (this.$route.path !== "/") this.$router.replace("/");
+          if (this.$route.path !== "/") this.$router.push("/");
         })
         .catch(() => {
           console.log("로그아웃 에러입니다.");

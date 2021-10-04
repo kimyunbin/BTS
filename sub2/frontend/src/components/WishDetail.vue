@@ -141,7 +141,7 @@ export default {
     setSelectInfo(){
       console.log(this.wishDetail.Touristspot.id)
       this.$store.dispatch("SET_SELECT_DETAIL", this.wishDetail.Touristspot).then(()=>{
-        this.$router.replace("/infodetail");
+        this.$router.push("/infodetail");
       });
     },
     deleteReview() {
@@ -150,7 +150,7 @@ export default {
         // this.$store.state.select_like
         // console.log(this.select_like,'ccc')
         alert("관심목록에서 취소되었습니다.");
-        this.$router.replace("/myinteresting");
+        this.$router.push("/myinteresting");
       })
     }
   },

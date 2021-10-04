@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     goWishList(){
-        this.$router.replace("/myinteresting");
+        this.$router.push("/myinteresting");
     }
   },
   }

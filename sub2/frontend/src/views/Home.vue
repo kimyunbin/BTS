@@ -439,7 +439,7 @@ export default{
     setDetailRoad(num){
       console.log(this.other_road[num].spots);
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
-        this.$router.replace("/otherroad");
+        this.$router.push("/otherroad");
       });
     },
     checkOtherRoad(){

@@ -188,6 +188,9 @@ def wishlist(request):
     payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
     user = get_object_or_404(User, username=payload["username"])
     
+    if not WishList.objects.filter(user=user).exists():
+        return Response({"data": [] },status=status.HTTP_200_OK)
+    
     wishlist = get_list_or_404(WishList,user=user)
     
     serializers = WishSerialzer(data=wishlist, many=True)

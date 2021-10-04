@@ -212,7 +212,7 @@ export default {
     setUserSignup(){
       this.sex = this.sexList.value;
       this.$store.dispatch("SET_SELECT_USERSIGNUP", this.form).then(()=>{
-        this.$router.replace("/signup2/"); 
+        this.$router.push("/signup2/"); 
       });
     },
     check(){ 
