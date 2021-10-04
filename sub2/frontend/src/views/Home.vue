@@ -166,49 +166,6 @@
       </v-layout>
     </section>
 
-
-
-      <!-- <v-btn round dark @click="move('최신')" v-b-tooltip.hover title="click!" >
-          최신
-      </v-btn>
-      <v-btn round dark @click="move('아이들과')" v-b-tooltip.hover title="click!" >
-          아이들과
-      </v-btn>
-      <v-btn round  dark @click="move('커플/신혼')" v-b-tooltip.hover title="click!" >
-          커플/신혼
-      </v-btn>
-      <v-btn round  dark @click="move('남자끼리')" v-b-tooltip.hover title="click!" >
-          남자끼리
-      </v-btn>
-      <v-btn round  dark @click="move('여자끼리')" v-b-tooltip.hover title="click!" >
-          여자끼리
-      </v-btn> -->
-      <!-- <section style="">
-      <vue-horizontal-list :items="other_road" :options="options" >
-        <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
-        </template>
-
-        <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
-        </template>
-
-        <template v-slot:default="{ item }">
-          <OtherRoad
-            :road="item"
-          />
-        </template>
-      </vue-horizontal-list>
-    </section> -->
-
-    <!-- <section>
-      <OtherRoad
-        v-for="(road, idx) in other_road"
-        :key="idx"
-        :road="road"
-      ></OtherRoad>
-    </section> -->
-
     <br>
     <br>
     <h1><b>남자를 위한 추천 여행지역</b></h1>
@@ -322,13 +279,7 @@ export default{
     ])
   },
   mounted() {
-    window.kakao && window.kakao.maps
-      ? this.initMap()
-      : this.addKakaoMapScript();
-
-      $(document).ready(function(){
-      $('.slider').slider();
-    });
+    
   },
   data() {
     return {
@@ -391,21 +342,6 @@ export default{
           cursor:"pointer"
         }
       },
-    
-      
-      items: [
-        { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
-        { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { id:"3", title: "서울", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { id:"4", title: "여수", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { id:"5", title: "의정부", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { id:"6", title: "전주", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { id:"7", title: "강원", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
-      ],
-      items2: [],
-      genderItems: [],
       username: '',
     };
   },
@@ -418,7 +354,14 @@ export default{
     const random_instance = createInstance2();
     random_instance.get("/tour/routerandom/").then(
       (response) =>{
+        this.$store.commit("CLEAR_OTHER_ROAD", response.data);
         this.$store.commit("SET_OTHER_ROAD", response.data);
+        window.kakao && window.kakao.maps
+      ? this.initMap()
+      : this.addKakaoMapScript();
+      $(document).ready(function(){
+      $('.slider').slider();
+    });
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
@@ -429,6 +372,9 @@ export default{
     check(){
       //console.log(this.user_info);
       console.log(this.other_road);
+      console.log(this.other_road[0].spots[0].touristspot.title+" "+this.other_road[0].spots[1].touristspot.title);
+      console.log(this.other_road[1].spots[0].touristspot.title+" "+this.other_road[1].spots[1].touristspot.title);
+      console.log(this.other_road[2].spots[0].touristspot.title+" "+this.other_road[2].spots[1].touristspot.title);
     },
     setDetailRoad(num){
       console.log(this.other_road[num].spots);
@@ -501,7 +447,7 @@ export default{
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
           var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
-        
+          console.log(this.other_road[0].spots[i].touristspot.title);
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치

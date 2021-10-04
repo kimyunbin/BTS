@@ -17,8 +17,6 @@
         <br>
         <br>
 
-
-
         <div>
           <p class="green--text font-weight-medium"><b>{{wishDetail.Touristspot.address}}</b></p>
         </div>
@@ -27,9 +25,8 @@
 
     </v-card-title>
       <div class="img-box">
-       <v-img
+        <v-img
           width=100%
-
           :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${wishDetail.Touristspot.img[0].awsimages}`"
         ></v-img>
         <br>
@@ -38,7 +35,6 @@
   </v-card>
   <hr>
   <div style="height:100px">
-
   </div>
 </v-flex>
 

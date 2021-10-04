@@ -151,11 +151,8 @@ export default {
                     .then(
                         (response) => {
                             console.log(response);
-                            //this.$store.commit("SET_TOKEN", token);
-                            //this.$store.commit("SET_USER_INFO", decoded.username);
-                            //this.$router.push("/home");
                             this.$alert("저장이 완료되었습니다.").then(() => {
-
+                                this.$router.replace("/home");
                             })
                         }
                     )

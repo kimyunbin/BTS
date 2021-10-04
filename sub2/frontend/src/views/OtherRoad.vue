@@ -4,7 +4,9 @@
     <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b></h1>
     <v-btn @click="check()"></v-btn>
     <div id="map" class="map"></div>
-    
+    <v-btn large to="/home" flat class="blue--text">
+        <v-icon>arrow_back</v-icon>뒤로가기
+    </v-btn>
   </div>      
 </template>
 
