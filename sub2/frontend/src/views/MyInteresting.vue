@@ -2,7 +2,7 @@
     <div>
     <br><br>
     <v-layout>
-      <h1 data-aos="fade-up"><b>관심spot 리스트</b></h1>
+      <h1 data-aos="fade-up"><b>관심지역</b></h1>
     </v-layout>
 
     <v-layout col data-aos="fade-up">

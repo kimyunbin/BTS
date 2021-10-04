@@ -1,9 +1,10 @@
 <template>
   <div>
     <br>
-    <h1 data-aos="fade-up"><b>{{select_road[0].name}}님의 여행 경로입니다.</b></h1>
-    <div id="map" class="map"></div>
+    <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b></h1>
     <v-btn @click="check()"></v-btn>
+    <div id="map" class="map"></div>
+    
   </div>      
 </template>
 
@@ -35,14 +36,14 @@ export default {
       var lat = 0;
       var lng = 0;
     
-      for (var i = 0; i < this.select_road.length; i++) {
-        lat +=  parseFloat(this.select_road[i].lat);
-        lng +=  parseFloat(this.select_road[i].lng);
+      for (var i = 0; i < this.select_road.spots.length; i++) {
+        lat +=  parseFloat(this.select_road.spots[i].touristspot.latitude);
+        lng +=  parseFloat(this.select_road.spots[i].touristspot.longitude);
       
       }
-      lat /= this.select_road.length;
-      lng /= this.select_road.length;
-    
+      lat /= this.select_road.spots.length;
+      lng /= this.select_road.spots.length;
+      
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng, lat), //지도의 중심좌표.
@@ -53,19 +54,19 @@ export default {
 
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
     
-      for (var i = 0; i < this.select_road.length; i++) {
+      for (var i = 0; i < this.select_road.spots.length; i++) {
           
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new kakao.maps.Size(24, 35); 
           
           // 마커 이미지를 생성합니다    
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-          var latlng = new kakao.maps.LatLng(this.select_road[i].lng, this.select_road[i].lat); 
+          var latlng = new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude); 
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
-              title : this.select_road[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              title : this.select_road.spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지 
           });
       }
@@ -76,8 +77,8 @@ export default {
 
       var linePath = [];
             
-      for(var i = 0; i< this.select_road.length; i++){
-        linePath.push( new kakao.maps.LatLng(this.select_road[i].lng,this.select_road[i].lat));
+      for(var i = 0; i< this.select_road.spots.length; i++){
+        linePath.push( new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude));
       }
 
       // 지도에 표시할 선을 생성합니다
@@ -93,29 +94,36 @@ export default {
       polyline.setMap(map);  
     },
     displayInfo(map){
-      for (var i = 0; i < this.select_road.length; i ++) {
+      for (var i = 0; i < this.select_road.spots.length; i ++) {
     // 마커를 생성합니다
-        var latlng = new kakao.maps.LatLng(this.select_road[i].lng, this.select_road[i].lat); 
+        var latlng = new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude); 
         var marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
             position:latlng // 마커의 위치
         });
 
         // 마커에 표시할 인포윈도우를 생성합니다 
+
+        var url ="";
+        if(this.select_road.spots[i].touristspot.img.length==0){
+          url = "noimage.png";
+        }else{
+          url = this.select_road.spots[i].touristspot.img[0].awsimages;
+        }
         var infowindow = new kakao.maps.InfoWindow({
             content: '<div class="wrap3">' + 
                             '    <div class="info3">' + 
                             '        <div class="title3">' + 
-                                            this.select_road[i].title      + 
+                                            this.select_road.spots[i].touristspot.title      + 
                             
                             '        </div>' + 
                             '        <div class="body3">' +
                             '            <div class="img3">' +
-                            '                <img src="https://i.ibb.co/gWBNgwm/image.jpg" width="73" height="70">' +
+                            '                <img src="https://go-test-buket.s3.ap-northeast-2.amazonaws.com/'+url +'" width="73" height="70">' +
                             '           </div>' + 
                             '            <div class="desc3">' + 
                             '                <div class="ellipsis3">'+
-                                            this.select_road[i].address+
+                                            this.select_road.spots[i].touristspot.address+
                             '</div>' + 
                             '            </div>' + 
                             '        </div>' + 

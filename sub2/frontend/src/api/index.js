@@ -11,11 +11,13 @@ function createInstance() {
   return instance;
 }
 function createInstance2() {
-  const token =  localStorage.getItem('token')
+  const token = localStorage.getItem('token')
   const instance = axios.create({
     baseURL: "http://j5c203.p.ssafy.io/api",
 
     headers: {
+      
+      "Content-Type": "application/json",
       Authorization: `JWT ${token}`
     },
   });

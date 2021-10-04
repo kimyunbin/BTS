@@ -22,12 +22,13 @@ export default new Vuex.Store({
     select_info: null, // 선택 정보(즐길거리, 숙소, 맛집) 들이 들어가 있는 것들
     select_detail:null, //선택 spot장소의 좌표 등 세부정보
     other_road: [], // 다른 사람들의 경로
-    select_road: [], // Home.vue에서 선택된 경로
+    select_road: {}, // Home.vue에서 선택된 경로
     select_map: null, //svg에서 선택된 경로
     tour_detail: [],
     tour_image:[],
     recom_area: [], // Home.vue에서 보여주는 추천지역
     satis_area: [], // 만족도 높은 순 지역 결과
+    
   },
 
   getters: {
@@ -155,6 +156,9 @@ export default new Vuex.Store({
     },
     SATIS_AREA(state, data) {
       state.satis_area = data;
+    },
+    SET_OTHER_ROAD(state, data) {
+      state.other_road = data;
     }
   },
   actions: {
@@ -197,11 +201,11 @@ export default new Vuex.Store({
       context.commit("SET_SELECT_DETAIL", payload);
     },
     SET_SELECT_ROAD(context, payload) {
-      this.select_road = [];
+      this.select_road = {};
       context.commit("SET_SELECT_ROAD", payload);
     },
     CLEAR_OTHER_ROAD(context) {
-      this.select_road = [];
+      this.select_road = {};
       context.commit("CLEAR_OTHER_ROAD");
     },
     SET_SELECT_USERSIGNUP(context, payload) {
@@ -244,6 +248,10 @@ export default new Vuex.Store({
       this.state.tour_image = null;
       context.commit("SET_TOUR_IMAGE", payload);
       // 메인페이지 추천지역 불러오기
+    },
+    SET_OTHER_ROAD(context, paylaod) {
+      this.state.other_road = [];
+      context.commit("SET_OTHER_ROAD", paylaod);
     },
     async GET_RECOMMEND_AREA(context) {
       const instance = createInstance2()
@@ -290,6 +298,7 @@ export default new Vuex.Store({
       const instance = createInstance3()
       const response = await instance.get(`tour/detail/${Spok_pk}`)
       console.log(response.data)
-    }
+    },
+    
   }
 });

@@ -19,8 +19,9 @@
         class="justify-center"
       >다른사람경로보기&nbsp;<i class="fas fa-plus"></i>
       </v-btn>
-    </v-layout>
 
+      <v-btn @click="check()"></v-btn>
+    </v-layout>
     <ul class="slides">
     <input type="radio" name="radio-btn" id="img-1" checked />
     <li class="slide-container">
@@ -104,36 +105,8 @@
     </li>
 </ul>
 
-    <div id="demo">
-      <div id="slider">
-      <input checked="" type="radio" name="slider" id="slide1" selected="false">
-      <input type="radio" name="slider" id="slide2" selected="false">
-      <input type="radio" name="slider" id="slide3" selected="false">
-      <input type="radio" name="slider" id="slide4" selected="false">
-      <div id="slides">
-        <div id="overflow">
-          <div class="inner">
-            <article v-for="(item,i) in items2" :key="i" class="slide">
-              <div class="image-container">
-                <a :href="item.src">
-                <img :src="item.img" alt="item.title" style="margin-bottom:10px"/>
-                </a>
-              </div>
-              <p><br></p>
-              <div class="title" style="padding-top:5px">{{item.title}}</div>
-              
-            </article>
-          </div> <!-- .inner -->
-        </div> <!-- #overflow -->
-      </div>
-      <label for="slide1"></label>
-      <label for="slide2"></label>
-      <label for="slide3"></label>
-      <label for="slide4"></label>
-    </div>
-  </div>
     <br><br><br>
-    <h1><b>차범희님을 위한 추천 여행지역</b></h1>
+    <h1><b>{{user_info}} 님을 위한 추천 여행지역</b></h1>
     <br>
     <section>
 
@@ -162,31 +135,31 @@
     <section>
       <v-layout row justify-center align-center wrap class="mt-4 pt-2" v-if="other_road.length>2">
         <v-card @click="setDetailRoad(0)" hover>
-          <div id="map" class="map" style="display:inline-block"></div>
+          <div id="amap" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>{{other_road[0][0].title}} 여행경로</b></p>
+            <p class="headline mb-0"><b>{{other_road[0].title}} 여행경로</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{other_road[0][0].name}}의 경로</b></p>
+            <p class="green--text font-weight-medium"><b>{{other_road[0].user.nickname}}님</b></p>
           </div>
         </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
 
         <v-card @click="setDetailRoad(1)" hover>
-          <div id="map2" class="map" style="display:inline-block"></div>
+          <div id="bmap" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>{{other_road[1][0].title}} 여행경로</b></p>
+            <p class="headline mb-0"><b>{{other_road[1].title}} 여행경로</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{other_road[1][0].name}}</b></p>
+            <p class="green--text font-weight-medium"><b>{{other_road[1].user.nickname}}님</b></p>
           </div>
         </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
 
         <v-card @click="setDetailRoad(2)" hover>
-          <div id="map3" class="map" style="display:inline-block"></div>
+          <div id="cmap" class="map" style="display:inline-block"></div>
           <div>
-            <p class="headline mb-0"><b>{{other_road[2][0].title}}</b></p>
+            <p class="headline mb-0"><b>{{other_road[2].title}} 여행경로</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{other_road[2][0].name}}의 경로</b></p>
+            <p class="green--text font-weight-medium"><b>{{other_road[2].user.nickname}}님</b></p>
           </div>
         </div>
         </v-card>&nbsp;&nbsp;
@@ -286,6 +259,7 @@
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
 import { mapGetters, mapState } from "vuex";
+import { createInstance2} from "@/api/index.js";
 
 export default{
   name: "ServeDev",
@@ -349,10 +323,10 @@ export default{
       ],
       options: {
         item: {
-          padding: -20
+          padding: 10
         },
         map:{
-          padding: -20
+          padding: 10
         },
         responsive: [
           { end: 576, size: 1 },
@@ -361,14 +335,13 @@ export default{
           { size: 4 },
         ],
         list: {
-
           windowed: 1200,
-          padding: 30,
+          padding: 10,
         },
         position: {
-          start: 0,
+          start: 4,
         },
-        autoplay: { play: false, repeat: true, speed: 2400 },
+        autoplay: { play: true, repeat: true, speed: 2400 },
         hover:{
           cursor:"pointer"
         }
@@ -392,23 +365,30 @@ export default{
   created() {
     this.$store.dispatch("GET_RECOMMEND_AREA")
     .then(()=>{
-     this.items2 =  this.$store.state.recom_area
+      this.items2 =  this.$store.state.recom_area
     })
+
+    const random_instance = createInstance2();
+    random_instance.get("/tour/routerandom/").then(
+      (response) =>{
+        this.$store.commit("SET_OTHER_ROAD", response.data);
+      }
+    )
   },
 
   methods: {
     check(){
-      console.log(this.is_login);
+      //console.log(this.user_info);
       console.log(this.other_road);
     },
     setDetailRoad(num){
+      console.log(this.other_road[num].spots);
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
         this.$router.replace("/otherroad");
       });
     },
     checkOtherRoad(){
       console.log(this.other_road);
-      //console.log(this.other_road[1].length);
     },
     addKakaoMapScript() {
       const script = document.createElement("script");
@@ -419,9 +399,9 @@ export default{
       document.head.appendChild(script);
     },
     initMap() {
-      var container = document.getElementById("map");
-      var container2 = document.getElementById("map2");
-      var container3 = document.getElementById("map3");
+      var container = document.getElementById("amap");
+      var container2 = document.getElementById("bmap");
+      var container3 = document.getElementById("cmap");
       var lat = [];
       var lng = [];
       for(var j = 0; j < this.other_road.length; j++){
@@ -429,36 +409,33 @@ export default{
         lng[j] = 0;
       }
       for(var j = 0; j < this.other_road.length; j++){
-        //console.log(lat[j]);
-        //console.log(lng[j]);
-        for (var i = 0; i < this.other_road[j].length; i++) {
-          lat[j] +=  parseFloat(this.other_road[j][i].lat);
-          lng[j] +=  parseFloat(this.other_road[j][i].lng);
-          //console.log(lat[j]);
-          //console.log(lng[j]);
+        for (var i = 0; i < this.other_road[j].spots.length; i++) {
+          lat[j] +=  parseFloat(this.other_road[j].spots[i].touristspot.latitude);
+          lng[j] +=  parseFloat(this.other_road[j].spots[i].touristspot.longitude);
         }
-        lat[j] /= this.other_road[j].length;
-        lng[j] /= this.other_road[j].length;
-
+        lat[j] /= this.other_road[j].spots.length;
+        lng[j] /= this.other_road[j].spots.length;
+        
       }
+    
 
 
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[0], lat[0]), //지도의 중심좌표.
-        level: 8 //지도의 레벨(확대, 축소 정도)
+        level: 10 //지도의 레벨(확대, 축소 정도)
       };
 
       var options2 = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[1], lat[1]), //지도의 중심좌표.
-        level: 8 //지도의 레벨(확대, 축소 정도)
+        level: 10 //지도의 레벨(확대, 축소 정도)
       };
 
       var options3 = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[2], lat[2]), //지도의 중심좌표.
-        level: 8 //지도의 레벨(확대, 축소 정도)
+        level: 10 //지도의 레벨(확대, 축소 정도)
       };
 
       var map = new kakao.maps.Map(container, options);
@@ -466,51 +443,53 @@ export default{
       var map3 = new kakao.maps.Map(container3, options3);
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-      for (var i = 0; i < this.other_road[0].length; i++) {
+      for (var i = 0; i < this.other_road[0].spots.length; i++) {
 
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new kakao.maps.Size(24, 35);
 
           // 마커 이미지를 생성합니다
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          var latlng = new kakao.maps.LatLng(this.other_road[0][i].lng, this.other_road[0][i].lat);
+          var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
+        
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
-              title : this.other_road[0][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              title : this.other_road[0].spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지
           });
+          //console.log(marker);
       }
-      for (var i = 0; i < this.other_road[1].length; i++) {
+      for (var i = 0; i < this.other_road[1].spots.length; i++) {
 
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new kakao.maps.Size(24, 35);
 
           // 마커 이미지를 생성합니다
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          var latlng = new kakao.maps.LatLng(this.other_road[1][i].lng, this.other_road[1][i].lat);
+          var latlng = new kakao.maps.LatLng(this.other_road[1].spots[i].touristspot.longitude, this.other_road[1].spots[i].touristspot.latitude);
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map2, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
-              title : this.other_road[1][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              title : this.other_road[1].spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지
           });
       }
-      for (var i = 0; i < this.other_road[2].length; i++) {
+      for (var i = 0; i < this.other_road[2].spots.length; i++) {
 
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new kakao.maps.Size(24, 35);
 
           // 마커 이미지를 생성합니다
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          var latlng = new kakao.maps.LatLng(this.other_road[2][i].lng, this.other_road[2][i].lat);
+          var latlng = new kakao.maps.LatLng(this.other_road[2].spots[i].touristspot.longitude, this.other_road[2].spots[i].touristspot.latitude);
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map3, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
-              title : this.other_road[2][i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              title : this.other_road[2].spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지
           });
       }
@@ -522,8 +501,8 @@ export default{
 
       var linePath = [];
 
-      for(var i = 0; i< this.other_road[n].length; i++){
-        linePath.push( new kakao.maps.LatLng(this.other_road[n][i].lng, this.other_road[n][i].lat));
+      for(var i = 0; i< this.other_road[n].spots.length; i++){
+        linePath.push( new kakao.maps.LatLng(this.other_road[n].spots[i].touristspot.longitude, this.other_road[n].spots[i].touristspot.latitude));
       }
 
       // 지도에 표시할 선을 생성합니다
@@ -556,7 +535,6 @@ export default{
 }
 
 </style>
-<<<<<<< HEAD
 <style scoped>
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
 
@@ -673,110 +651,5 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 </style>
 
 <style lang="scss">
-// .slide {
-  
-//   .image-container {
-//     img {
-//       width: 1200px;
-//       height: 700px;
-//     }
-//     float: left;
-//     width: 100%;
-//     margin-right: 15px;
-//   }
-//   .title {
-//     font-size: 20px;
-//     font-weight: 700;
-//     text-align: left;
-//   }
-//   .teaser {
-//     text-align: left;
-//   }
-  
-// }
 
-// * {
-//   -webkit-box-sizing: border-box;
-//   -moz-box-sizing: border-box;
-//   -ms-box-sizing: border-box;
-//   box-sizing: border-box;
-// }
-
-// #slider {
-//   max-width: 1600px;
-//   text-align: center;
-//   margin: 0 auto;
-// }
-
-// #overflow {
-//   width: 100%;
-//   overflow: hidden;
-// }
-
-// #slides .inner {
-//   width: 400%;
-// }
-
-// #slides .inner {
-//   -webkit-transform: translateZ(0);
-//   -moz-transform: translateZ(0);
-//   -o-transform: translateZ(0);
-//   -ms-transform: translateZ(0);
-//   transform: translateZ(0);
-
-//   -webkit-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -moz-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -o-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -ms-transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
-
-//   -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   -ms-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-//   transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
-// }
-
-// #slides article {
-//   width: 25%;
-//   float: left;
-// }
-
-// #slide1:checked ~ #slides .inner {
-//   margin-left: 0;
-// }
-
-// #slide2:checked ~ #slides .inner {
-//   margin-left: -100%;
-// }
-
-// #slide3:checked ~ #slides .inner {
-//   margin-left: -200%;
-// }
-
-// #slide4:checked ~ #slides .inner {
-//   margin-left: -300%;
-// }
-
-// input[type="radio"] {
-//   display: none;
-// }
-
-// label {
-//   background: #CCC;
-//   display: inline-block;
-//   cursor: pointer;
-//   width: 13px;
-//   height: 13px;
-//   border-radius: 5px;
-// }
-
-// #slide1:checked ~ label[for="slide1"],
-// #slide2:checked ~ label[for="slide2"],
-// #slide3:checked ~ label[for="slide3"],
-// #slide4:checked ~ label[for="slide4"] {
-//   background: #333;
-// }
 </style>
-=======
->>>>>>> b47026525afafa48045ba7988578293f902a2137
