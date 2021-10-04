@@ -37,7 +37,7 @@
     <v-toolbar flat dense color="transparent">
       <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline">
-        <span class="font-weight-bold"><b>Best Trip Service</b></span>
+        <span class="BTS font-weight-bold" @click="toMain"><b>Best Trip Service</b></span>
 
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -93,10 +93,23 @@ export default {
           console.log("로그아웃 에러입니다.");
         });
       })
+    },
+    toMain(){
+      this.$router.push("home")
     }
   }
 };
 </script>
 
-<style >
+<style scoped>
+
+.v-btn--router{
+  text-decoration: none;
+}
+a{
+  text-decoration: none;
+}
+.BTS{
+  cursor: pointer;
+}
 </style>

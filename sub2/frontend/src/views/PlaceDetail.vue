@@ -168,7 +168,7 @@ export default {
         position: {
           start: 4,
         },
-        autoplay: { play: true, repeat: true, speed: 2400 },
+        autoplay: { play: true, repeat: true, speed: 3500 },
         hover:{
           cursor:"pointer"
         }

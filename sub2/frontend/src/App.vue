@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <v-container align-center>
+      <v-container align-center >
         <TheHeader v-if="$route.name !=='intro'" />
         <transition
           name="router-animation"
@@ -47,4 +47,7 @@ export default {
 </script>
 <style>
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css";
+.main{
+  width: 80%;
+}
 </style>
