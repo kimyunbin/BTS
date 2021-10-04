@@ -152,7 +152,7 @@ import uuid
 from PIL import Image
 from io  import BytesIO
 def test():
-    for i in range(80998,125263):
+    for i in range(120603,125263):
         print(i)
         img=ToruistImg.objects.get(id = i)
         url = 'https:' +img.images
@@ -185,3 +185,26 @@ def test():
         
 
 test()
+def delete():
+    CSV_PATH = './sss.csv'	# 3. csv 파일 경로
+    
+    
+    with open(CSV_PATH, newline='') as csvfile:	# 4. newline =''
+        data_reader = csv.DictReader(csvfile)
+
+        for row in data_reader:
+            print(row['id'])
+            obj =Touristspot.objects.get(pk=row['id'])
+            # if ToruistImg.objects.filter(Touristspot = row['id']).exists():
+
+            # list2 = Review.objects.filter(Touristspot = row['id'])
+            # list3 = WishList.objects.filter(Touristspot = row['id'])
+            # list4 = RouteTouristspot.objects.filter(touristspot = row['id'])
+            # list.delete()
+            # list2.delete()
+            # list3.delete()
+            # list4.delete()
+            # print(obj)
+            obj.delete()
+
+# delete()
