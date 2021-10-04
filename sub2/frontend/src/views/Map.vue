@@ -77,7 +77,6 @@ import { createInstance2 } from "@/api/index.js";
 
 export default {
     created(){
-        //this.makeImage();
         this.place = this.select_map;
     },
     computed:{
@@ -213,6 +212,7 @@ export default {
             // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
         },
         searchPlaces() {
+            //alert(this.place);
             var keyword = this.place;
 
             if (!keyword.replace(/^\s+|\s+$/g, '')) {

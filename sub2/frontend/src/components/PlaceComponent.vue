@@ -3,15 +3,15 @@
         <v-img
           :src="item.imgurl"
           width=100%
-          height="200"
+          height="180"
           object-fit: cover
         />
 
         <v-card-title primary-title>
         <div>
-          <p class="headline mb-0"><b>{{item.name}}</b></p>
+          <p class="headline mt-0 mb-0"><b>{{item.name}}</b></p>
           <div>
-            <p class="green--text font-weight-medium"><b>{{item.state}}</b></p>
+            <p class="green--text mb-0 font-weight-medium"><b>{{item.state}}</b></p>
           </div>
         </div>
       </v-card-title>
@@ -33,11 +33,13 @@ export default {
   },
   methods: {
     setSelectPlace(){
-      this.$store.dispatch("SET_SELECT_PLACE", this.item.name).then(()=>{
-      this.$store.dispatch("SET_SELECT_INFO", this.item.name)
+      // console.log(this.item.state + ' ' + this.item.name)
+      const name = this.item.state + ' ' + this.item.name
+      this.$store.dispatch("SET_SELECT_PLACE", name).then(()=>{
+      this.$store.dispatch("SET_SELECT_INFO", name)
       .then(()=>{
 
-        this.$router.replace("/placedetail");
+        this.$router.push("/placedetail");
       })
       });
     }

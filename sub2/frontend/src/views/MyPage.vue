@@ -70,9 +70,11 @@
     <h1>
       <b>관심지역</b>
       </h1>
+
     <br>
     <section style="">
-      <vue-horizontal-list :items="wishes" :options="options" >
+
+      <vue-horizontal-list :items="wishlist" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -80,10 +82,9 @@
         <template v-slot:nav-next>
           <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
-
         <template v-slot:default="{ item }">
           <PlaceWish
-            :item="item"
+            :item="item.Touristspot"
           />
         </template>
       </vue-horizontal-list>
@@ -109,16 +110,17 @@ export default {
       "my_road","other_road","my_wish_road"
     ]),
     ...mapState([
-      "is_login", "user_info"
+      "is_login", "user_info","wishlist"
     ])
   },
   created() {
-  
+    this.$store.dispatch("GET_WISHLIST")
   },
   mounted(){
- window.kakao && window.kakao.maps
+      window.kakao && window.kakao.maps
       ? this.initMap()
       : this.addKakaoMapScript();
+      
   },
   data() {
     return {
@@ -149,15 +151,15 @@ export default {
         }
       },
       items: [
-        { id:"1", title: "광주 북구 경로", content: "Content item with description", src: "https://i.ibb.co/6Byzrqx/image.jpg"},
-        { id:"2", title: "대구 수성구 경로", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { id:"3", title: "전주 경로", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { id:"4", title: "의정부 부대찌개 경로", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { id:"5", title: "부산 해운대 경로", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { id:"6", title: "철원 수색경로", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { id:"7", title: "조순님 마음속경로", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { id:"8", title: "광주 맛집 탐방경로", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { id:"9", title: "경로이름", content: "경로이름 정하거나 지역구 이름으로", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
+        { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
+        { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
+        { id:"3", title: "서울", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
+        { id:"4", title: "여수", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
+        { id:"5", title: "의정부", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
+        { id:"6", title: "전주", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
+        { id:"7", title: "강원", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
+        { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
+        { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
       wishes: [
         { id:"1", title: "해운대 해수욕장", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
@@ -172,6 +174,8 @@ export default {
       ],
     }
   },
+ 
+  
   methods: {
     check(){
       console.log(this.my_road);
@@ -205,21 +209,23 @@ export default {
       var lng = [];
       var lat2 = [];
       var lng2 = [];
-      for(var j = 0; j < this.my_road.length; j++){
-        lat[j] = 0;
-        lng[j] = 0;
-      }
-      for(var j = 0; j < this.my_wish_road.length; j++){
-        lat2[j] = 0;
-        lng2[j] = 0;
-      }
-      for(var j = 0; j < this.my_road.length; j++){
-        for (var i = 0; i < this.my_road[j].spots.length; i++) {
-          lat[j] +=  parseFloat(this.my_road[j].spots[i].touristspot.latitude);
-          lng[j] +=  parseFloat(this.my_road[j].spots[i].touristspot.longitude);
+      if(this.my_road){
+        for(var j = 0; j < this.my_road.length; j++){
+          lat[j] = 0;
+          lng[j] = 0;
         }
-        lat[j] /= this.my_road[j].spots.length;
-        lng[j] /= this.my_road[j].spots.length;
+        for(var j = 0; j < this.my_wish_road.length; j++){
+          lat2[j] = 0;
+          lng2[j] = 0;
+        }
+        for(var j = 0; j < this.my_road.length; j++){
+          for (var i = 0; i < this.my_road[j].spots.length; i++) {
+            lat[j] +=  parseFloat(this.my_road[j].spots[i].touristspot.latitude);
+            lng[j] +=  parseFloat(this.my_road[j].spots[i].touristspot.longitude);
+          }
+          lat[j] /= this.my_road[j].spots.length;
+          lng[j] /= this.my_road[j].spots.length;
+        }
       }
       for(var j = 0; j < this.my_wish_road.length; j++){
         for (var i = 0; i < this.my_wish_road[j].route.spots.length; i++) {
@@ -229,23 +235,25 @@ export default {
         lat2[j] /= this.my_wish_road[j].route.spots.length;
         lng2[j] /= this.my_wish_road[j].route.spots.length;
       }
-      var options = {
-        //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(lng[0], lat[0]), //지도의 중심좌표.
-        level: 10 //지도의 레벨(확대, 축소 정도)
-      };
+      if(this.my_road){
+        var options = {
+          //지도를 생성할 때 필요한 기본 옵션
+          center: new kakao.maps.LatLng(lng[0], lat[0]), //지도의 중심좌표.
+          level: 10 //지도의 레벨(확대, 축소 정도)
+        };
 
-      var options2 = {
-        //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(lng[1], lat[1]), //지도의 중심좌표.
-        level: 10 //지도의 레벨(확대, 축소 정도)
-      };
+        var options2 = {
+          //지도를 생성할 때 필요한 기본 옵션
+          center: new kakao.maps.LatLng(lng[1], lat[1]), //지도의 중심좌표.
+          level: 10 //지도의 레벨(확대, 축소 정도)
+        };
 
-      var options3 = {
-        //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(lng[2], lat[2]), //지도의 중심좌표.
-        level: 10 //지도의 레벨(확대, 축소 정도)
-      };
+        var options3 = {
+          //지도를 생성할 때 필요한 기본 옵션
+          center: new kakao.maps.LatLng(lng[2], lat[2]), //지도의 중심좌표.
+          level: 10 //지도의 레벨(확대, 축소 정도)
+        };
+      }
 
       var options4 = {
         //지도를 생성할 때 필요한 기본 옵션
@@ -264,9 +272,11 @@ export default {
         center: new kakao.maps.LatLng(lng2[2], lat2[2]), //지도의 중심좌표.
         level: 10 //지도의 레벨(확대, 축소 정도)
       };
-      var map = new kakao.maps.Map(container, options);
-      var map2 = new kakao.maps.Map(container2, options2);
-      var map3 = new kakao.maps.Map(container3, options3);
+      if(this.my_road){
+        var map = new kakao.maps.Map(container, options);
+        var map2 = new kakao.maps.Map(container2, options2);
+        var map3 = new kakao.maps.Map(container3, options3);
+      }
       var map4 = new kakao.maps.Map(container4, options4);
       if(lat2.length>1){
         var map5 = new kakao.maps.Map(container5, options5);

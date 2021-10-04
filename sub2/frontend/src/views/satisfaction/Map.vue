@@ -68,6 +68,8 @@ export default {
       const mapLayer = g.append('g').classed('map-layer', true);
       // 아이콘이 그려지는 그래픽 노드
       const labelLayer = g.append('g').classed('label-layer', true);
+      // 도시명이 그려지는 그래픽 노드
+      const namesLayer = g.append('g').classed('names-layer', true);
 
       // 지도의 출력 방법을 선택(메로카토르)
       let projection = d3.geoMercator()
@@ -206,6 +208,106 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"강원도",
+          "lat" : "37.32442222",
+          "lon" : "128.3008417"
+        },
+        {
+          "name":"경기도",
+          "lat" : "37.43091667",
+          "lon" : "127.1876528"
+
+        },
+        {
+          "name":"서울특별시",
+          "lat" : "37.10609444",
+          "lon" : "126.9875222"
+        },
+        {
+          "name":"인천광역시",
+          "lat" : "37.22384843",
+          "lon" : "126.2407617"
+        },
+        {
+          "name":"충청북도",
+          "lat" : "36.33243056",
+          "lon" : "127.7088306"
+        },
+        {
+          "name":"충청남도",
+          "lat" : "36.01836111",
+          "lon" : "126.8029083"
+        },
+        {
+          "name":"세종특별자치시",
+          "lat" : "36.1200000",
+          "lon" : "127.2400000"
+        },
+        {
+          "name":"대전광역시",
+          "lat" : "35.84582989",
+          "lon" : "127.411381"
+        },
+        {
+          "name":"대구광역시",
+          "lat" : "35.33621351",
+          "lon" : "128.587702"
+        },
+        {
+          "name":"경상북도",
+          "lat" : "35.90975833",
+          "lon" : "128.6993639"
+        },
+        {
+          "name":"경상남도",
+          "lat" : "34.80703333",
+          "lon" : "128.3000000"
+        },
+        {
+          "name":"울산광역시",
+          "lat" : "35.08371228",
+          "lon" : "129.2728162"
+        },
+        {
+          "name":"부산광역시",
+          "lat" : "34.75995278",
+          "lon" : "129.0453194"
+        },
+        {
+          "name":"전라북도",
+          "lat" : "35.20918889",
+          "lon" : "127.1219194"
+        },
+        {
+          "name":"전라남도",
+          "lat" : "34.378525",
+          "lon" : "126.9391083"
+        },
+        {
+          "name":"광주광역시",
+          "lat" : "34.6825164",
+          "lon" : "126.8295063"
+        },
+        {
+          "name":"제주특별자치도",
+          "lat" : "32.89631111",
+          "lon" : "126.4332083"
+        },
+      ]
+
+      namesLayer
+        .selectAll('text')
+        .data(iconsInfo)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
 
     }
   }

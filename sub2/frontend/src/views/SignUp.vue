@@ -198,21 +198,27 @@ export default {
           (response) => {
             console.log(response);
             if (response.data.status === "success") {
-              alert("인증완료")
+              this.$alert("인증완료").then(() => {
+                    
+              });
             } else {
-              alert("인증실패")
+              this.$alert("인증실패").then(() => {
+                    
+              });
             }
           }
         )
         .catch(() => {
-          alert("에러");
+          this.$alert("인증실패").then(() => {
+                    
+              });
         })
 
     },
     setUserSignup(){
       this.sex = this.sexList.value;
       this.$store.dispatch("SET_SELECT_USERSIGNUP", this.form).then(()=>{
-        this.$router.replace("/signup2/"); 
+        this.$router.push("/signup2/"); 
       });
     },
     check(){ 

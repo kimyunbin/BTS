@@ -12,7 +12,7 @@
 
         <div v-else>
           <v-img
-            src="https://i.ibb.co/q7dBcZ1/image.jpg"
+            src="https://go-test-buket.s3.ap-northeast-2.amazonaws.com/noimage.png"
             width=100%
             height="200"
             object-fit: cover
@@ -46,7 +46,7 @@ export default {
     setSelectInfo(){
       console.log(this.item)
       this.$store.dispatch("SET_SELECT_DETAIL", this.item).then(()=>{
-        this.$router.replace("/infodetail");
+        this.$router.push("/infodetail");
       });
     }
   },

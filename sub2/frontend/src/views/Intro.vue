@@ -100,19 +100,11 @@
           </v-layout>
           
         </v-container>
-        <div class="ocean">
-            <div class="wave"></div>
-            <div class="wave"></div>
-          </div>
+          
         </div>
       </div>
 
-      <div class ="section">
-        <div class="ocean">
-          <div class="wave"></div>
-          <div class="wave"></div>
-        </div>
-      </div>
+      
     </full-page>
   </div>
 </template>
