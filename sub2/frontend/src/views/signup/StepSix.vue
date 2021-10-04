@@ -180,8 +180,10 @@
     display: flex;
     justify-content: center;
     align-content: center;
+    text-align: center;
 }
 .box {
+    cursor: pointer;
     display: inline-block;
     border-radius: 10px;
     width: 160px;
@@ -189,6 +191,7 @@
     margin: 2rem 1rem;
 }
 .card {
+    border-style: none;
     width: 160px;
     height: 100px;
 }

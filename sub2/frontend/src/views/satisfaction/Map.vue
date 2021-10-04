@@ -89,7 +89,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -108,55 +108,72 @@ export default {
           console.log(name)
           
           if (name === "강원도") {
-            location.href ="http://localhost:8080/gangwon";
+            // location.href ="http://localhost:8080/gangwon";
+            location.href ="http://j5c203.p.ssafy.io/gangwon";
           }
           if (name === "경기도") {
-            location.href ="http://localhost:8080/gyeonggi";
+            // location.href ="http://localhost:8080/gyeonggi";
+            location.href ="http://j5c203.p.ssafy.io/gyeonggi";
           }
           if (name === "서울특별시") {
-            location.href ="http://localhost:8080/seoul";
+            // location.href ="http://localhost:8080/seoul";
+            location.href ="http://j5c203.p.ssafy.io/seoul";
           }
           if (name === "인천광역시") {
-            location.href ="http://localhost:8080/incheon";
+            // location.href ="http://localhost:8080/incheon";
+            location.href ="http://j5c203.p.ssafy.io/incheon";
           }
           if (name === "경상북도") {
-            location.href ="http://localhost:8080/gyeongbuk";
+            // location.href ="http://localhost:8080/gyeongbuk";
+            location.href ="http://j5c203.p.ssafy.io/gyeongbuk";
           }
           if (name === "충청북도") {
-            location.href ="http://localhost:8080/chungbuk";
+            // location.href ="http://localhost:8080/chungbuk";
+            location.href ="http://j5c203.p.ssafy.io/chungbuk";
           }
           if (name === "세종특별자치시") {
-            location.href ="http://localhost:8080/sejong";
+            // location.href ="http://localhost:8080/sejong";
+            location.href ="http://j5c203.p.ssafy.io/sejong";
           }
           if (name === "대전광역시") {
-            location.href ="http://localhost:8080/daejeon";
+            // location.href ="http://localhost:8080/daejeon";
+            location.href ="http://j5c203.p.ssafy.io/daejeon";
           }
           if (name === "충청남도") {
-            location.href ="http://localhost:8080/chungnam";
+            // location.href ="http://localhost:8080/chungnam";
+            location.href ="http://j5c203.p.ssafy.io/chungnam";
           }
           if (name === "대구광역시") {
-            location.href ="http://localhost:8080/daegu";
+            // location.href ="http://localhost:8080/daegu";
+            location.href ="http://j5c203.p.ssafy.io/daegu";
           }
           if (name === "울산광역시") {
-            location.href ="http://localhost:8080/ulsan";
+            // location.href ="http://localhost:8080/ulsan";
+            location.href ="http://j5c203.p.ssafy.io/ulsan";
           }
           if (name === "부산광역시") {
-            location.href ="http://localhost:8080/busan";
+            // location.href ="http://localhost:8080/busan";
+            location.href ="http://j5c203.p.ssafy.io/busan";
           }
           if (name === "경상남도") {
-            location.href ="http://localhost:8080/gyeongnam";
+            // location.href ="http://localhost:8080/gyeongnam";
+            location.href ="http://j5c203.p.ssafy.io/gyeongnam";
           }
           if (name === "전라북도") {
-            location.href ="http://localhost:8080/jeonbuk";
+            // location.href ="http://localhost:8080/jeonbuk";
+            location.href ="http://j5c203.p.ssafy.io/jeonbuk";
           }
           if (name === "광주광역시") {
-            location.href ="http://localhost:8080/gwangju";
+            // location.href ="http://localhost:8080/gwangju";
+            location.href ="http://j5c203.p.ssafy.io/gwangju";
           }
           if (name === "전라남도") {
-            location.href ="http://localhost:8080/jeonnam";
+            // location.href ="http://localhost:8080/jeonnam";
+            location.href ="http://j5c203.p.ssafy.io/jeonnam";
           }
           if (name === "제주특별자치도") {
-            location.href ="http://localhost:8080/jeju";
+            // location.href ="http://localhost:8080/jeju";
+            location.href ="http://j5c203.p.ssafy.io/jeju";
           }
           
       }
@@ -164,7 +181,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
-        // d3.select(this).style('fill', '#004EA2');
+        d3.select(this).style('cursor', 'pointer');
         if(d) {
           _this.selectProvince(d.properties);
         }
@@ -268,8 +285,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }
