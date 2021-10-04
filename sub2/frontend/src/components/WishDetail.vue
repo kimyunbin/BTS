@@ -150,7 +150,7 @@ export default {
         // this.$store.state.select_like
         // console.log(this.select_like,'ccc')
         alert("관심목록에서 취소되었습니다.");
-        this.$router.push("/myinteresting");
+        this.$router.replace("/myinteresting");
       })
     }
   },
