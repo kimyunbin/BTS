@@ -216,16 +216,20 @@ export default {
           (response) => {
             console.log(response);
             if (response.data.message === "success") {
-              alert("회원가입 완료");
-              this.$router.push("/login");
+              this.$alert("회원가입 완료").then(() => {
+                this.$router.push("/login");
+              })
             } else {
-              alert("회원가입 실패");
+              this.$alert("인증실패").then(() => {
+                    
+              });
             }
           }
         )
         .catch(() => {
-          alert("에러발생!");
-          this.$router.push("/");
+          this.$alert("인증실패").then(() => {
+            this.$router.push("/");
+          });
         });
     },
     showAlert(msg) {
