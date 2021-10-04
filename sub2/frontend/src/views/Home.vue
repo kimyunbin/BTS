@@ -1,28 +1,10 @@
 <template>
   <div id="app">
     <br>
-    <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-      <v-btn
-        :to="'/keyword'"
-        color="primary"
-        elevation="3"
-        large
-        class="justify-center"
-      >키워드검색&nbsp;<i class="fas fa-plus"></i>
-      </v-btn>
-
-      <v-btn
-        @click="checkOtherRoad()"
-        color="primary"
-        elevation="3"
-        large
-        class="justify-center"
-      >다른사람경로보기&nbsp;<i class="fas fa-plus"></i>
-      </v-btn>
-
-      <v-btn @click="check()"></v-btn>
-    </v-layout>
     <ul class="slides">
+      <div>
+        <input type="text">
+      </div>
     <input type="radio" name="radio-btn" id="img-1" checked />
     <li class="slide-container">
     <div class="slide">
@@ -107,7 +89,6 @@
 
     <br><br><br>
     <h1><b>{{user_info}} 님을 위한 추천 여행지역</b></h1>
-    <br>
     <section>
 
       <vue-horizontal-list :items="items2" :options="options" >
@@ -128,10 +109,30 @@
       </vue-horizontal-list>
     </section>
 
+    <br><br><br>
+    <h1><b>{{user_info}} 님을 위한 관광지 추천 </b></h1>
+    <section>
+      <vue-horizontal-list :items="recom_spot||items" :options="options" >
+        <template v-slot:nav-prev>
+          <div><v-icon>arrow_back_ios</v-icon></div>
+        </template>
+
+        <template v-slot:nav-next>
+          <div><v-icon>arrow_forward_ios</v-icon></div>
+        </template>
+
+        <template v-slot:default="{ item }">
+          <SpotComponents
+            :item="item"
+          />
+        </template>
+
+      </vue-horizontal-list>
+    </section>
+
     <br>
     <br>
     <h1><b>다른 유저가 갔던 여행 경로 추천</b></h1>
-    <br>
     <section>
       <v-layout row justify-center align-center wrap class="mt-4 pt-2" v-if="other_road.length>2">
         <v-card @click="setDetailRoad(0)" hover>
@@ -212,7 +213,6 @@
     <br>
     <br>
     <h1><b>남자를 위한 추천 여행지역</b></h1>
-    <br>
     <section style="">
       <vue-horizontal-list :items="gender_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -234,7 +234,6 @@
     <br>
     <br>
     <h1><b>다른 유저가 추천하는 여행지역</b></h1>
-    <br>
     <section style="">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -256,7 +255,6 @@
     <br>
     <br>
     <h1><b>예산 추천 여행지역</b></h1>
-    <br>
     <section style="">
       <vue-horizontal-list :items="budget_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -278,7 +276,6 @@
     <br>
     <br>
     <h1><b>동행자 추천 여행지역</b></h1>
-    <br>
     <section style="">
       <vue-horizontal-list :items="companion_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -302,6 +299,7 @@
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
+import SpotComponents from "@/components/SpotComponents";
 import { mapGetters, mapState } from "vuex";
 import { createInstance2} from "@/api/index.js";
 
@@ -310,6 +308,7 @@ export default{
   components: {
     VueHorizontalList,
     PlaceComponent,
+    SpotComponents
     
   },
   computed:{
@@ -393,16 +392,16 @@ export default{
       },
     
       
-      items: [
-        { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
-        { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { id:"3", title: "서울", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { id:"4", title: "여수", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { id:"5", title: "의정부", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { id:"6", title: "전주", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { id:"7", title: "강원", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
+      recom_spot: [
+        { id:"1", title: "부산", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/sv0Cqg1/image.jpg"}]},
+        { id:"2", title: "대구", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/KmtrYTf/image.jpg"}]},
+        { id:"3", title: "서울", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/w6cC5MT/image.jpg"}]},
+        { id:"4", title: "여수", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/60yjckh/image.jpg"}]},
+        { id:"5", title: "의정부", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/Z24FjMD/image.jpg"}]},
+        { id:"6", title: "전주", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/0V3grZZ/image.jpg"}]},
+        { id:"7", title: "강원", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/kBjW0Wg/image.jpg"}]},
+        { id:"8", title: "화성", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/StjhL5X/image.png"}]},
+        { id:"9", title: "제주", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/gWBNgwm/image.jpg"}]},
       ],
       items2: [],
       genderItems: [],
@@ -423,6 +422,13 @@ export default{
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
 
+    const randomspot = createInstance2();
+    randomspot.get("tour/recommendspot/").then(
+      (res)=>{
+        this.recom_spot = res.data
+      }
+    )
+
   },
 
   methods: {
@@ -433,7 +439,7 @@ export default{
     setDetailRoad(num){
       console.log(this.other_road[num].spots);
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
-        this.$router.replace("/otherroad");
+        this.$router.push("/otherroad");
       });
     },
     checkOtherRoad(){

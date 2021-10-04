@@ -55,3 +55,9 @@ class PhotoSerializer(serializers.ModelSerializer):
         model = test
         fields = "__all__"
 
+class RouteLikeSerializer(serializers.ModelSerializer):
+    user = UserNameSerializer()
+    route = RouteSerializer()
+    class Meta:
+        model = Routelike
+        fields = ('user','route')

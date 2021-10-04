@@ -504,7 +504,7 @@ export default new Vuex.Store({
     // 위시리스트(관심Spot) 불러오기
     async GET_WISHLIST(context) {
       const instance = createInstance2()
-      const response = await instance.get("accounts/wishlist/")
+      const response = await instance.get("/accounts/wishlist/")
       console.log(response.data)
       context.commit("GET_WISHLIST",response.data.data)
     }

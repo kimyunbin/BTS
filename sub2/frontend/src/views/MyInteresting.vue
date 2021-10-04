@@ -6,13 +6,14 @@
     </v-layout>
     <v-layout col data-aos="fade-up">
       <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-        <div>
+        <div v-if="wishlist.length">
           <WishDetail
             v-for="(wishDetail,key) in wishlist"
             :key = key
             :wishDetail = wishDetail
           />
         </div>
+        <div v-else>관심지역이 없습니다</div>
       </v-layout>
     </v-layout>
     </div>
@@ -30,24 +31,7 @@ export default {
   },
   data() {
     return {
-      wishDetails: [
-        {
-          title: '지도 왜 마커 안찍힘?',
-          img: 'https://i.ibb.co/StjhL5X/image.png',
-          reviewCnt: 5,
-          rating: 3,
-          address:'광주 수완지구 싸피-26번지',
-          tel:'062-4533-0093'
-        },
-        {
-          title: '조순님 살려주세요',
-          img: 'https://i.ibb.co/gWBNgwm/image.jpg',
-          reviewCnt: 10,
-          rating: 4,
-          address:'의정부 부대찌개구 싸피-27번지',
-          tel:'031-8724-4774'
-        },
-      ],
+
     }
   },
   computed: {

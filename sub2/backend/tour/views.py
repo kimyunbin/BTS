@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Review, Route, RouteTouristspot, Routelike, ToruistImg, Touristspot, RouteTouristspot
-from .serializers import reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
+from .serializers import RouteLikeSerializer, reviewSerializer, tourSerializer, RouteSerializer, RouteTouristspotSerializer,PhotoSerializer
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -244,6 +244,23 @@ def route_follow(request,route_pk):
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
+def get_follow(request):
+    user = finduser(request)
+    if not Routelike.objects.filter(user=user).exists():
+        return Response({"status":"저장한 경로가 없습니다."},status=status.HTTP_404_NOT_FOUND)
+
+    like = Routelike.objects.filter(user=user).order_by('-pk')[:2]
+
+    serializer = RouteLikeSerializer(data=like, many= True)
+    print(serializer.is_valid())
+
+    return Response({"data":serializer.data}, status = status.HTTP_200_OK)    
+
+
+
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def recommendspot(request):
     user = finduser(request)
     review = Review.objects.filter(user=user)
@@ -260,7 +277,7 @@ def recommendspot(request):
     df1_T = df2.transpose()
     item_sim = cosine_similarity(df2,df2)
     item_sim_df = pd.DataFrame(item_sim, index=df1_T.columns, columns=df1_T.columns)
-    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:10]
+    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:30]
 
     spot = Touristspot.objects.filter(pk__in = recommend).order_by('?')
     

@@ -81,7 +81,7 @@ export default {
                   console.log(response);
                   this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
                   //const image_instance = imageInstance();
-                  this.$router.replace("/map");
+                  this.$router.push("/map");
                 });
               }
         )
@@ -125,6 +125,9 @@ export default {
       const mapLayer = g.append('g').classed('map-layer', true);
       // 아이콘이 그려지는 그래픽 노드
       const iconsLayer = g.append('g').classed('icons-layer', true);
+      // 도시명이 그려지는 그래픽 노드
+      const namesLayer = g.append('g').classed('names-layer', true);
+      const namesLayer2 = g.append('g').classed('names-layer2', true);
 
       // 지도의 출력 방법을 선택(메로카토르)
       let projection = d3.geoMercator()
@@ -338,6 +341,40 @@ export default {
         .attr('y', d=> projection([d.lon, d.lat])[1]-80)
         .attr('opacity', 1)
         .attr("xlink:href", require("../../assets/img/만족도/5.png"))
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+      
+      namesLayer
+        .selectAll('text')
+        .data(iconsInfo)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+
+      namesLayer2
+        .selectAll('text')
+        .data(iconsInfo2)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
         .transition()
         .ease(d3.easeElastic)
         .duration(2000)

@@ -90,7 +90,7 @@ export default {
           this.$store.dispatch("WRITE_REVIEW", data)
           .then(()=>{
             alert('리뷰작성 성공!')
-            this.$router.replace("/infodetail");
+            this.$router.push("/infodetail");
           })
 
         }
