@@ -71,6 +71,7 @@ img{
   overflow: hidden;
 }
 .card:hover img{
+  transform: 0.5s;
   -webkit-transform: scale(1.2);
 }
 .headline{
