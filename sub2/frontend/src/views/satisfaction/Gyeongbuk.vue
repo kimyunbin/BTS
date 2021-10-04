@@ -19,6 +19,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -26,16 +29,38 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "경상북도") {
+          this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -48,7 +73,7 @@ export default {
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
 
         const instance = createInstance();
-        instance.get("/tour/detail?code="+ city)
+        instance.get("/tour/detail/?code="+ city)
         .then(
             (response) => {
                 console.log(response.data);
@@ -58,7 +83,7 @@ export default {
               }
         )
         .catch(() => {
-            alert("에러발생!");
+            // alert("에러발생!");
           //this.$router.push("/");
         });
               
@@ -119,7 +144,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -144,6 +169,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -185,6 +211,150 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"경산시",
+          "lat" : "35.82208889",
+          "lon" : "128.8234639"
+        },
+        {
+          "name":"경주시",
+          "lat" : "35.80316944",
+          "lon" : "129.2270222"
+        },
+        {
+          "name":"고령군",
+          "lat" : "35.70298611",
+          "lon" : "128.3050222"
+        },
+        {
+          "name":"구미시",
+          "lat" : "36.17655",
+          "lon" : "128.3867778"
+        },
+        {
+          "name":"군위군",
+          "lat" : "36.10999722",
+          "lon" : "128.6850778"
+        },
+        {
+          "name":"김천시",
+          "lat" : "36.06689722",
+          "lon" : "128.1158"
+        },
+        {
+          "name":"문경시",
+          "lat" : "36.66363056",
+          "lon" : "128.1890194"
+        },
+        {
+          "name":"봉화군",
+          "lat" : "36.89026111",
+          "lon" : "128.904875"
+        },
+        {
+          "name":"상주시",
+          "lat" : "36.40796944",
+          "lon" : "128.1612639"
+        },
+        {
+          "name":"성주군",
+          "lat" : "35.87621111",
+          "lon" : "128.2851528"
+        },
+        {
+          "name":"안동시",
+          "lat" : "36.56546389",
+          "lon" : "128.8016222"
+        },
+        {
+          "name":"영덕군",
+          "lat" : "36.41210278",
+          "lon" : "129.3683556"
+        },
+        {
+          "name":"영양군",
+          "lat" : "36.664275",
+          "lon" : "129.1546222"
+        },
+        {
+          "name":"영주시",
+          "lat" : "36.80293611",
+          "lon" : "128.6263444"
+        },
+        {
+          "name":"영천시",
+          "lat" : "35.97005278",
+          "lon" : "128.940775"
+        },
+        {
+          "name":"예천군",
+          "lat" : "36.63495000",
+          "lon" : "128.4750222"
+        },
+        {
+          "name":"울릉군",
+          "lat" : "37.51057500",
+          "lon" : "130.9037889"
+        },
+        {
+          "name":"울진군",
+          "lat" : "36.93018611",
+          "lon" : "129.3327861"
+        },
+        {
+          "name":"의성군",
+          "lat" : "36.30975833",
+          "lon" : "128.6993639"
+        },
+        {
+          "name":"청도군",
+          "lat" : "35.62431111",
+          "lon" : "128.8262000"
+        },
+        {
+          "name":"청송군",
+          "lat" : "36.35329167",
+          "lon" : "129.1094000"
+        },
+        {
+          "name":"칠곡군",
+          "lat" : "35.96254722",
+          "lon" : "128.4737972"
+        },
+        {
+          "name":"포항시",
+          "lat" : "36.04568611",
+          "lon" : "129.3616667"
+        },
+      ];
+      console.log(iconsInfo.length)
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -248,8 +418,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }

@@ -1,6 +1,5 @@
 <template>
   <div id="map-wrapper" class="map-wrapper">
-
   </div>
 </template>
 
@@ -8,7 +7,6 @@
 import * as d3 from 'd3';
 import { mapGetters, mapState } from "vuex";
 import { createInstance } from "@/api/index.js";
-import one from "../../assets/img/만족도/1.png"
 
 const MAP_GEOJSON = require('./gangwon.json'); // json 파일 입력시 해당지역 지도 출력
 
@@ -20,7 +18,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
-      items: []
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -34,7 +34,9 @@ export default {
   created() {
     this.store()
     // this.check()
-    console.log(this.items)
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
@@ -45,6 +47,7 @@ export default {
       for(var i=0; i < this.satis_area.length; i++) {
         if(this.satis_area[i]["state"] === "강원도") {
           this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
         }
       }
     },
@@ -65,7 +68,7 @@ export default {
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
 
         const instance = createInstance();
-        instance.get("/tour/detail?code="+ city)
+        instance.get("/tour/detail/?code="+ city)
         .then(
             (response) => {
                 console.log(response.data);
@@ -140,7 +143,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -163,8 +166,14 @@ export default {
       }
 
       function mouseover(d){
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        name = "강원도 " + name
+        // arlert(name)
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
+        // this.cityname = name
+        // alert(this.cityname)
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -178,6 +187,7 @@ export default {
           .style('fill', (d) => {
             return centered && d===centered ? '#D5708B' : fillFn(d);
           });
+        // this.cityname = "";
       }
 
       // Get province name length
@@ -210,37 +220,37 @@ export default {
       const iconsInfo = [
         {
           "name":"강릉시",
-          "lat" : "37.74913611",
+          "lat" : "37.70913611",
           "lon" : "128.8784972"
         },
         {
           "name":"고성군",
-          "lat" : "38.37796111",
-          "lon" : "128.4701639"
+          "lat" : "38.32796111",
+          "lon" : "128.4251639"
         },
         {
           "name":"동해시",
-          "lat" : "37.52193056",
-          "lon" : "129.1166333"
+          "lat" : "37.48193056",
+          "lon" : "129.1066333"
         },
         {
           "name":"삼척시",
-          "lat" : "37.44708611",
+          "lat" : "37.26708611",
           "lon" : "129.1674889"
         },
         {
           "name":"속초시",
-          "lat" : "38.204275",
-          "lon" : "128.5941667"
+          "lat" : "38.154275",
+          "lon" : "128.5541667"
         },
-        {
-          "name":"양구군",
-          "lat" : "38.10729167",
-          "lon" : "127.9922444"
-        },
+        // {
+        //   "name":"양구군",
+        //   "lat" : "38.10729167",
+        //   "lon" : "127.9922444"
+        // },
         {
           "name":"양양군",
-          "lat" : "38.07283333",
+          "lat" : "38.02283333",
           "lon" : "128.6213556"
         },
         {
@@ -250,23 +260,23 @@ export default {
         },
         {
           "name":"원주시",
-          "lat" : "37.33908333",
+          "lat" : "37.30908333",
           "lon" : "127.9220556"
         },
         {
           "name":"인제군",
           "lat" : "38.06697222",
-          "lon" : "128.1726972"
+          "lon" : "128.2586972"
         },
         {
           "name":"정선군",
           "lat" : "37.37780833",
-          "lon" : "128.6630861"
+          "lon" : "128.7230861"
         },
         {
           "name":"철원군",
-          "lat" : "38.14405556",
-          "lon" : "127.3157333"
+          "lat" : "38.18005556",
+          "lon" : "127.4157333"
         },
         {
           "name":"춘천시",
@@ -275,18 +285,18 @@ export default {
         },
         {
           "name":"태백시",
-          "lat" : "37.16122778",
+          "lat" : "37.12122778",
           "lon" : "128.9879972"
         },
         {
           "name":"평창군",
-          "lat" : "37.36791667",
-          "lon" : "128.3923528"
+          "lat" : "37.48791667",
+          "lon" : "128.4223528"
         },
         {
           "name":"홍천군",
-          "lat" : "37.69442222",
-          "lon" : "127.8908417"
+          "lat" : "37.72442222",
+          "lon" : "128.1508417"
         },
         {
           "name":"화천군",
@@ -296,55 +306,59 @@ export default {
         {
           "name":"횡성군",
           "lat" : "37.48895833",
-          "lon" : "127.9872222"
+          "lon" : "128.1572222"
         },
       ];
-
+      const iconsInfo2 = [
+        {
+          "name":"양구군",
+          "lat" : "38.10729167",
+          "lon" : "127.9922444"
+        },
+      ]
+      
       // 아이콘 그리기
-      if(this.items[0]["score"] === 10) {
-        iconsLayer
-          .selectAll('svg')
-          .data(iconsInfo)
-          .enter()
-          .append("svg:image")
-          .attr("width", 60)
-          .attr("height", 60)
-          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
-          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
-          .attr('opacity', 1)
-          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
-          // .on('click', d => {
-          //   console.log(d)
-          // })
-          .transition()
-          .ease(d3.easeElastic)
-          .duration(2000)
-          .delay((d, i)=> i * 50)
-          .attr('opacity', 1)
-          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
-      } else {
-        iconsLayer
-          .selectAll('svg')
-          .data(iconsInfo)
-          .enter()
-          .append("svg:image")
-          .attr("width", 60)
-          .attr("height", 60)
-          .attr('x', d=> projection([d.lon, d.lat])[0]-40)
-          .attr('y', d=> projection([d.lon, d.lat])[1]-80)
-          .attr('opacity', 1)
-          .attr("xlink:href", require("../../assets/img/만족도/1.png"))
-          // .on('click', d => {
-          //   console.log(d)
-          // })
-          .transition()
-          .ease(d3.easeElastic)
-          .duration(2000)
-          .delay((d, i)=> i * 50)
-          .attr('opacity', 1)
-          .attr('y',  d=> projection([d.lon, d.lat])[1]-30)
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
-      }
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo2)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href", require("../../assets/img/만족도/5.png"))
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -408,8 +422,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #ffff;
+    stroke: #ffff;
     stroke-width: 1px;
   }
 }

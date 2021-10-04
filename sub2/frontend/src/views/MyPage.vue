@@ -3,7 +3,6 @@
     <br><br>
     <v-layout>
       <h1 data-aos="fade-up"><b>000님의 마이페이지</b></h1>
-      <v-btn @click="goWishList" color="blue" class="white--text">관심 Spot 리스트</v-btn>
     </v-layout>
     <br>
     <br>
@@ -55,7 +54,7 @@
     <br>
     <br>
     <h1>
-      <b>관심spot</b>
+      <b>관심지역</b>
       </h1>
     <br>
     <section style="">
@@ -94,7 +93,7 @@ export default {
     return {
       options: {
         item: {
-          padding: -20
+          padding: 10
         },
         map:{
           padding: -20
@@ -113,7 +112,7 @@ export default {
         position: {
           start: 0,
         },
-        autoplay: { play: false, repeat: true, speed: 2400 },
+        autoplay: { play: true, repeat: true, speed: 3600 },
         hover:{
           cursor:"pointer"
         }
@@ -140,8 +139,8 @@ export default {
         { id:"8", title: "수원화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
         { id:"9", title: "Item 8", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
-     }
-    },
+    }
+  },
   methods: {
     goWishList(){
         this.$router.replace("/myinteresting");

@@ -19,6 +19,9 @@ export default {
   data() {
     return {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
+      items: [],
+      names: [],
+      cityname: ""
     }
   },
   computed: {
@@ -26,16 +29,38 @@ export default {
       "SET_SELECT_MAP"
     ]),
     ...mapState([
-      "select_map"
+      "select_map", "satis_area"
     ])
   },
   created() {
+    this.store()
+    // this.check()
+    for(var i=0; i<this.items.length; i++) {
+      console.log(this.items[i]["city"])
+    }
   },
   mounted() {
     this.drawMap();
   },
 
   methods: {
+    store() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "경상남도") {
+          this.items.push(this.satis_area[i])
+          this.names.push(this.satis_area[i].city)
+        }
+      }
+    },
+    check() {
+      for(var i=0; i < this.satis_area.length; i++) {
+        if(this.satis_area[i]["state"] === "철원군") {
+          console.log(this.satis_area[i]["city"])
+        } else {
+          console.log("x")
+        }
+      }
+    },
     // 선택된 지역
     selectProvince(province) {
       this.province = province;
@@ -48,7 +73,7 @@ export default {
       this.$store.dispatch("SET_SELECT_MAP", city).then(()=>{
 
         const instance = createInstance();
-        instance.get("/tour/detail?code="+ city)
+        instance.get("/tour/detail/?code="+ city)
         .then(
             (response) => {
                 console.log(response.data);
@@ -58,7 +83,7 @@ export default {
             }
         )
         .catch(() => {
-            alert("에러발생!");
+            // alert("에러발생!");
           //this.$router.push("/");
         });
               
@@ -119,7 +144,7 @@ export default {
         .domain([1, 20])
         .clamp(true)
         // .range(['#08304b', '#08304b']);
-        .range(['#595959', '#595959']);
+        .range(['#dbdbdb', '#dbdbdb']);
 
       const _this = this;
       // Get province color
@@ -144,6 +169,7 @@ export default {
       function mouseover(d){
         // Highlight hovered province
         d3.select(this).style('fill', '#1483ce');
+        d3.select(this).style('cursor', 'pointer');
         // d3.select(this).style('fill', '#004EA2');
         if(d) {
           _this.selectProvince(d.properties);
@@ -185,6 +211,124 @@ export default {
         .on('mouseover', mouseover)
         .on('mouseout', mouseout)
         .on('click', clicked);
+      
+      const iconsInfo = [
+        {
+          "name":"거제시",
+          "lat" : "34.85735833",
+          "lon" : "128.6433556"
+        },
+        {
+          "name":"거창군",
+          "lat" : "35.693625",
+          "lon" : "127.9316556"
+        },
+        {
+          "name":"고성군",
+          "lat" : "34.9999",
+          "lon" : "128.3245417"
+        },
+        {
+          "name":"김해시",
+          "lat" : "35.25550556",
+          "lon" : "128.8716667"
+        },
+        {
+          "name":"남해군",
+          "lat" : "34.81455833",
+          "lon" : "127.9244667"
+        },
+        {
+          "name":"밀양시",
+          "lat" : "35.46077778",
+          "lon" : "128.7689444"
+        },
+        {
+          "name":"사천시",
+          "lat" : "35.02028333",
+          "lon" : "128.0667778"
+        },
+        {
+          "name":"산청군",
+          "lat" : "35.37249167",
+          "lon" : "127.8956194"
+        },
+        {
+          "name":"양산시",
+          "lat" : "35.36192778",
+          "lon" : "129.0494111"
+        },
+        {
+          "name":"의령군",
+          "lat" : "35.36911944",
+          "lon" : "128.2838222"
+        },
+        {
+          "name":"진주시",
+          "lat" : "35.17703333",
+          "lon" : "128.1100000"
+        },
+        {
+          "name":"창녕군",
+          "lat" : "35.51153611",
+          "lon" : "128.4945333"
+        },
+        {
+          "name":"창원시",
+          "lat" : "35.1940033",
+          "lon" : "128.6201544"
+        },
+        {
+          "name":"통영시",
+          "lat" : "34.85125833",
+          "lon" : "128.4352778"
+        },
+        {
+          "name":"하동군",
+          "lat" : "35.10420278",
+          "lon" : "127.7934306"
+        },
+        {
+          "name":"함안군",
+          "lat" : "35.24940556",
+          "lon" : "128.4287083"
+        },
+        {
+          "name":"함양군",
+          "lat" : "35.51746944",
+          "lon" : "127.7374194"
+        },
+        {
+          "name":"합천군",
+          "lat" : "35.56361667",
+          "lon" : "128.1679306"
+        },
+      ];
+
+      // 아이콘 그리기
+      iconsLayer
+        .selectAll('svg')
+        .data(iconsInfo)
+        .enter()
+        .append("svg:image")
+        .attr("width", 60)
+        .attr("height", 60)
+        .attr('x', d=> projection([d.lon, d.lat])[0]-40)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .attr('opacity', 1)
+        .attr("xlink:href",d=> {
+          for (let index = 0; index < this.items.length; index++) {
+            if (d.name === this.items[index].city) {
+              return require(`../../assets/img/만족도/${this.items[index]["score"]}.png`)
+            }
+          }
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
     }
   }
@@ -248,8 +392,8 @@ export default {
     pointer-events: all;
   }
   .map-layer {
-    fill: #08304b;
-    stroke: #021019;
+    fill: #fff;
+    stroke: #fff;
     stroke-width: 1px;
   }
 }

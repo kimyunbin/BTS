@@ -10,10 +10,11 @@
                         :key="idx"
                     >
                     <v-layout column>
-                        <v-card column hover flat width="200" height="70">
+                        <v-card column hover flat width="380" height="80">
                             <v-card-title primary-title>
+                                <v-img :src="road.src" width="80" max-width="120" height="80" object-fit: cover></v-img>
                                 <v-flex text-xs-center subheading font-weight-bold>{{road.title}}</v-flex>
-                                <v-btn  elevation="0" icon @click="deleteRoad(idx)"  color="pink white--text" ><v-icon>delete</v-icon></v-btn>
+                                <div style="padding:8px"><v-btn elevation="0" icon @click="deleteRoad(idx)"  color="pink white--text" ><v-icon>delete</v-icon></v-btn></div>
                             </v-card-title>
                             <!-- <div v-if="road.src === null">
                                 <v-img v-bind:src="thumbnail" width=90% height="0%" object-fit: cover></v-img>
@@ -21,9 +22,9 @@
                             <div v-else>
                                 <v-img :src="road.src" width=100% height="0%" object-fit: cover></v-img>
                             </div> -->
-                            <v-card-title primary-title class="justify-center">
-                                <div class="txt_line">{{road.address}}</div>
-                            </v-card-title>
+                            <!-- <v-card-title primary-title class="justify-center">
+                                <div class="txt_line" style="position:relative; left:28px">{{road.address}}</div>
+                            </v-card-title> -->
                         </v-card>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </v-layout>
@@ -71,11 +72,10 @@
 <script>
 import { mapGetters } from "vuex";
 import { createInstance2 } from "@/api/index.js";
-import { imageInstance} from "@/api/index.js";
 
 export default {
     created(){
-        this.makeImage();
+        //this.makeImage();
         this.place = this.select_map;
     },
     computed:{
@@ -107,21 +107,6 @@ export default {
         };
     },
     methods: {
-        makeImage(){
-            const image_instance = imageInstance();
-            for(let i = 0; i< this.tour_detail.관광지.length; i++){
-                image_instance.get("/search/image?query="+this.tour_detail.관광지[i].title)
-                .then(
-                    (response) => {
-                        //console.log(response);
-                        this.image[i]=response.data.documents[0].image_url;
-                    }
-                )
-                .catch(() =>{
-
-                });
-            }
-        },
         check(){
             console.log(this.my_road);
         },
@@ -135,60 +120,57 @@ export default {
             this.my_road= [];
         },
         storeMyRoad() {
-           // console.log(this.token);
             const instance = createInstance2();
-            console.log(this.my_road);
-            
-            // var title = prompt("경로이름을 입력해주세요");
             var title='';
-
-            this.$prompt("Input your name").then((text) => {
-                title = text;
-                
-            
-            const data= [];
-            for(let i = 0; i < this.my_road.length;i++){
-                const road= {
-                    id : this.my_road[i].id,
-                    address : this.my_road[i].address,
-                    lat : this.my_road[i].lat,
-                    lng : this.my_road[i].lng,
-                    name : this.my_road[i].name,
-                    title : this.my_road[i].title
-                }
-                data.push(road)
+            if(this.my_road.length == 0){
+                this.$alert("경로를 입력해주세요.").then(() => {
+                    
+                })
+                return;
             }
-            const dto={
-                title: title,
-                spot: data
-            };
-            console.log(JSON.stringify(dto))
-            instance.post("/tour/route/", JSON.stringify(dto))
-                .then(
-                (response) => {
-                    console.log(response);
-                    // this.$store.commit("SET_TOKEN", token);
-                    // this.$store.commit("SET_USER_INFO", decoded.username);
-                    // this.$router.push("/");
+            this.$prompt("경로이름을 등록하여주세요!").then((text) => {
+                title = text;
+                const data= [];
+                for(let i = 0; i < this.my_road.length;i++){
+                    const road= {
+                        address : this.my_road[i].address,
+                        id : this.my_road[i].id,
+                        lat : this.my_road[i].lat,
+                        lng : this.my_road[i].lng,
+                        name : this.my_road[i].name,
+                        title : this.my_road[i].title
+                    }
+                    data.push(road)
                 }
-                )
-                .catch(() => {
-                    //alert("에러발생!");
-                    //this.$router.push("/");
-                });
-            //this.other_road.push(this.my_road);
-            this.makeLine();
-            //alert("저장이 완료되었습니다.");
-            //this.my_road = [];
-            //this.my_road_title = [];
+                const dto={
+                    "title": title,
+                    "spot": data
+                };
+                console.log( JSON.stringify(dto));
+                instance.post("/tour/route/", JSON.stringify(dto))
+                    .then(
+                        (response) => {
+                            console.log(response);
+                            //this.$store.commit("SET_TOKEN", token);
+                            //this.$store.commit("SET_USER_INFO", decoded.username);
+                            //this.$router.push("/home");
+                            this.$alert("저장이 완료되었습니다.").then(() => {
+
+                            })
+                        }
+                    )
+                    .catch(() => {
+                    
+                    });
+                    //this.other_road.push(this.my_road);
+                    this.makeLine();
+                    this.my_road = [];
+                    this.my_road_title = [];
             })
             
             .catch(() => {
-                //console.log(title);
-                //if(title===''){
-                    this.$alert("경로이름을 입력해주세요!");
-                    return;
-                //}
+                this.$alert("경로이름을 입력해주세요!");
+                return;
             });
         },
 
@@ -233,7 +215,10 @@ export default {
             var keyword = this.place;
 
             if (!keyword.replace(/^\s+|\s+$/g, '')) {
-                alert('장소를 입력해주세요!');
+            
+                this.$alert("장소를 입력해주세요!").then(() => {
+                    
+                })
                 return false;
             }
 
@@ -242,20 +227,17 @@ export default {
         },
         placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
-
-            // 정상적으로 검색이 완료됐으면
-            // 검색 목록과 마커를 표출합니다const image_instance = imageInstance();
-            //console.log(this.tour_detail.관광지);
-            
-            //console.log(this.imaget[0]);
-            
-            this.displayPlaces(this.tour_detail.관광지);
+                this.displayPlaces(this.tour_detail.관광지);
 
             // 페이지 번호를 표출합니다
             this.displayPagination(pagination);
 
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-                alert('검색 결과가 존재하지 않습니다.');
+            
+                this.$alert("검색 결과가 존재하지 않습니다.").then(() => {
+                    
+                })
+                
                 return;
             } else if (status === kakao.maps.services.Status.ERROR) {
                 alert('검색 결과 중 오류가 발생했습니다.');
@@ -263,8 +245,8 @@ export default {
             }
         },
 
-        displayInfowindow(title, infowindow, marker, address, id,url) {
-            url ="https://go-test-buket.s3.ap-northeast-2.amazonaws.com/aecf1e8d-4dcd-40a6-87d2-fc64e59ae473";
+        displayInfowindow(title, infowindow, marker, address, id, url) {
+            var imgsrc ="https://go-test-buket.s3.ap-northeast-2.amazonaws.com/"+url;
             var content =
                             '<div class="wrap3">' +
                             '    <div class="info3">' +
@@ -274,7 +256,7 @@ export default {
                             '        </div>' +
                             '        <div class="body3">' +
                             '            <div class="img3">' +
-                            '                <img src="' +url +'" width="73" height="70" />' +
+                            '                <img src="' +imgsrc +'" width="73" height="70" />' +
                             '           </div>' +
                             '            <div class="desc3">' +
                             '                <div class="ellipsis3">'+
@@ -286,7 +268,6 @@ export default {
                             '        </div>' +
                             '    </div>' +
                             '</div>';
-            console.log(url);
             infowindow.setContent(content);
             infowindow.open(this.map, marker);
         },
@@ -310,12 +291,14 @@ export default {
             var func = this.displayInfowindow;
             var addRoad = this.addmy_road;
             const _this = this;
-            //console.log("this.image ="+ _this.image);
-            var images = _this.image;
-
-            // console.log("============================");
-            //console.log(_this.images.length());            
+            
             for ( var i=0; i < places.length; i++ ) {
+                var imgurl ="";
+                if(places[i].img.length ==0){
+                    imgurl = "noimage.png";
+                }else{
+                    imgurl = places[i].img[0].awsimages
+                }
             
                 // 마커를 생성하고 지도에 표시합니다
                 var placePosition = new kakao.maps.LatLng(places[i].longitude, places[i].latitude),
@@ -331,7 +314,6 @@ export default {
                 (function(marker, title, lat, lng, address,id, image) {
                     kakao.maps.event.addListener(marker, 'mouseover', function(){
                         func(title,infowindow,marker,address, id, image);
-
                     });
 
 
@@ -353,7 +335,7 @@ export default {
                     itemEl.onmouseout =  function () {
                         infowindow.close();
                     };
-                })(marker, places[i].title, places[i].latitude, places[i].longitude, places[i].address,places[i].id, _this.image[i]);
+                })(marker, places[i].title, places[i].latitude, places[i].longitude, places[i].address,places[i].id, imgurl);
 
                 fragment.appendChild(itemEl);
             }
@@ -442,12 +424,16 @@ export default {
 
         addmy_road(title2, lat2, lng2, id2,adddress2, src2){
             if(this.my_road_title.indexOf(title2)>0){
-                alert("이미 경로에 포함되어있습니다.");
+                this.$alert("이미 경로에 포함되어있습니다.").then(() => {
+                    
+                });
                 return;
             }
-            src2 = "https://go-test-buket.s3.ap-northeast-2.amazonaws.com/aecf1e8d-4dcd-40a6-87d2-fc64e59ae473";
+            var src3 = "https://go-test-buket.s3.ap-northeast-2.amazonaws.com/"+ src2;
             alert("추가되었습니다.");
-            console.log(this.user_info);
+            this.$alert("추가되었습니다.").then(() => {
+                    
+            })
             const road ={
                 name: this.user_info,
                 title:title2,
@@ -455,11 +441,11 @@ export default {
                 lng: lng2,
                 id: id2,
                 address: adddress2,
-                src : src2
+                src : src3
             }
             this.my_road_title.push(road.title);
             this.my_road.push(road);
-            //this.makeLine();
+            this.makeLine();
         },
     }
 };

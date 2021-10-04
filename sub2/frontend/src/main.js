@@ -14,7 +14,7 @@ import 'vue-sequential-entrance/vue-sequential-entrance.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import VueFullPage from 'vue-fullpage.js'
 Vue.config.productionTip = false
 const isProd = process.env.NODE_ENV === "production"
 
@@ -33,6 +33,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 Vue.use(SequentialEntrance);
 Vue.use(VueSimpleAlert);
+Vue.use(VueFullPage);
 
 new Vue({
   router,

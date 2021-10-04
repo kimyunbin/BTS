@@ -12,8 +12,15 @@ export default new Router({
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
   },
-  routes: [{
+  routes: [
+    {
       path: "/",
+      name: "intro",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/Intro.vue")
+    },
+    {
+      path: "/home",
       name: "home",
       component: Home,
     },
