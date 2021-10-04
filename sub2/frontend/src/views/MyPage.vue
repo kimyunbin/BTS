@@ -56,9 +56,11 @@
     <h1>
       <b>관심지역</b>
       </h1>
+
     <br>
     <section style="">
-      <vue-horizontal-list :items="wishes" :options="options" >
+
+      <vue-horizontal-list :items="wishlist" :options="options" >
         <template v-slot:nav-prev>
           <div><v-icon>arrow_back_ios</v-icon></div>
         </template>
@@ -66,10 +68,9 @@
         <template v-slot:nav-next>
           <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
-
         <template v-slot:default="{ item }">
           <PlaceWish
-            :item="item"
+            :item="item.Touristspot"
           />
         </template>
       </vue-horizontal-list>
@@ -81,6 +82,7 @@
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
 import PlaceWish from "@/components/PlaceWish";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: 'MyPage',
@@ -118,15 +120,15 @@ export default {
         }
       },
       items: [
-        { id:"1", title: "광주 북구 경로", content: "Content item with description", src: "https://i.ibb.co/6Byzrqx/image.jpg"},
-        { id:"2", title: "대구 수성구 경로", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
-        { id:"3", title: "전주 경로", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
-        { id:"4", title: "의정부 부대찌개 경로", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
-        { id:"5", title: "부산 해운대 경로", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
-        { id:"6", title: "철원 수색경로", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
-        { id:"7", title: "조순님 마음속경로", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
-        { id:"8", title: "광주 맛집 탐방경로", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
-        { id:"9", title: "경로이름", content: "경로이름 정하거나 지역구 이름으로", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
+        { id:"1", title: "부산", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
+        { id:"2", title: "대구", content: "Content item with description", src: "https://i.ibb.co/KmtrYTf/image.jpg"},
+        { id:"3", title: "서울", content: "Content item with description", src: "https://i.ibb.co/w6cC5MT/image.jpg"},
+        { id:"4", title: "여수", content: "Content item with description", src: "https://i.ibb.co/60yjckh/image.jpg"},
+        { id:"5", title: "의정부", content: "Content item with description", src: "https://i.ibb.co/Z24FjMD/image.jpg"},
+        { id:"6", title: "전주", content: "Content item with description", src: "https://i.ibb.co/0V3grZZ/image.jpg"},
+        { id:"7", title: "강원", content: "Content item with description", src: "https://i.ibb.co/kBjW0Wg/image.jpg"},
+        { id:"8", title: "화성", content: "Content item with description", src: "https://i.ibb.co/StjhL5X/image.png"},
+        { id:"9", title: "제주", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
       wishes: [
         { id:"1", title: "해운대 해수욕장", content: "Content item with description", src: "https://i.ibb.co/sv0Cqg1/image.jpg"},
@@ -140,6 +142,14 @@ export default {
         { id:"9", title: "Item 8", content: "Content item with description", src: "https://i.ibb.co/gWBNgwm/image.jpg"},
       ],
     }
+  },
+  computed: {
+  ...mapState([
+    "wishlist",
+    ]),
+  },
+  created() {
+    this.$store.dispatch("GET_WISHLIST")
   },
   methods: {
     goWishList(){
