@@ -277,7 +277,7 @@ def recommendspot(request):
     df1_T = df2.transpose()
     item_sim = cosine_similarity(df2,df2)
     item_sim_df = pd.DataFrame(item_sim, index=df1_T.columns, columns=df1_T.columns)
-    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:10]
+    recommend = df_svd_preds.loc[item_sim_df.iloc[-1].sort_values(ascending=False).index[1]].sort_values(ascending=False).index[:30]
 
     spot = Touristspot.objects.filter(pk__in = recommend).order_by('?')
     

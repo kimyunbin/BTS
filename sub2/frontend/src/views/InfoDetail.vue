@@ -25,7 +25,8 @@
       </v-layout>
     </v-layout>
     <v-layout row justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-    <img :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${select_detail.img[0].awsimages}`" width="500" height="500" style="display:inline-block"/>
+    <img v-if="select_detail.img.length > 0" :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${select_detail.img[0].awsimages}`" width="500" height="500" style="display:inline-block"/>
+    <img v-else :src="defaultimg" width="500" height="500" style="display:inline-block"/>
     &nbsp;&nbsp;&nbsp;
       <div class="map_wrap">
         <div id="map" style="width:900;height:100%;position:relative;overflow:hidden;"></div>
@@ -107,6 +108,7 @@ export default {
       ps : {},
       infowindow : {},
       place: "강남",
+      defaultimg:"https://i.ibb.co/q7dBcZ1/image.jpg"
       // reviews:[
       //   {
       //     userid: "abc1234",
@@ -425,4 +427,8 @@ export default {
   #pagination {margin:10px auto;text-align: center;}
   #pagination a {display:inline-block;margin-right:10px;}
   #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+  img{
+    object-fit: cover;
+  }
 </style>

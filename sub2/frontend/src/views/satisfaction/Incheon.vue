@@ -123,6 +123,8 @@ export default {
       const mapLayer = g.append('g').classed('map-layer', true);
       // 아이콘이 그려지는 그래픽 노드
       const iconsLayer = g.append('g').classed('icons-layer', true);
+      // 도시명이 그려지는 그래픽 노드
+      const namesLayer = g.append('g').classed('names-layer', true);
 
       // 지도의 출력 방법을 선택(메로카토르)
       let projection = d3.geoMercator()
@@ -303,6 +305,23 @@ export default {
         .delay((d, i)=> i * 50)
         .attr('opacity', 1)
         .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+      
+      namesLayer
+        .selectAll('text')
+        .data(iconsInfo)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
       // iconsLayer
       //   .selectAll('svg')
@@ -321,6 +340,7 @@ export default {
       //   .delay((d, i)=> i * 50)
       //   .attr('opacity', 1)
       //   .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+    
 
     }
   }

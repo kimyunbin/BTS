@@ -1,5 +1,7 @@
 <template>
   <div id="map-wrapper" class="map-wrapper">
+    <!-- <div>dkdkdk</div>   -->
+    <!-- <v-btn @click="check()">check</v-btn> -->
   </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
       province: undefined, // 마우스가 지역구 위에 있을 때 정보
       items: [],
       names: [],
-      cityname: ""
+      cityname: "없음"
     }
   },
   computed: {
@@ -52,13 +54,7 @@ export default {
       }
     },
     check() {
-      for(var i=0; i < this.satis_area.length; i++) {
-        if(this.satis_area[i]["state"] === "철원군") {
-          console.log(this.satis_area[i]["city"])
-        } else {
-          console.log("x")
-        }
-      }
+      console.log(this.cityname)
     },
     // 선택된 지역
     selectProvince(province) {
@@ -122,6 +118,9 @@ export default {
       const mapLayer = g.append('g').classed('map-layer', true);
       // 아이콘이 그려지는 그래픽 노드
       const iconsLayer = g.append('g').classed('icons-layer', true);
+      // 도시명이 그려지는 그래픽 노드
+      const namesLayer = g.append('g').classed('names-layer', true);
+      const namesLayer2 = g.append('g').classed('names-layer2', true);
 
       // 지도의 출력 방법을 선택(메로카토르)
       let projection = d3.geoMercator()
@@ -360,6 +359,39 @@ export default {
         .attr('opacity', 1)
         .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
 
+      namesLayer
+        .selectAll('text')
+        .data(iconsInfo)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
+
+      namesLayer2
+        .selectAll('text')
+        .data(iconsInfo2)
+        .enter()
+        .append('text')
+        .attr('x', d=> projection([d.lon, d.lat])[0]-30)
+        .attr('y', d=> projection([d.lon, d.lat])[1]-80)
+        .text(function(d) {
+            return d.name;
+        })
+        .transition()
+        .ease(d3.easeElastic)
+        .duration(2000)
+        .delay((d, i)=> i * 50)
+        .attr('opacity', 1)
+        .attr('y',  d=> projection([d.lon, d.lat])[1]-50)
     }
   }
 }

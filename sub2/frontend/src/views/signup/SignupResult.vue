@@ -229,10 +229,15 @@ export default {
           (response) => {
             console.log(response);
             if (response.data.status === "success") {
-              alert("회원가입 완료");
-              //this.$router.push("/");
+              this.$alert("회원가입 완료").then(() => {
+                    
+              });
+              this.$router.push("/home");
             } else {
-              alert("회원가입 실패");
+              this.$alert("회원가입 실패").then(() => {
+                    
+              });
+              return;
             }
           }
         )
