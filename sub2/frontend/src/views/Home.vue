@@ -89,49 +89,6 @@
       </v-layout>
     </section>
 
-
-
-      <!-- <v-btn round dark @click="move('최신')" v-b-tooltip.hover title="click!" >
-          최신
-      </v-btn>
-      <v-btn round dark @click="move('아이들과')" v-b-tooltip.hover title="click!" >
-          아이들과
-      </v-btn>
-      <v-btn round  dark @click="move('커플/신혼')" v-b-tooltip.hover title="click!" >
-          커플/신혼
-      </v-btn>
-      <v-btn round  dark @click="move('남자끼리')" v-b-tooltip.hover title="click!" >
-          남자끼리
-      </v-btn>
-      <v-btn round  dark @click="move('여자끼리')" v-b-tooltip.hover title="click!" >
-          여자끼리
-      </v-btn> -->
-      <!-- <section style="">
-      <vue-horizontal-list :items="other_road" :options="options" >
-        <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
-        </template>
-
-        <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
-        </template>
-
-        <template v-slot:default="{ item }">
-          <OtherRoad
-            :road="item"
-          />
-        </template>
-      </vue-horizontal-list>
-    </section> -->
-
-    <!-- <section>
-      <OtherRoad
-        v-for="(road, idx) in other_road"
-        :key="idx"
-        :road="road"
-      ></OtherRoad>
-    </section> -->
-
     <br>
     <h1><b>남자를 위한 추천 여행지역</b></h1>
     <section style="">
@@ -242,13 +199,7 @@ export default{
     ])
   },
   mounted() {
-    window.kakao && window.kakao.maps
-      ? this.initMap()
-      : this.addKakaoMapScript();
-
-      $(document).ready(function(){
-      $('.slider').slider();
-    });
+    
   },
   data() {
     return {
@@ -329,10 +280,24 @@ export default{
     const random_instance = createInstance2();
     random_instance.get("/tour/routerandom/").then(
       (response) =>{
+        this.$store.commit("CLEAR_OTHER_ROAD", response.data);
         this.$store.commit("SET_OTHER_ROAD", response.data);
+        window.kakao && window.kakao.maps
+      ? this.initMap()
+      : this.addKakaoMapScript();
+      $(document).ready(function(){
+      $('.slider').slider();
+    });
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
+    const instance2 = createInstance2();
+          instance2.get("/tour/route/follow/").then(
+            (response) =>{
+              this.$store.dispatch("SET_MY_WISH_ROAD", response.data.data).then(()=>{
+                
+              })
+          })
 
     const randomspot = createInstance2();
     randomspot.get("tour/recommendspot/").then(
@@ -345,8 +310,8 @@ export default{
 
   methods: {
     check(){
-      //console.log(this.user_info);
-      console.log(this.other_road);
+      console.log(this.my_wish_road);
+
     },
     setDetailRoad(num){
       console.log(this.other_road[num].spots);
@@ -419,7 +384,7 @@ export default{
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
           var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
-        
+          console.log(this.other_road[0].spots[i].touristspot.title);
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치

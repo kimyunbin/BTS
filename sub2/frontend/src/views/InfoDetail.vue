@@ -126,7 +126,9 @@ export default {
       .then(()=>{
         this.$store.state.select_like
         console.log(this.select_like,'ccc')
-        alert("관심목록에 추가되었습니다.");
+        this.$alert("관심목록에 추가되었습니다.").then(() =>{
+
+        })
       })
     },
 
