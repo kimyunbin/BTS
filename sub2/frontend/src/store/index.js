@@ -34,7 +34,9 @@ export default new Vuex.Store({
     companion_recom_area: [],//Home.vue에서 보여주는 동행자별 추천지역
     reviews: [],
     select_like: Boolean,
-    wishlist: []
+    wishlist: [],
+    my_road: [],
+    my_wish_road:[],
   },
 
   getters: {
@@ -55,6 +57,12 @@ export default new Vuex.Store({
     },
     other_road(state) {
       return state.other_road;
+    },
+    my_road(state) {
+      return state.my_road;
+    },
+    my_wish_road(state) {
+      return state.my_wish_road;
     },
     select_road(state) {
       return state.select_road;
@@ -187,6 +195,12 @@ export default new Vuex.Store({
     SET_OTHER_ROAD(state, data) {
       state.other_road = data;
     },
+    SET_MY_ROAD(state, data) {
+      state.my_road = data;
+    },
+    SET_MY_WISH_ROAD(state, data) {
+      state.my_wish_road = data;
+    },
     GET_GENDER_RECOMMEND_AREA(state, data) {
       state.gender_recom_area = data;
     },
@@ -217,7 +231,7 @@ export default new Vuex.Store({
         decode.username,
         response => {
           if (response.data.message === "success") {
-            commit("SET_IS_LOGIN", response.data.memberInfo);
+            commit("SET_IS_LOGIN", true);
             commit("SET_TOKEN", token);
           } else {
             console.log("유저 정보 없음!!");
@@ -301,6 +315,14 @@ export default new Vuex.Store({
     SET_OTHER_ROAD(context, paylaod) {
       this.state.other_road = [];
       context.commit("SET_OTHER_ROAD", paylaod);
+    },
+    SET_MY_ROAD(context, paylaod) {
+      this.state.my_road = [];
+      context.commit("SET_MY_ROAD", paylaod);
+    },
+    SET_MY_WISH_ROAD(context, paylaod) {
+      this.state.my_road = [];
+      context.commit("SET_MY_WISH_ROAD", paylaod);
     },
     async GET_RECOMMEND_AREA(context) {
       const instance = createInstance2()
