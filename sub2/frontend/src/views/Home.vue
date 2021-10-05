@@ -314,7 +314,6 @@ export default{
 
     },
     setDetailRoad(num){
-      console.log(this.other_road[num].spots);
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
         this.$router.push("/otherroad");
       });
@@ -384,14 +383,12 @@ export default{
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
           var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
-          console.log(this.other_road[0].spots[i].touristspot.title);
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
               title : this.other_road[0].spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지
           });
-          //console.log(marker);
       }
       for (var i = 0; i < this.other_road[1].spots.length; i++) {
 

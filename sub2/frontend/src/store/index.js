@@ -140,6 +140,8 @@ export default new Vuex.Store({
     SET_IS_LOGOUT(state) {
       state.is_login = false;
       state.user_info = null;
+      state.my_road = [];
+      state.my_wish_road = [];
     },
     SET_SELECT_PLACE(state, data) {
       state.select_place = data;
