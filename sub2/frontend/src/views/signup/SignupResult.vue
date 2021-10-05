@@ -232,7 +232,7 @@ export default {
               this.$alert("회원가입 완료").then(() => {
                     
               });
-              this.$router.push("/home");
+              this.$router.push("/");
             } else {
               this.$alert("회원가입 실패").then(() => {
                     

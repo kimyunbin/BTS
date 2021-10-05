@@ -1,92 +1,14 @@
 <template>
   <div id="app">
-    <br>
-    <ul class="slides">
-      <div>
-        <input type="text">
+    <div class="back-ground">
+      <h4 data-aos="fade-up">더 나은 여행경험</h4>
+      <p class="q" data-aos="fade-up">만족도를 알고 싶으세요?</p>
+      <div class="b" @click="toMap">
+        <p class="to_map"></p>
       </div>
-    <input type="radio" name="radio-btn" id="img-1" checked />
-    <li class="slide-container">
-    <div class="slide">
-      <a href="/satisfactionmap">
-      <img src="https://i.ibb.co/PFJwzf5/06.jpg" /></a>
     </div>
-    <div class="nav">
-      <label for="img-6" class="prev">&#x2039;</label>
-      <label for="img-2" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-2" />
-    <li class="slide-container">
-        <div class="slide">
-          <a href="/satisfactionmap">
-          <img src="https://i.ibb.co/Z6T3bLs/image.jpg" /></a>
-        </div>
-    <div class="nav">
-      <label for="img-1" class="prev">&#x2039;</label>
-      <label for="img-3" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-3" />
-    <li class="slide-container">
-        <div class="slide">
-          <a href="/satisfactionmap">
-          <img src="https://i.ibb.co/x5MCb10/image.jpg" /></a>
-        </div>
-    <div class="nav">
-      <label for="img-2" class="prev">&#x2039;</label>
-      <label for="img-4" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-4" />
-    <li class="slide-container">
-        <div class="slide">
-          <a href="/satisfactionmap">
-          <img src="https://i.ibb.co/qBfG2mk/image.jpg" /></a>
-        </div>
-    <div class="nav">
-      <label for="img-3" class="prev">&#x2039;</label>
-      <label for="img-5" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-5" />
-    <li class="slide-container">
-        <div class="slide">
-          <a href="/satisfactionmap">
-          <img src="https://i.ibb.co/dJ1Kt0H/image.jpg" /></a>
-        </div>
-    <div class="nav">
-      <label for="img-4" class="prev">&#x2039;</label>
-      <label for="img-6" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <input type="radio" name="radio-btn" id="img-6" />
-    <li class="slide-container">
-        <div class="slide">
-          <a href="/satisfactionmap">
-          <img src="https://i.ibb.co/WtCgpYM/image.jpg" /></a>
-        </div>
-    <div class="nav">
-      <label for="img-5" class="prev">&#x2039;</label>
-      <label for="img-1" class="next">&#x203a;</label>
-    </div>
-    </li>
-
-    <li class="nav-dots">
-      <label for="img-1" class="nav-dot" id="img-dot-1"></label>
-      <label for="img-2" class="nav-dot" id="img-dot-2"></label>
-      <label for="img-3" class="nav-dot" id="img-dot-3"></label>
-      <label for="img-4" class="nav-dot" id="img-dot-4"></label>
-      <label for="img-5" class="nav-dot" id="img-dot-5"></label>
-      <label for="img-6" class="nav-dot" id="img-dot-6"></label>
-    </li>
-</ul>
-
+    <br>
+    <div class="empty"></div>
     <br><br><br>
     <h1><b>{{user_info}} 님을 위한 추천 여행지역</b></h1>
     <section>
@@ -109,7 +31,7 @@
       </vue-horizontal-list>
     </section>
 
-    <br><br><br>
+    <br><br>
     <h1><b>{{user_info}} 님을 위한 관광지 추천 </b></h1>
     <section>
       <vue-horizontal-list :items="recom_spot||items" :options="options" >
@@ -167,50 +89,6 @@
       </v-layout>
     </section>
 
-
-
-      <!-- <v-btn round dark @click="move('최신')" v-b-tooltip.hover title="click!" >
-          최신
-      </v-btn>
-      <v-btn round dark @click="move('아이들과')" v-b-tooltip.hover title="click!" >
-          아이들과
-      </v-btn>
-      <v-btn round  dark @click="move('커플/신혼')" v-b-tooltip.hover title="click!" >
-          커플/신혼
-      </v-btn>
-      <v-btn round  dark @click="move('남자끼리')" v-b-tooltip.hover title="click!" >
-          남자끼리
-      </v-btn>
-      <v-btn round  dark @click="move('여자끼리')" v-b-tooltip.hover title="click!" >
-          여자끼리
-      </v-btn> -->
-      <!-- <section style="">
-      <vue-horizontal-list :items="other_road" :options="options" >
-        <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
-        </template>
-
-        <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
-        </template>
-
-        <template v-slot:default="{ item }">
-          <OtherRoad
-            :road="item"
-          />
-        </template>
-      </vue-horizontal-list>
-    </section> -->
-
-    <!-- <section>
-      <OtherRoad
-        v-for="(road, idx) in other_road"
-        :key="idx"
-        :road="road"
-      ></OtherRoad>
-    </section> -->
-
-    <br>
     <br>
     <h1><b>남자를 위한 추천 여행지역</b></h1>
     <section style="">
@@ -232,7 +110,6 @@
     </section>
 
     <br>
-    <br>
     <h1><b>다른 유저가 추천하는 여행지역</b></h1>
     <section style="">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
@@ -252,7 +129,6 @@
       </vue-horizontal-list>
     </section>
 
-    <br>
     <br>
     <h1><b>예산 추천 여행지역</b></h1>
     <section style="">
@@ -299,6 +175,7 @@
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
+import defaultimg from "@/assets/img/1.jpg";
 import SpotComponents from "@/components/SpotComponents";
 import { mapGetters, mapState } from "vuex";
 import { createInstance2} from "@/api/index.js";
@@ -308,7 +185,8 @@ export default{
   components: {
     VueHorizontalList,
     PlaceComponent,
-    SpotComponents
+    SpotComponents,
+    defaultimg
     
   },
   computed:{
@@ -321,13 +199,7 @@ export default{
     ])
   },
   mounted() {
-    window.kakao && window.kakao.maps
-      ? this.initMap()
-      : this.addKakaoMapScript();
-
-      $(document).ready(function(){
-      $('.slider').slider();
-    });
+    
   },
   data() {
     return {
@@ -341,28 +213,24 @@ export default{
       },
       items2 : [
         {
-          src:"/satisfactionmap",
-          title: '함양 용추폭포',
-          img: "https://i.ibb.co/Sc2d57d/image.jpg",
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+          name: '',
+          imgurl: "",
+          state: ''
         }, 
         {
-          src:"/satisfactionmap",
-          title: '단양 만천하스카이워크',
-          img: "https://i.ibb.co/D40Hy4z/image.jpg",
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+          name: '',
+          imgurl: "",
+          state: ''
         }, 
         {
-          src:"/satisfactionmap",
-          title: '영천 팔공산 도립공원',
-          img: "https://i.ibb.co/p43Ckf9/image.jpg",
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+          name: '',
+          imgurl: "",
+          state: ''
         }, 
         {
-          src:"/satisfactionmap",
-          title: '소양강스카이워크',
-          img: "https://i.ibb.co/Cv4fSBn/image.jpg",
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex arcu, fringilla in urna quis, ultrices efficitur neque. Morbi lacinia arcu tellus, a imperdiet'
+          name: '',
+          imgurl: "",
+          state: ''
         }
       ],
       options: {
@@ -385,7 +253,7 @@ export default{
         position: {
           start: 4,
         },
-        autoplay: { play: true, repeat: true, speed: 2400 },
+        autoplay: { play: true, repeat: true, speed: 3500 },
         hover:{
           cursor:"pointer"
         }
@@ -393,19 +261,14 @@ export default{
     
       
       recom_spot: [
-        { id:"1", title: "부산", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/sv0Cqg1/image.jpg"}]},
-        { id:"2", title: "대구", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/KmtrYTf/image.jpg"}]},
-        { id:"3", title: "서울", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/w6cC5MT/image.jpg"}]},
-        { id:"4", title: "여수", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/60yjckh/image.jpg"}]},
-        { id:"5", title: "의정부", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/Z24FjMD/image.jpg"}]},
-        { id:"6", title: "전주", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/0V3grZZ/image.jpg"}]},
-        { id:"7", title: "강원", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/kBjW0Wg/image.jpg"}]},
-        { id:"8", title: "화성", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/StjhL5X/image.png"}]},
-        { id:"9", title: "제주", address: "Content item with description", img:[{awsimages: "https://i.ibb.co/gWBNgwm/image.jpg"}]},
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
       ],
-      items2: [],
       genderItems: [],
       username: '',
+      defaultimg
     };
   },
   created() {
@@ -417,10 +280,24 @@ export default{
     const random_instance = createInstance2();
     random_instance.get("/tour/routerandom/").then(
       (response) =>{
+        this.$store.commit("CLEAR_OTHER_ROAD", response.data);
         this.$store.commit("SET_OTHER_ROAD", response.data);
+        window.kakao && window.kakao.maps
+      ? this.initMap()
+      : this.addKakaoMapScript();
+      $(document).ready(function(){
+      $('.slider').slider();
+    });
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
+    const instance2 = createInstance2();
+          instance2.get("/tour/route/follow/").then(
+            (response) =>{
+              this.$store.dispatch("SET_MY_WISH_ROAD", response.data.data).then(()=>{
+                
+              })
+          })
 
     const randomspot = createInstance2();
     randomspot.get("tour/recommendspot/").then(
@@ -433,8 +310,8 @@ export default{
 
   methods: {
     check(){
-      //console.log(this.user_info);
-      console.log(this.other_road);
+      console.log(this.my_wish_road);
+
     },
     setDetailRoad(num){
       console.log(this.other_road[num].spots);
@@ -507,7 +384,7 @@ export default{
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
           var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
-        
+          console.log(this.other_road[0].spots[i].touristspot.title);
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
@@ -571,6 +448,9 @@ export default{
 
       // 지도에 선을 표시합니다
       polyline.setMap(map);
+    },
+    toMap(){
+      this.$router.push("satisfactionmap")
     }
   },
 };
@@ -595,6 +475,76 @@ export default{
 
 html, body { background: #333 url("https://codepen.io/images/classy_fabric.png"); }
 
+.empty{
+  height: 27vw;
+  margin-bottom: 3px;
+}
+
+.back-ground{
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  flex-direction: column;
+  top: 80px;
+  left: 0%;
+  width: 100vw;
+  height: 30vw;
+  background-image:url("../assets/img/1.jpg");
+  background-size: cover;
+}
+.q{
+  font-size: 50px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 2px 2px #000;
+}
+.b{
+  position: relative;
+  display: inline-flex;
+  width: 180px;
+  height: 55px;
+  margin: 0 15px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.to_map{
+  font-size: 19px;
+  letter-spacing: 1px;
+  transform-style: preserve-3d;
+  transform: translateZ(-25px);
+  transition: transform .25s;
+}
+.b .to_map:before,
+.b .to_map:after{
+  position: absolute;
+  content: "지도로 가기";
+  height: 55px;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #4caf50;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.b .to_map:before{
+  color: #fff;
+  background: #4caf50;
+  transform: rotateY(0deg) translateZ(25px);
+}
+.b .to_map:after{
+  color: #4caf50;
+  background-color: #FFF;
+  font-weight: 600;
+  transform: rotateX(90deg) translateZ(25px);
+}
+.b .to_map:hover{
+  transform: translateZ(-25px) rotateX(-90deg);
+}
 .slides {
     padding: 0;
     width: 1050px;
