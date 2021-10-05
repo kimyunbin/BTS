@@ -59,7 +59,7 @@ export default {
   methods: {
     deleteReview(){
       //리뷰삭제로직이 들어가면 됩니다.
-      alert("미구현");
+      this.$alert("작성자만 삭제할 수 있습니다");
     }
   },
 };
