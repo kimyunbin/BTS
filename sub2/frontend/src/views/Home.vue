@@ -9,17 +9,17 @@
     </div>
     <br>
     <div class="empty"></div>
-    <br><br><br>
+    <br><br><br><br><br>
     <h1><b>{{user_info}} 님을 위한 추천 여행지역</b></h1>
     <section>
 
       <vue-horizontal-list :items="items2" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>        
         </template>
 
         <template v-slot:default="{ item }">
@@ -36,11 +36,11 @@
     <section>
       <vue-horizontal-list :items="recom_spot||items" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -55,9 +55,9 @@
     <br>
     <br>
     <h1><b>다른 유저가 갔던 여행 경로 추천</b></h1>
-    <section>
-      <v-layout row justify-center align-center wrap class="mt-4 pt-2" v-if="other_road.length>2">
-        <v-card @click="setDetailRoad(0)" hover>
+    <section v-if="other_road.length>0">
+      <v-layout row justify-center align-center wrap class="mt-4 pt-2" >
+        <v-card @click="setDetailRoad(0)" hover v-if="other_road.length>0">
           <div id="amap" class="map" style="display:inline-block"></div>
           <div>
             <p class="headline mb-0"><b>{{other_road[0].title}} 여행경로</b></p>
@@ -67,7 +67,7 @@
         </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <v-card @click="setDetailRoad(1)" hover>
+        <v-card @click="setDetailRoad(1)" hover v-if="other_road.length>1">
           <div id="bmap" class="map" style="display:inline-block"></div>
           <div>
             <p class="headline mb-0"><b>{{other_road[1].title}} 여행경로</b></p>
@@ -77,7 +77,7 @@
         </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <v-card @click="setDetailRoad(2)" hover>
+        <v-card @click="setDetailRoad(2)" hover v-if="other_road.length>2">
           <div id="cmap" class="map" style="display:inline-block"></div>
           <div>
             <p class="headline mb-0"><b>{{other_road[2].title}} 여행경로</b></p>
@@ -94,11 +94,11 @@
     <section style="">
       <vue-horizontal-list :items="gender_recom_area" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -114,11 +114,11 @@
     <section style="">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -134,11 +134,11 @@
     <section style="">
       <vue-horizontal-list :items="budget_recom_area" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -155,11 +155,11 @@
     <section style="">
       <vue-horizontal-list :items="companion_recom_area" :options="options" >
         <template v-slot:nav-prev>
-          <div><v-icon>arrow_back_ios</v-icon></div>
+          <div>👈</div>
         </template>
 
         <template v-slot:nav-next>
-          <div><v-icon>arrow_forward_ios</v-icon></div>
+          <div>👉</div>
         </template>
 
         <template v-slot:default="{ item }">
@@ -314,7 +314,6 @@ export default{
 
     },
     setDetailRoad(num){
-      console.log(this.other_road[num].spots);
       this.$store.dispatch("SET_SELECT_ROAD", this.other_road[num]).then(()=>{
         this.$router.push("/otherroad");
       });
@@ -336,11 +335,11 @@ export default{
       var container3 = document.getElementById("cmap");
       var lat = [];
       var lng = [];
-      for(var j = 0; j < this.other_road.length; j++){
+      for(var j = 0; j < 3; j++){
         lat[j] = 0;
         lng[j] = 0;
       }
-      for(var j = 0; j < this.other_road.length; j++){
+      for(var j = 0; j < 3; j++){
         for (var i = 0; i < this.other_road[j].spots.length; i++) {
           lat[j] +=  parseFloat(this.other_road[j].spots[i].touristspot.latitude);
           lng[j] +=  parseFloat(this.other_road[j].spots[i].touristspot.longitude);
@@ -361,7 +360,7 @@ export default{
       var options2 = {
         //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(lng[1], lat[1]), //지도의 중심좌표.
-        level: 10 //지도의 레벨(확대, 축소 정도)
+        level: 12 //지도의 레벨(확대, 축소 정도)
       };
 
       var options3 = {
@@ -384,14 +383,12 @@ export default{
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
           var latlng = new kakao.maps.LatLng(this.other_road[0].spots[i].touristspot.longitude, this.other_road[0].spots[i].touristspot.latitude);
           // 마커를 생성합니다
-          console.log(this.other_road[0].spots[i].touristspot.title);
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
               title : this.other_road[0].spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지
           });
-          //console.log(marker);
       }
       for (var i = 0; i < this.other_road[1].spots.length; i++) {
 
