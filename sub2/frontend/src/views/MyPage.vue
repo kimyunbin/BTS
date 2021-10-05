@@ -83,7 +83,7 @@
           <div><v-icon>arrow_forward_ios</v-icon></div>
         </template>
         <template v-slot:default="{ item }">
-          <PlaceWish
+          <SpotComponent
             :item="item.Touristspot"
           />
         </template>
@@ -95,6 +95,7 @@
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 import PlaceComponent from "@/components/PlaceComponent";
+import SpotComponent from "@/components/SpotComponents";
 import PlaceWish from "@/components/PlaceWish";
 import { mapGetters, mapState } from "vuex";
 
@@ -104,6 +105,7 @@ export default {
     VueHorizontalList,
     PlaceComponent,
     PlaceWish,
+    SpotComponent
   },
   computed:{
     ...mapGetters([

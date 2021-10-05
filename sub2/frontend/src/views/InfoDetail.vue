@@ -87,6 +87,7 @@ export default {
     ? this.initMap()
     : this.addKakaoMapScript();
     this.searchPlaces();
+    console.log('ffff')
   },
   components: {
     VueHorizontalList,
@@ -99,8 +100,6 @@ export default {
   },
   created() {
     this.place = this.select_detail.title;
-    this.$store.dispatch("GET_REVIEW", this.select_detail.id)
-
   },
   data() {
     return {
