@@ -105,6 +105,9 @@ def route(request):
             temp.save()
         return Response({"status":"success"})
     elif request.method == 'GET':
+        if not Route.objects.filter(user=user).exists():
+            return Response({"status":"fail"},status=status.HTTP_200_OK)
+        
         route = get_list_or_404(Route, user=user)
 
         return Response(RouteSerializer(route, many=True).data)
@@ -249,7 +252,7 @@ def get_follow(request):
     if not Routelike.objects.filter(user=user).exists():
         return Response({"status":"저장한 경로가 없습니다."},status=status.HTTP_404_NOT_FOUND)
 
-    like = Routelike.objects.filter(user=user).order_by('-pk')[:2]
+    like = Routelike.objects.filter(user=user).order_by('-pk')[:3]
 
     serializer = RouteLikeSerializer(data=like, many= True)
     print(serializer.is_valid())
