@@ -167,7 +167,7 @@ export default {
     searchPlaces() {
       var keyword = this.place;
 
-      if (!keyword.push(/^\s+|\s+$/g, '')) {
+      if (!keyword.replace(/^\s+|\s+$/g, '')) {
         alert('장소를 입력해주세요!');
         return false;
       }

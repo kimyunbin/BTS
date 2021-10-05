@@ -25,7 +25,7 @@
           </div>
         </v-card>&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <v-card @click="setDetailRoad(2)" hover>
+        <v-card @click="setDetailRoad(2)" hover v-if="my_road.length>2">
           <div id="cmap" class="map" style="display:inline-block"></div>
           <div>
             <p class="headline mb-0" style="text-align:center"><b>{{my_road[2].title}} </b></p>
