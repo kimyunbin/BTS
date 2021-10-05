@@ -167,7 +167,7 @@ export default {
 
       function clicked(d) {
         
-        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"].replace("시","시 ");
         name = "부산광역시 " + name
         console.log(name);
         _this.move(name);
