@@ -3,12 +3,12 @@
     <v-dialog
       v-model="dialog"
       width="1200px"
-      height ="800px"
+      height ="900px"
     >
       <template v-slot:activator="{ on, attrs }">
         <div 
           class="card" 
-          @click="setSelectInfo()"
+          @click="setSelectInfo(item.id)"
           color="primary"
           dark
           v-bind="attrs"
@@ -44,39 +44,24 @@
       <div class="my-modal">
         <div class="modal-title">
           <div></div>
-          <span class="text-h5">{{select_detail.title}}</span>
+          <span class="text-h5">{{item.title}}</span>
           <div class="btn-gp">
-            <div @click="changeLike">
-              <i
-                class="fas fa-heart fa-sm"
-                v-if="select_like == true"
-                style="color:red;font-size: 0.5em;"
-              />
+            <div @click="changeLike(item.id)">
+              <i class="fas fa-heart fa-sm" v-if="select_like == true" style="color:red;font-size: 0.5em;"/>
               <i class="far fa-heart fa-sm" v-else style="color:red;font-size: 0.5em;"/>
             </div>
             <div @click="share()">
-              <i
-                class="fas fa-share-alt fa-sm"
-                style="color:green;font-size: 0.5em;"
-              />
+              <i class="fas fa-share-alt fa-sm" style="color:green;font-size: 0.5em;" />
             </div>
           </div>
         </div>
         <div class="modal-content">
           <div class="modal-img">
-            <v-carousel hide-delimiters>
-              <v-carousel-item
-                v-for="(item,i) in select_detail.img"
-                :key="i"
-                :src="`https://go-test-buket.s3.ap-northeast-2.amazonaws.com/${item.awsimages}`"
-                object-fit:cover
-              >
-              </v-carousel-item>
-            </v-carousel>
+            <carosel :item=item />
           </div>
           <div class="modal-rv">
             <InfoReview
-              v-for="(review,key) in reviews"
+              v-for="(review,key) in rvs"
               :key = key
               :review = review
             />
@@ -97,6 +82,10 @@
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <div class="adr">{{item.address}}</div>
+          <div class="loc">📌 X: {{item.latitude}} ,Y: {{item.longitude}}</div>
+        </div>
       </div>
     </v-dialog>
   </div>
@@ -107,14 +96,12 @@
 import { mapGetters, mapState } from "vuex";
 import StarRating from 'vue-star-rating'
 import InfoReview from "@/components/InfoReview";
-import heart from "@/assets/heart.png"
-import heart_b from "@/assets/heart_b.png"
+import carosel from "@/components/my-Carosel";
 export default {
   components: {
     StarRating,
     InfoReview,
-    heart,
-    heart_b
+    carosel
   },
   data:()=>{
     return {
@@ -126,7 +113,8 @@ export default {
         contents :"",
         write_date:"",
         evaluate: 0,
-      }
+      },
+      rvs:[],
     }
   },
   props: {
@@ -149,11 +137,11 @@ export default {
     ]),
   },
   methods: {
-    setSelectInfo(){
-      this.$store.dispatch("SET_SELECT_DETAIL", this.item).then(()=>{
-        this.$store.dispatch("GET_REVIEW", this.select_detail.id)
-        this.dialog = true
+    setSelectInfo(k){
+      this.$store.dispatch("GET_REVIEW", k).then(()=>{
+        this.rvs = this.$store.state.reviews
       })
+      this.dialog = true
     },
     submit(){
         if (this.review.contents == "") {
@@ -191,16 +179,14 @@ export default {
           })
         }
     },
-    changeLike(){
+    changeLike(k){
       // this.isLike = !this.isLike;
-      console.log(this.select_detail.id)
-      this.$store.dispatch("SPOT_LIKE", this.select_detail.id)
+      this.$store.dispatch("SPOT_LIKE", k)
       .then(()=>{
         this.$store.state.select_like
         console.log(this.select_like,'ccc')
       })
     },
-
     share(){
       var url = '';
       var textarea = document.createElement("textarea");
@@ -239,13 +225,7 @@ img{
   z-index: 1;
   cursor: pointer;
 }
-.card:hover img{
-  transform: 0.5s;
-  -webkit-transform: scale(1.2);
-}
-.star{
-  color: red;
-}
+
 .skeleton {
   animation: shine 1s linear infinite alternate;
 }
@@ -267,13 +247,36 @@ img{
 .modal-title{
   font-size: 50px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
+.modal-footer{
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  margin: 0%;
+  padding: 0%;
+}
+.adr{
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-left: 40px;
+  font-size: 20px;
+  color: #4caf50;
+  height: 50px;
+  display: flex;
+  align-items: flex-start;
+}
+.loc{
+  margin: 10px;
+  padding-right: 30px;
+  color: #4caf50;
+}
 .btn-gp{
   display: flex;
   flex-direction: row;
   gap: 10px;
+  margin-right: 40px;
 }
 
   .likeBtn {
@@ -304,12 +307,6 @@ img{
 .modal-img{
   width: 50%;
   margin: 3%;
-}
-.modal-img i{
-  object-fit: cover;
-  width: 500px;
-  height: 500px;
-
 }
 
 .modal-rv{

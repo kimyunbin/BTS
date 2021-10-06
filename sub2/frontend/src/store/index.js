@@ -37,6 +37,7 @@ export default new Vuex.Store({
     wishlist: [],
     my_road: [],
     my_wish_road:[],
+    recom_name:[],
   },
 
   getters: {
@@ -203,6 +204,9 @@ export default new Vuex.Store({
     SET_MY_WISH_ROAD(state, data) {
       state.my_wish_road = data;
     },
+    GET_RECOMMEND_AREA_NAME(state, data){
+      state.recom_name = data;
+    },
     GET_GENDER_RECOMMEND_AREA(state, data) {
       state.gender_recom_area = data;
     },
@@ -257,9 +261,16 @@ export default new Vuex.Store({
     async SET_SELECT_INFO(context, payload) {
       // this.state.select_info = {};
       const instance = createInstance3()
-      const response = await instance.get(`/tour/detail/?code=${payload}`)
-      // console.log(response.data)
-      context.commit("SET_SELECT_INFO", response.data);
+      console.log(typeof(payload))
+      if (payload.slice(0, 2)==="세종"){
+        const response = await instance.get("/tour/detail/?code=세종특별자치시")
+        // console.log(response.data)
+        context.commit("SET_SELECT_INFO", response.data);
+      } else {
+        const response = await instance.get(`/tour/detail/?code=${payload}`)
+        // console.log(response.data)
+        context.commit("SET_SELECT_INFO", response.data);
+      }
     },
     SET_SELECT_DETAIL(context, payload) {
       // this.state.select_detail = {};
@@ -370,6 +381,8 @@ export default new Vuex.Store({
       const instance = createInstance2()
       const response = await instance.get("/tour/city/")
       console.log(response.data)
+      const name = response.data.name
+      context.commit("GET_RECOMMEND_AREA_NAME", name);
       // 여기가 gender부분
       // console.log(response.data.gender,'gender')
       let gender_data = []
