@@ -85,7 +85,7 @@
       </h1>
 
     <br>
-    <section style="">
+    <section style="" v-if="wishlist.length>0">
 
       <vue-horizontal-list :items="wishlist" :options="options" >
         <template v-slot:nav-prev>
@@ -101,6 +101,12 @@
           />
         </template>
       </vue-horizontal-list>
+    </section>
+
+    <section v-else>
+      <v-layout row justify-center align-center wrap class="mt-4 pt-2" >
+        <p><b>관심지역이 없습니다.</b></p>
+      </v-layout>
     </section>
   </div>
 </template>
@@ -456,7 +462,7 @@ export default {
   }
 </script>
 
-<style>
+<style scoped>
 @media (min-width: 1200px) {
     #app {
       padding-left: 0px;

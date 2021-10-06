@@ -81,7 +81,7 @@
           >다음으로</v-btn>
 
           
-          <v-btn @click="clear">초기화</v-btn>
+          <v-btn @click="clear" color="red"  class="white--text">초기화</v-btn>
           <!-- <v-btn @click="fakeSignUp"></v-btn> -->
         </form>
       </v-flex>
