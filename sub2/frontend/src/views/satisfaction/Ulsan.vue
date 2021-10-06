@@ -1,7 +1,7 @@
 <template>
 <div>
   <div id="map-wrapper" class="map-wrapper">
-    <div class="text">
+    <div class="satitext">
       <p>해당 지역은</p>&nbsp;
       <p>
         <span class="word wisteria">시민과 함께</span>
@@ -359,7 +359,7 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .map-wrapper {
   position:relative;
   text-align: center;
@@ -436,7 +436,7 @@ export default {
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:600);
 
-.text {
+.satitext {
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
   font-size: 40px;
@@ -449,7 +449,7 @@ export default {
   margin-top: 2.5rem;
 }
 
-p {
+.satitext p {
   display: inline-block;
   vertical-align: top;
   margin: 0;
