@@ -344,7 +344,7 @@ export default {
 
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .map-wrapper {
   position:relative;
   text-align: center;
