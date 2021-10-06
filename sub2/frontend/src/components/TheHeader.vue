@@ -2,32 +2,32 @@
   <div>
     <v-navigation-drawer v-model="drawer" absolute temporary app width="150" height="340">
       <v-list class="pt-4">
-        <v-list-tile active-class="blue--text" to="/">
+        <v-list-tile active-class="black--text" to="/">
           <v-list-tile-content>
             <v-list-tile-title>메인</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile active-class="blue--text" to="/mypage">
+        <v-list-tile active-class="black--text" to="/mypage">
           <v-list-tile-content>
             <v-list-tile-title>마이페이지</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile active-class="blue--text" to="/myinteresting">
+        <v-list-tile active-class="black--text" to="/myinteresting">
           <v-list-tile-content>
             <v-list-tile-title>관심지역</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile active-class="blue--text" to="/login">
+        <v-list-tile active-class="black--text" to="/login">
           <v-list-tile-content>
             <v-list-tile-title>로그인</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile active-class="blue--text" to="/signup">
+        <v-list-tile active-class="black--text" to="/signup">
           <v-list-tile-content>
             <v-list-tile-title>회원가입</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile active-class="blue--text" to="/contact">
+        <v-list-tile active-class="black--text" to="/contact">
           <v-list-tile-content>
             <v-list-tile-title></v-list-tile-title>
           </v-list-tile-content>
@@ -50,10 +50,10 @@
       </v-toolbar-items>
 
       <v-toolbar-items class="hidden-sm-and-down" v-else>
-        <v-btn flat to="/home" active-class="blue--text headline"><b>메인</b></v-btn>
-        <v-btn flat @click.prevent="onClickMypage" active-class="blue--text headline"><b>마이페이지</b></v-btn>
-        <v-btn flat to="/satisfactionmap" active-class="blue--text headline"><b>전국 만족도</b></v-btn>
-        <v-btn flat @click.prevent="onClickLogout" active-class="blue--text headline"><b>로그아웃</b></v-btn>
+        <v-btn flat to="/home" active-class="black--text headline"><b>메인</b></v-btn>
+        <v-btn flat @click.prevent="onClickMypage" active-class="black--text headline"><b>마이페이지</b></v-btn>
+        <v-btn flat to="/satisfactionmap" active-class="black--text headline"><b>전국 만족도</b></v-btn>
+        <v-btn flat @click.prevent="onClickLogout" active-class="black--text headline"><b>로그아웃</b></v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </div>
