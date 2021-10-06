@@ -173,9 +173,36 @@ export default {
           cursor:"pointer"
         }
       },
-      touristSpots: [],
-      Accommodation: [],
-      Food: [],
+      touristSpots: [
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
+      ],
+      Accommodation: [
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
+      ],
+      Food: [
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
+      ],
+      Sport:[
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
+      ],
+      Culture:[
+        { id:"1", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"2", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"3", title: "", address: "", img:[{awsimages: ""}]},
+        { id:"4", title: "", address: "", img:[{awsimages: ""}]},
+      ]
     };
   },
   created() {
