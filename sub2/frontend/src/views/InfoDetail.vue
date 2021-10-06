@@ -87,6 +87,7 @@ export default {
     ? this.initMap()
     : this.addKakaoMapScript();
     this.searchPlaces();
+    console.log('ffff')
   },
   components: {
     VueHorizontalList,
@@ -99,8 +100,6 @@ export default {
   },
   created() {
     this.place = this.select_detail.title;
-    this.$store.dispatch("GET_REVIEW", this.select_detail.id)
-
   },
   data() {
     return {
@@ -167,7 +166,7 @@ export default {
     searchPlaces() {
       var keyword = this.place;
 
-      if (!keyword.push(/^\s+|\s+$/g, '')) {
+      if (!keyword.replace(/^\s+|\s+$/g, '')) {
         alert('장소를 입력해주세요!');
         return false;
       }

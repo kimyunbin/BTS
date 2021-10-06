@@ -1,12 +1,14 @@
 <template>
   <div>
     <br>
-    
-    <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large to="/home" flat class="blue--text">
-        <v-icon>arrow_back</v-icon>뒤로가기
-    </v-btn></h1>
-
-    <v-btn @click="storeMyRoad()"></v-btn>
+    <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
+      <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large to="/home" flat class="blue--text">
+          <v-icon>arrow_back</v-icon>뒤로가기
+      </v-btn></h1>
+      <v-layout justify-end align-end wrap class="mt-4 pt-2" data-aos="fade-up">
+        <v-btn @click="storeMyRoad()" color="red" class = "white--text"><v-icon>favorite</v-icon></v-btn>
+      </v-layout>
+    </v-layout>
     
     <div id="map" class="map"></div>
     
@@ -131,11 +133,11 @@ export default {
                             '            <div class="desc3">' + 
                             '                <div class="ellipsis3">'+
                                             this.select_road.spots[i].touristspot.address+
-                            '</div>' + 
+                                            '</div>' + 
                             '            </div>' + 
                             '        </div>' + 
                             '    </div>' +    
-                            '</div>'
+                      '</div>'
         });
 
         // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
@@ -162,26 +164,7 @@ export default {
     storeMyRoad() {
             const instance = createInstance2();
             var title='';
-            //console.log(this.user_info);
-            //this.$prompt("경로이름을 등록하여주세요!").then((text) => {
-                //title = text;
-                //const data= [];
-                //data.push(this.select_road.spots);
-                // for(let i = 0; i < this.select_road.spots.length;i++){
-                //     const road= {
-                //         address : this.select_road.spots[i].touristspot.address,
-                //         id : this.select_road.spots[i].touristspot.id,
-                //         lat : this.select_road.spots[i].touristspot.latitude,
-                //         lng : this.select_road.spots[i].touristspot.longitude,
-                //         name : this.user_info,
-                //         title : this.select_road.spots[i].touristspot.title
-                //     }
-                //     data.push(road)
-                // }
-                // const dto={
-                //     "title": title,
-                //     "spot": data
-                // };
+            
                 console.log(this.select_road.id);
                 instance.post("/tour/route/follow/"+this.select_road.id+"/")
                     .then(
@@ -195,13 +178,7 @@ export default {
                     .catch(() => {
                     
                     });
-            //   })
-            
-            // .catch(() => {
-            //     this.$alert("경로이름을 입력해주세요!");
-            //     return;
-            // });
-        },
+            },
   },
 };
 </script>
@@ -211,4 +188,55 @@ export default {
   width: 100%;
   height: 600px;
 }
+
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+.map_wrap {position:relative;width:100%;height:800px;}
+#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+.bg_white {background:#fff;}
+#menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+#menu_wrap .option{text-align: center;}
+#menu_wrap .option p {margin:10px 0;}
+#menu_wrap .option button {margin-left:5px;}
+#placesList li {list-style: none;}
+#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item span {display: block;margin-top:4px;}
+#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#placesList .item .info2{padding:10px 0 10px 55px;}
+#placesList .info2 .gray {color:#8a8a8a;}
+#placesList .info2 .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+#placesList .info2 .tel {color:#009900;}
+#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+#placesList .item .marker_1 {background-position: 0 -10px;}
+#placesList .item .marker_2 {background-position: 0 -56px;}
+#placesList .item .marker_3 {background-position: 0 -102px}
+#placesList .item .marker_4 {background-position: 0 -148px;}
+#placesList .item .marker_5 {background-position: 0 -194px;}
+#placesList .item .marker_6 {background-position: 0 -240px;}
+#placesList .item .marker_7 {background-position: 0 -286px;}
+#placesList .item .marker_8 {background-position: 0 -332px;}
+#placesList .item .marker_9 {background-position: 0 -378px;}
+#placesList .item .marker_10 {background-position: 0 -423px;}
+#placesList .item .marker_11 {background-position: 0 -470px;}
+#placesList .item .marker_12 {background-position: 0 -516px;}
+#placesList .item .marker_13 {background-position: 0 -562px;}
+#placesList .item .marker_14 {background-position: 0 -608px;}
+#placesList .item .marker_15 {background-position: 0 -654px;}
+#pagination {margin:10px auto;text-align: center;}
+#pagination a {display:inline-block;margin-right:10px;}
+#pagination .on {font-weight: bold; cursor: default;color:#777;}
+.info2 .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+
+.wrap3 {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;} 
+.wrap3 * {padding: 0;margin: 0;}
+.wrap3 .info3 {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+.wrap3 .info3:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;} 
+.info3 .title3 {height: 32px;background: #eee;border-bottom: 1px solid #ddd;text-align: center; font-size: 20px;font-weight: bold;}
+.info3 .body3 {position: relative;overflow: hidden;}
+.info3 .desc3 {position: relative;margin: 13px 0 0 90px;height: 75px;}
+.desc2 .ellipsis3 {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc2 .jibun3 {font-size: 11px;color: #888;margin-top: -2px;}
+.info3 .img3 {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+.info3:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.info3 .link3 {color: #5085BB;}
 </style>

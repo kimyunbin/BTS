@@ -84,6 +84,7 @@
                 background-color="transparent"
                 v-model="member.password"
                 label="비밀번호"
+                @keyup.enter="confirm"
               ></v-text-field>
               <v-btn
                 @click="confirm"
@@ -91,6 +92,7 @@
                 color="blue"
                 class="white--text"
                 :disabled="(member.username==''||member.password=='')"
+                
               >로그인</v-btn>
               
               <v-btn to="/signup" color="green" class="white--text">회원가입</v-btn>

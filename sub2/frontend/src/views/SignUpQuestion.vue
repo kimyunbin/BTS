@@ -216,7 +216,7 @@ export default {
           (response) => {
             console.log(response);
             if (response.data.message === "success") {
-              this.$alert("회원가입 완료").then(() => {
+              this.$alert("회원가입 완료").then(() =>{
                 this.$router.push("/login");
               })
             } else {

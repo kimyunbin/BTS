@@ -1,25 +1,17 @@
 <template>
-<v-flex >
-  <v-card hover class="justify-center" width=550px height=250px>
-    <v-card-title primary-title>
+  <div class="comment">
+    <div class="top">
+      <star-rating v-model="rating" read-only v-bind:star-size="30"></star-rating>
+      <div class="user">{{review.user.nickname}}</div>
+    </div>
+    <div class="bottom">
       <div>
-        <span style="padding-bottom:2px">{{review.user.nickname}}</span>
-        <v-btn round dark @click="deleteReview()"  style="position:absolute;right:5px;"><v-icon>delete</v-icon></v-btn>
-        <star-rating v-model="rating" read-only v-bind:star-size="30"></star-rating>
-        <br>
-        <div>
-          <p class="headline mb-3 word"><b>{{review.content}}</b></p>
-          <!-- <p class="green--text font-weight-medium"><b>{{review.content}}</b></p> -->
-        </div>
-        <br>
-        <h6>작성일: {{createtime}}</h6>
-        <h6>이 리뷰는 {{review.user.nickname}}님의 개인 의견이며 저희 서비스 의견과 무관합니다.</h6>
+        <p class="word"><b>{{review.content}}</b></p>
       </div>
-    </v-card-title>
-    <br>
-  </v-card>
-  <hr>
-</v-flex>
+      <h6>작성일: {{createtime}}</h6>
+    </div>
+    <hr>
+  </div>
 </template>
 
 <script>
@@ -59,7 +51,7 @@ export default {
   methods: {
     deleteReview(){
       //리뷰삭제로직이 들어가면 됩니다.
-      alert("미구현");
+      this.$alert("작성자만 삭제할 수 있습니다");
     }
   },
 };
@@ -81,5 +73,20 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2 ;
   -webkit-box-orient: vertical;
+}
+
+.comment{
+  width: 90%;
+}
+.top{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.user{
+  padding-right: 20px;
+  font-size: 15px;
+  font-weight: 500;
 }
 </style>

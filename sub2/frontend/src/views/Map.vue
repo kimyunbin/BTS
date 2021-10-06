@@ -16,15 +16,7 @@
                                 <v-flex text-xs-center subheading font-weight-bold>{{road.title}}</v-flex>
                                 <div style="padding:8px"><v-btn elevation="0" icon @click="deleteRoad(idx)"  color="pink white--text" ><v-icon>delete</v-icon></v-btn></div>
                             </v-card-title>
-                            <!-- <div v-if="road.src === null">
-                                <v-img v-bind:src="thumbnail" width=90% height="0%" object-fit: cover></v-img>
-                            </div>
-                            <div v-else>
-                                <v-img :src="road.src" width=100% height="0%" object-fit: cover></v-img>
-                            </div> -->
-                            <!-- <v-card-title primary-title class="justify-center">
-                                <div class="txt_line" style="position:relative; left:28px">{{road.address}}</div>
-                            </v-card-title> -->
+                            
                         </v-card>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </v-layout>
@@ -65,8 +57,8 @@
         <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <v-btn large @click="storeMyRoad()" color="primary">내 경로 저장하기</v-btn>
             <v-btn large @click="clearRoad()" color="green" class="white--text">경로 초기화</v-btn>
-            <!-- <v-btn @click="clearAllRoad()">저장된 경로 전체 삭제(추후삭제)</v-btn>
-            <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn> -->
+            <v-btn large @click="back()" color="purple" class="white--text">다른 곳 둘러보기</v-btn>
+            <!-- <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn> --> 
         </v-layout>
     </div>
 </template>
@@ -108,6 +100,10 @@ export default {
         };
     },
     methods: {
+        back(){
+            this.$router.go(-1);
+
+        },
         check(){
             console.log(this.my_road);
         },
@@ -149,11 +145,10 @@ export default {
                     "title": title,
                     "spot": data
                 };
-                console.log( JSON.stringify(dto));
                 instance.post("/tour/route/", JSON.stringify(dto))
                     .then(
                         (response) => {
-                            console.log(response);
+                            //console.log(response);
                             this.$alert("저장이 완료되었습니다.").then(() => {
                                 this.$router.replace("/home");
                             })
@@ -203,7 +198,7 @@ export default {
             var options = {
                 //지도를 생성할 때 필요한 기본 옵션
                 center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-                level: 3 //지도의 레벨(확대, 축소 정도)
+                level: 4 //지도의 레벨(확대, 축소 정도)
             };
             this.map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
             this.ps = new kakao.maps.services.Places();
@@ -228,9 +223,7 @@ export default {
         },
         placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
-                console.log(this.tour_detail);
                 let newdata = this.tour_detail.관광지.concat(this.tour_detail.문화시설,this.tour_detail.레포츠,this.tour_detail.숙박,this.tour_detail.음식);
-                console.log(newdata)
                 this.displayPlaces(newdata);
 
             // 페이지 번호를 표출합니다
@@ -298,7 +291,7 @@ export default {
             
             for ( var i=0; i < places.length; i++ ) {
                 var imgurl ="";
-                if(places[i].img.length ==0){
+                if(places[i].img.length == 0){
                     imgurl = "noimage.png";
                 }else{
                     imgurl = places[i].img[0].awsimages
@@ -368,18 +361,17 @@ export default {
             return el;
         },
         addMarker(position, idx, place) {
-            console.log(place);
             var imageSrc = '';
             var imageSize ='';
             if(place.category=='음식'){
                 imageSrc ='https://i.ibb.co/ggQW2MQ/food.png';
-                imageSize = new kakao.maps.Size(45, 35);
+                imageSize = new kakao.maps.Size(60, 50);
             }else if(place.category=='숙박'){
                 imageSrc = 'https://i.ibb.co/RSNfGYd/hotel.png';
-                imageSize = new kakao.maps.Size(35, 35);
+                imageSize = new kakao.maps.Size(55, 55);
             }else if(place.category=='문화시설'){
-                imageSrc = 'https://i.ibb.co/T2bvjBg/culture.png';
-                imageSize = new kakao.maps.Size(35, 35);
+                imageSrc = 'https://i.ibb.co/hfPQvjP/culture.png';
+                imageSize = new kakao.maps.Size(55, 48);
             }
             else{
                 imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
