@@ -137,25 +137,34 @@ def tour_city(request):
     companions = user.companion
     if genders == True :
         gender = City.objects.filter(code__in = man,user=user).order_by('?')[:10]
+        gender_name = '남자'
     else:
         gender = City.objects.filter(code__in = woman,user=user).order_by('?')[:10]
+        gender_name='여자'
 
     if travelers == 1:
         traveler = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
+        traveler_name = '혼자'
     else :
         traveler = City.objects.filter(code__in =multi,user=user).order_by('?')[:10]
-    
+        traveler_name = '다같이'
+
     if budgets <= 100000:
         budget = City.objects.filter(code__in =poor,user=user).order_by('?')[:10]
+        budget_name = '가성비'
     else:
         budget = City.objects.filter(code__in =rich,user=user).order_by('?')[:10]
+        budget_name= '플렉스'
 
     if companions == True:
         companion = City.objects.filter(code__in =family,user=user).order_by('?')[:10]
+        companion_name = '가족'
     elif companions == False:
         companion = City.objects.filter(code__in =friend,user=user).order_by('?')[:10]
+        companion_name = '친구'
     else:
         companion = City.objects.filter(code__in =single,user=user).order_by('?')[:10]
+        companion_name = '나'
 
     genderserializer = CitySerializer(data=gender, many=True)
     travelerserializer = CitySerializer(data=traveler, many=True)
@@ -165,10 +174,12 @@ def tour_city(request):
     print(genderserializer.is_valid(),travelerserializer.is_valid(),budgetserializer.is_valid(),companionserializer.is_valid())
     
     context = {
+        'name':[gender_name,traveler_name,budget_name,companion_name],
         'gender': genderserializer.data,
         'traveler' : travelerserializer.data,
         'budget': budgetserializer.data,
-        'companion': companionserializer.data,
+        'companion': companionserializer.data
+        
     }
     return Response(context)
     # return Response({"context":genderserializer.data})

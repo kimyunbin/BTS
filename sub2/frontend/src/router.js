@@ -91,12 +91,6 @@ export default new Router({
         import( /* webpackChunkName: "about" */ "./views/satisfaction/Map.vue")
     },
     {
-      path: "/infodetail",
-      name: "infodetail",
-      component: () =>
-        import( /* webpackChunkName: "about" */ "./views/InfoDetail.vue")
-    },
-    {
       path: "/reviewwrite",
       name: "reviewwrite",
       component: () =>

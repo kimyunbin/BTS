@@ -147,42 +147,74 @@ def images():
 # images()
 
 import requests
+import json
 import boto3
 import uuid
 from PIL import Image
 from io  import BytesIO
 def test():
-    for i in range(120603,125263):
+    '''
+    i : spot_id로 찾아서 img가 있는지 체크 한다 .
+    없으면 api로 이미지 검색 후 하나 저장하고 s3에 올린다
+    s3 올릴때 pk와 awsimages uuid 저장한다.
+    59018
+    '''
+    for i in range(9755,59018):
         print(i)
-        img=ToruistImg.objects.get(id = i)
-        url = 'https:' +img.images
-        img_response = requests.get(url,verify=False)
-        
-        s3_client = boto3.client(
-            's3',
-            aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
-            aws_secret_access_key = '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'
-        )
-        # print(img_response.content)
-        if img_response.status_code == 200:
-            #print(img_response.content)
+        try : 
 
-            print("========= [이미지 저장] =========")
-            with open('test.jpg', 'wb') as fp:
-                fp.write(img_response.content)
+            if not ToruistImg.objects.filter(Touristspot = i).exists():
+                if not Touristspot.objects.filter(pk=i).exists():
+                    continue
+                obj = Touristspot.objects.get(pk = i)
+                title = obj.title
+                print('---이미지 검색 시작---',title)
+                url = "https://dapi.kakao.com/v2/search/image"
+                headers = {
+                    "Authorization" : "KakaoAK 84c4793d7481a469466d29f71665395f"
+                }
+                data = {
+                    "query" : title,
+                    "size"  : "1"
+                }
+                response = requests.post(url, headers=headers, data=data)
+                
+                # 요청에 실패했다면,
+                if response.status_code != 200 or not response.json()['documents']:
+                    continue
+                else: # 성공했다면,
+                    print('이미지 저장 시작')
+                    url = response.json()['documents'][0]['image_url']
+                    img_response = requests.get(url,verify=False)
+                    s3_client = boto3.client(
+                        's3',
+                        aws_access_key_id     = 'AKIA3QQ443NJNXC2EH66',
+                        aws_secret_access_key = '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'
+                    )
+                    # print(img_response.content)
+                    if img_response.status_code == 200:
+                        #print(img_response.content)
 
-            image = Image.open("test.jpg")
-            buffer = BytesIO()
-            image = image.convert("RGB")
-            image.save(buffer, "JPEG")
-            buffer.seek(0)
-            url_generator = str(uuid.uuid4())
-            img.awsimages = url_generator
-            img.save()
+                        print("========= [이미지 저장] =========")
+                        with open('test.jpg', 'wb') as fp:
+                            fp.write(img_response.content)
 
-            print(url_generator)
-            s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
-        
+                        image = Image.open("test.jpg")
+                        buffer = BytesIO()
+                        image = image.convert("RGB")
+                        image.save(buffer, "JPEG")
+                        buffer.seek(0)
+                        url_generator = str(uuid.uuid4())
+                    
+                        ToruistImg.objects.create(
+                            images = url,
+                            Touristspot = Touristspot.objects.get(pk=i), 
+                            awsimages = url_generator
+                        )
+                        print(url_generator)
+                        s3_client.upload_fileobj(buffer,"go-test-buket",url_generator,ExtraArgs = {"ContentType": 'image/jpeg'})
+        except:
+            continue
 
 test()
 def delete():
