@@ -7,10 +7,10 @@ function login(member, success, fail) {
   instance.defaults.headers["access-token"] = window.localStorage.getItem(
     "access-token"
   );
-  
+
   instance
-    .post(`/member/login`, {
-      email: member.email,
+    .post(`/accounts/login`, {
+      username: member.username,
       password:member.password
     })
     .then(success)
