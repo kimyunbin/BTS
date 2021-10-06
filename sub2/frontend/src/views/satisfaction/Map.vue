@@ -108,8 +108,8 @@ export default {
       function clicked(d) {
         let name = d.path[0]["__data__"].properties["CTP_KOR_NM"];
           console.log(name)
-          let url ="http://localhost:8080/";
-          //let url ="http://j5c203.p.ssafy.io/";
+          //let url ="http://localhost:8080/";
+          let url ="http://j5c203.p.ssafy.io/";
           if (name === "강원도") {
             location.href =url+"gangwon";
           }
