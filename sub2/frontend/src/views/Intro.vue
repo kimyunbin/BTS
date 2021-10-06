@@ -174,7 +174,7 @@ import {
           }
         )
         .catch(() => {
-          alert("에러발생!");
+          this.$alert("비밀번호를 잘못입력하셨습니다.");
           //this.$router.push("/");
         });
       
