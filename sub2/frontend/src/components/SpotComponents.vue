@@ -42,18 +42,23 @@
         </div>
       </template>
       <div class="my-modal">
-        <div class="modal-title">
+        <div class="ctr">
           <div></div>
-          <span class="text-h5">{{item.title}}</span>
           <div class="btn-gp">
-            <div @click="changeLike(item.id)">
-              <i class="fas fa-heart fa-sm" v-if="select_like == true" style="color:red;font-size: 0.5em;"/>
-              <i class="far fa-heart fa-sm" v-else style="color:red;font-size: 0.5em;"/>
+            <div class="likeBtn" @click="changeLike(item.id)">
+              <i class="fas fa-heart" v-if="select_like == true"/>
+              <i class="far fa-heart" v-else />
             </div>
-            <div @click="share()">
-              <i class="fas fa-share-alt fa-sm" style="color:green;font-size: 0.5em;" />
+            <div class="shareBtn" @click="share()">
+              <i class="fas fa-share-alt" />
+            </div>
+            <div class="closeBtn" @click="dialog = false">
+              <i class="fas fa-times" ></i>
             </div>
           </div>
+        </div>
+        <div class="modal-title">
+          <span class="text-h5">{{item.title}}</span>
         </div>
         <div class="modal-content">
           <div class="modal-img">
@@ -101,7 +106,7 @@ export default {
   components: {
     StarRating,
     InfoReview,
-    carosel
+    carosel,
   },
   data:()=>{
     return {
@@ -240,14 +245,27 @@ img{
 }
 
 .my-modal{
-  background-color: #fff;
+  background-color: #f1f2f6;
   overflow:hidden;
+  border-radius: 10px;
+  border: 5px solid #a5b1c2 ;
 }
-
+.ctr{
+  display: flex;
+  height: 33px;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  background-color: #a5b1c2;
+  justify-content: space-between;
+}
 .modal-title{
   font-size: 50px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-weight:500;
+  color: #1e272e;
+  letter-spacing: 8px;
 }
 
 .modal-footer{
@@ -258,7 +276,7 @@ img{
   padding: 0%;
 }
 .adr{
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 10px;
   padding-left: 40px;
   font-size: 20px;
@@ -278,30 +296,65 @@ img{
   gap: 10px;
   margin-right: 40px;
 }
+.btn-gp div{
+  margin: 0%;
+  padding: 0%;
+  height: 25px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .likeBtn {
-    right: 0;
-    width: 30px;
-    height: 30px;
-    margin: 0.2em 0 0 0;
-    z-index: 10;
-    background-size: cover;
+.likeBtn {
+  width: 30px;
+  height: 30px;
+  margin: 0.4em 0 0 0;
+  background-size: cover;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+  color: red;
+}
+.likeBtn:hover {
+  background-color: #fff;
+  color: red;
   }
-  .likeBtn:hover {
-    cursor: pointer;
-    transform: scale(1.1);
+.shareBtn {
+  width: 28px;
+  height: 29px;
+  margin: 0.4em 0 0 0;
+  z-index: 10;
+  background-size: cover;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+  color: #fff;
+}
+.shareBtn:hover {
+  background-color: #4caf50;
   }
-  .shareBtn {
-    right: 0;
-    width: 28px;
-    height: 29px;
-    margin: 0.4em 0 0 0;
-    z-index: 10;
-    background-size: cover;
-  }
-  .shareBtn:hover {
-    cursor: pointer;
-    transform: scale(1.1);
+.closeBtn {
+  width: 28px;
+  height: 29px;
+  margin: 0.4em 0 0 0;
+  z-index: 10;
+  background-size: cover;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+  color: red;
+}
+.closeBtn:hover {
+  background-color: red;
+  color: #fff;
   }
 
 .modal-img{
@@ -320,6 +373,7 @@ img{
   display: flex;
   flex-direction: row;
   border: none;
+  background-color: #f1f2f6;
 }
 .rv-c{
   margin-top: 50px;
