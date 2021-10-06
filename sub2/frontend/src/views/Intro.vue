@@ -7,13 +7,12 @@
           <br><br><br>
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <v-img
-              lazy-src="https://picsum.photos/id/11/10/6"
+              
               aspect-ratio="0.5" height="800" contain
-              src="https://i.ibb.co/KW1JKX3/image.jpg"
+              src="https://i.ibb.co/qnV430m/btstrip.jpg"
             ></v-img>
-          
+            
           </v-layout>
-
           <div>
             <v-layout row justify-center align-center wrap class="mt-4 pt-2">
               <h1 data-aos="fade-left"><b>BTS에 오신 여러분을 환영합니다.</b></h1><br>
@@ -22,8 +21,6 @@
 
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <div class="s1_arrow">
-              <div class="scroll-arrow"></div>
-              <div class="scroll-arrow"></div>
               <div class="scroll-arrow"></div>
             </div>
           </v-layout>
@@ -49,8 +46,6 @@
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <div class="s1_arrow">
               <div class="scroll-arrow"></div>
-              <div class="scroll-arrow"></div>
-              <div class="scroll-arrow"></div>
             </div>
           </v-layout>
         </v-container>
@@ -75,8 +70,6 @@
           </v-layout>
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <div class="s1_arrow">
-              <div class="scroll-arrow"></div>
-              <div class="scroll-arrow"></div>
               <div class="scroll-arrow"></div>
             </div>
           </v-layout>
@@ -212,7 +205,6 @@ import {
 </script>
 
 <style scoped>
-/* body{background:#000; text-align:center;} */
 .s1_arrow{display:inline-block; position:relative; top:100px; margin-left:-10px; text-align:center; animation:arrow_down 1.5s infinite;}
 .scroll-arrow {width:45px; height:45px; border-right: 6px solid gray; border-bottom: 6px solid gray;
 transform: rotate(45deg); -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -o-transform: rotate(45deg);  -ms-transform: rotate(45deg);
@@ -301,7 +293,7 @@ body {
   background-image:url("https://i.ibb.co/JrPR7X6/1.jpg");
   background-repeat : no-repeat;
   min-height: 100%;
-    background-position: center;
+  background-position: center;
   background-size: cover;
 }
 </style>

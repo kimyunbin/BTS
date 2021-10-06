@@ -108,7 +108,7 @@ export default {
       function clicked(d) {
         let name = d.path[0]["__data__"].properties["CTP_KOR_NM"];
           console.log(name)
-          //let url ="http://localhost:8080/";
+          // let url ="http://localhost:8080/";
           let url ="http://j5c203.p.ssafy.io/";
           if (name === "강원도") {
             location.href =url+"gangwon";
@@ -315,7 +315,7 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .map-wrapper {
   position:relative;
   text-align: center;
@@ -331,7 +331,7 @@ export default {
     font-size: 0.9rem;
   }
   .province-info {
-    // background: white;
+    background: white;
     position: absolute;
     color: white;
     top: 50px;
@@ -343,7 +343,7 @@ export default {
     pointer-events: none;
   }
   .province-state {
-    // background: white;
+    background: white;
     position: absolute;
     color: white;
     bottom: 200px;
@@ -353,7 +353,7 @@ export default {
     pointer-events: none;
   }
   .province-summary {
-    // background: white;
+    background: white;
     position: absolute;
     color: white;
     bottom: 10px;
