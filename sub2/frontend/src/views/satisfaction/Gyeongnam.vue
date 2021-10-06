@@ -231,7 +231,7 @@ export default {
 
       function clicked(d) {
         
-        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"].replace("시","시 ");
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
         name = "경상남도 " + name
           console.log(name)
         _this.move(name);

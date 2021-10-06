@@ -50,7 +50,7 @@ export default {
     this.store()
     // this.check()
     for(var i=0; i<this.items.length; i++) {
-      console.log(this.items[i]["city"])
+      //console.log(this.items[i]["city"])
     }
   },
   mounted() {
@@ -145,7 +145,7 @@ export default {
         instance.get("/tour/detail/?code="+ city)
         .then(
             (response) => {
-                console.log(response.data);
+                //console.log(response.data);
                 this.$store.dispatch("SET_TOUR_DETAIL", response.data).then(()=>{
                   this.$router.push("/map");
                 });
@@ -231,7 +231,11 @@ export default {
 
       function clicked(d) {
         
-        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"].replace("시","시 ");
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        console.log(name.charAt(name.length-1));
+        if(name.charAt(name.length-1)!='구'){
+          name = name.replace("시","시 ");
+        }
         name = "경상북도 " + name
           console.log(name)
           _this.move(name);
@@ -400,7 +404,6 @@ export default {
           "lon" : "129.3616667"
         },
       ];
-      console.log(iconsInfo.length)
 
       // 아이콘 그리기
       iconsLayer

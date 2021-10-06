@@ -232,8 +232,8 @@ export default {
 
       function clicked(d) {
         
-        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"].replace("시","시 ");
-        name = "세종특별자치시 " + name
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        //name = "세종특별자치시 " + name
           console.log(name)
           _this.move(name);
       }
