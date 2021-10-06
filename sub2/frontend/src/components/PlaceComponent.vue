@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 img{
   border-radius: 10px;
   transition-duration: 0.5s;
