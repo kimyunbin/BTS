@@ -91,7 +91,7 @@
     </section>
 
     <br>
-    <h1 data-aos="fade-right"><b>남자를 위한 추천 여행지역</b></h1>
+    <h1 data-aos="fade-right"><b>{{recom_name[0]}}를 위한 추천 여행지역</b></h1>
     <section style="" data-aos="fade-left">
       <vue-horizontal-list :items="gender_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -111,7 +111,7 @@
     </section>
 
     <br>
-    <h1 data-aos="fade-right"><b>다른 유저가 추천하는 여행지역</b></h1>
+    <h1 data-aos="fade-right"><b>{{recom_name[1]}} 추천하는 여행지역</b></h1>
     <section style="" data-aos="fade-left">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -131,7 +131,7 @@
     </section>
 
     <br>
-    <h1 data-aos="fade-left"><b>예산 추천 여행지역</b></h1>
+    <h1 data-aos="fade-left"><b>{{recom_name[2]}}</b></h1>
     <section style="" data-aos="fade-right">
       <vue-horizontal-list :items="budget_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -152,7 +152,7 @@
 
     <br>
     <br>
-    <h1 data-aos="fade-left"><b>동행자 추천 여행지역</b></h1>
+    <h1 data-aos="fade-left"><b>{{recom_name[3]}} 추천 여행지역</b></h1>
     <section style="" data-aos="fade-right">
       <vue-horizontal-list :items="companion_recom_area" :options="options" >
         <template v-slot:nav-prev>
@@ -196,7 +196,7 @@ export default{
     ]),
     ...mapState([
       "is_login", "user_info", "gender_recom_area", "traveler_recom_area",
-      "budget_recom_area", "companion_recom_area"
+      "budget_recom_area", "companion_recom_area", "recom_name"
     ])
   },
   mounted() {

@@ -1,5 +1,6 @@
 <template>
     <div>
+        {{place}}
         <div class="map_wrap" ref="printMe">
             <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden; float: left; width: 80%;"></div>
             
@@ -58,6 +59,7 @@
             <v-btn large @click="storeMyRoad()" color="primary">내 경로 저장하기</v-btn>
             <v-btn large @click="clearRoad()" color="green" class="white--text">경로 초기화</v-btn>
             <v-btn large @click="back()" color="purple" class="white--text">다른 곳 둘러보기</v-btn>
+            <v-btn large @click="toCity()" color="warning" class="white--text">더 보기</v-btn>
             <!-- <v-btn @click="check()">현재 경로 확인(추후 삭제)</v-btn> --> 
         </v-layout>
     </div>
@@ -455,6 +457,16 @@ export default {
             this.my_road.push(road);
             this.makeLine();
         },
+        toCity(){
+            const name = this.place
+            this.$store.dispatch("SET_SELECT_PLACE", name).then(()=>{
+            this.$store.dispatch("SET_SELECT_INFO", name)
+            .then(()=>{
+
+                this.$router.push("/placedetail");
+            })
+            });
+        }
     }
 };
 </script>
