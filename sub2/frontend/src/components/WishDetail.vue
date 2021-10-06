@@ -94,7 +94,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .img-box {
   width: 100%;
   max-height: 450px;

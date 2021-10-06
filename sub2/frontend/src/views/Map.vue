@@ -150,7 +150,7 @@ export default {
                         (response) => {
                             //console.log(response);
                             this.$alert("저장이 완료되었습니다.").then(() => {
-                                this.$router.replace("/home");
+                                this.$router.go();
                             })
                         }
                     )

@@ -25,6 +25,7 @@
         <template v-slot:default="{ item }">
           <PlaceComponent
             :item="item"
+            padding=10
           />
         </template>
 
@@ -32,8 +33,8 @@
     </section>
 
     <br><br>
-    <h1><b>{{user_info}} 님을 위한 관광지 추천 </b></h1>
-    <section>
+    <h1 data-aos="fade-down"><b>{{user_info}} 님을 위한 관광지 추천 </b></h1>
+    <section data-aos="fade-up">
       <vue-horizontal-list :items="recom_spot||items" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -54,8 +55,8 @@
 
     <br>
     <br>
-    <h1><b>다른 유저가 갔던 여행 경로 추천</b></h1>
-    <section v-if="other_road.length>0">
+    <h1 data-aos="fade-right"><b>다른 유저가 갔던 여행 경로 추천</b></h1>
+    <section v-if="other_road.length>0" data-aos="fade-left">
       <v-layout row justify-center align-center wrap class="mt-4 pt-2" >
         <v-card @click="setDetailRoad(0)" hover v-if="other_road.length>0">
           <div id="amap" class="map" style="display:inline-block"></div>
@@ -90,8 +91,8 @@
     </section>
 
     <br>
-    <h1><b>남자를 위한 추천 여행지역</b></h1>
-    <section style="">
+    <h1 data-aos="fade-right"><b>남자를 위한 추천 여행지역</b></h1>
+    <section style="" data-aos="fade-left">
       <vue-horizontal-list :items="gender_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -110,8 +111,8 @@
     </section>
 
     <br>
-    <h1><b>다른 유저가 추천하는 여행지역</b></h1>
-    <section style="">
+    <h1 data-aos="fade-right"><b>다른 유저가 추천하는 여행지역</b></h1>
+    <section style="" data-aos="fade-left">
       <vue-horizontal-list :items="traveler_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -130,8 +131,8 @@
     </section>
 
     <br>
-    <h1><b>예산 추천 여행지역</b></h1>
-    <section style="">
+    <h1 data-aos="fade-left"><b>예산 추천 여행지역</b></h1>
+    <section style="" data-aos="fade-right">
       <vue-horizontal-list :items="budget_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -151,8 +152,8 @@
 
     <br>
     <br>
-    <h1><b>동행자 추천 여행지역</b></h1>
-    <section style="">
+    <h1 data-aos="fade-left"><b>동행자 추천 여행지역</b></h1>
+    <section style="" data-aos="fade-right">
       <vue-horizontal-list :items="companion_recom_area" :options="options" >
         <template v-slot:nav-prev>
           <div>👈</div>
@@ -285,9 +286,7 @@ export default{
         window.kakao && window.kakao.maps
       ? this.initMap()
       : this.addKakaoMapScript();
-      $(document).ready(function(){
-      $('.slider').slider();
-    });
+      
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
@@ -453,7 +452,7 @@ export default{
 };
 </script>
 
-<style > 
+<style scoped> 
 
 @media (min-width: 1200px) {
     #app {
@@ -548,6 +547,4 @@ html, body { background: #333 url("https://codepen.io/images/classy_fabric.png")
 }
 </style>
 
-<style lang="scss">
 
-</style>

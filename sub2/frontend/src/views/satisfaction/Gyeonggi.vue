@@ -229,8 +229,14 @@ export default {
 
       function clicked(d) {
         
-        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"].replace("시","시 ");
+        let name = d.path[0]["__data__"].properties["SIG_KOR_NM"];
+        
+        if(name.indexOf('용인시')>-1){
+          name = name.replace("시","시 ");
+        }
         name = "경기도 " + name
+                console.log(name);
+
         _this.move(name);
       }
 
