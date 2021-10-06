@@ -25,6 +25,7 @@
         <template v-slot:default="{ item }">
           <PlaceComponent
             :item="item"
+            padding=10
           />
         </template>
 
@@ -285,9 +286,7 @@ export default{
         window.kakao && window.kakao.maps
       ? this.initMap()
       : this.addKakaoMapScript();
-      $(document).ready(function(){
-      $('.slider').slider();
-    });
+      
       }
     )
     this.$store.dispatch("GET_OTHER_RECOMMEND_AREA")
