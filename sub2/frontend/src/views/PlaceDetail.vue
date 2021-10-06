@@ -13,11 +13,11 @@
       <section style="">
         <vue-horizontal-list :items="touristSpots" :options="options" >
           <template v-slot:nav-prev>
-            <div><v-icon>arrow_back_ios</v-icon></div>
+            <div>👈</div>
           </template>
 
           <template v-slot:nav-next>
-            <div><v-icon>arrow_forward_ios</v-icon></div>
+            <div>👉</div>
           </template>
 
           <template v-slot:default="{ item }">
@@ -37,11 +37,11 @@
       <section style="">
         <vue-horizontal-list :items="Accommodation" :options="options" >
           <template v-slot:nav-prev>
-            <div><v-icon>arrow_back_ios</v-icon></div>
+            <div>👈</div>
           </template>
 
           <template v-slot:nav-next>
-            <div><v-icon>arrow_forward_ios</v-icon></div>
+            <div>👉</div>
           </template>
 
           <template v-slot:default="{ item }">
@@ -61,11 +61,11 @@
       <section style="">
         <vue-horizontal-list :items="Food" :options="options" >
           <template v-slot:nav-prev>
-            <div><v-icon>arrow_back_ios</v-icon></div>
+              <div>👈</div>
           </template>
 
           <template v-slot:nav-next>
-            <div><v-icon>arrow_forward_ios</v-icon></div>
+            <div>👉</div>
           </template>
 
           <template v-slot:default="{ item }">
@@ -85,11 +85,11 @@
       <section style="">
         <vue-horizontal-list :items="Sport" :options="options" >
           <template v-slot:nav-prev>
-            <div><v-icon>arrow_back_ios</v-icon></div>
+            <div>👈</div>
           </template>
 
           <template v-slot:nav-next>
-            <div><v-icon>arrow_forward_ios</v-icon></div>
+            <div>👉</div>
           </template>
 
           <template v-slot:default="{ item }">
@@ -109,11 +109,11 @@
       <section style="">
         <vue-horizontal-list :items="Culture" :options="options" >
           <template v-slot:nav-prev>
-            <div><v-icon>arrow_back_ios</v-icon></div>
+            <div>👈</div>
           </template>
 
           <template v-slot:nav-next>
-            <div><v-icon>arrow_forward_ios</v-icon></div>
+            <div>👉</div>
           </template>
 
           <template v-slot:default="{ item }">
