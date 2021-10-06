@@ -488,7 +488,6 @@ html, body { background: #333 url("https://codepen.io/images/classy_fabric.png")
   left: 0%;
   width: 100vw;
   height: 30vw;
-  background-image:url("../assets/img/1.jpg");
   background-image:url("https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=90241173-b88a-4431-841c-b7c20c0b5586&mode=raw");
   background-size: cover;
 }
