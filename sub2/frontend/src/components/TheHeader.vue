@@ -37,8 +37,8 @@
     <v-toolbar flat dense color="transparent">
       <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline">
-        <span class="BTS font-weight-bold" @click="toMain"><b>Best Trip Service</b></span>
-
+        <span class="BTS font-weight-bold" @click="toMain" v-if="is_login===true"><b>Best Trip Service</b></span>
+        <span class="BTS font-weight-bold" @click="toIntro()" v-else><b>Best Trip Service</b></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="changeTheme" depressed small icon class="hidden-md-and-up">
@@ -50,7 +50,7 @@
       </v-toolbar-items>
 
       <v-toolbar-items class="hidden-sm-and-down" v-else>
-        <v-btn flat to="/home" active-class="black--text headline"><b>메인</b></v-btn>
+        <v-btn flat to="/home" active-class="black--text headline" ><b>메인</b></v-btn>
         <v-btn flat @click.prevent="onClickMypage" active-class="black--text headline"><b>마이페이지</b></v-btn>
         <v-btn flat to="/satisfactionmap" active-class="black--text headline"><b>전국 만족도</b></v-btn>
         <v-btn flat @click.prevent="onClickLogout" active-class="black--text headline"><b>로그아웃</b></v-btn>
@@ -97,6 +97,9 @@ export default {
     },
     toMain(){
       this.$router.push("home")
+    },
+    toIntro(){
+      this.$router.push("/")
     },
     onClickMypage(){
       const instance = createInstance2();

@@ -2,7 +2,7 @@
   <div>
     <br>
     <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-      <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large to="/home" flat class="blue--text">
+      <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large @click="back()" flat class="blue--text">
           <v-icon>arrow_back</v-icon>뒤로가기
       </v-btn></h1>
       <v-layout justify-end align-end wrap class="mt-4 pt-2" data-aos="fade-up">
@@ -31,6 +31,9 @@ export default {
   methods: {
     check(){
       console.log(this.select_road);
+    },
+    back(){
+      this.$router.go(-1);
     },
     addKakaoMapScript() {
       const script = document.createElement("script");
@@ -226,17 +229,4 @@ export default {
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 .info2 .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
-
-.wrap3 {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;} 
-.wrap3 * {padding: 0;margin: 0;}
-.wrap3 .info3 {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
-.wrap3 .info3:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;} 
-.info3 .title3 {height: 32px;background: #eee;border-bottom: 1px solid #ddd;text-align: center; font-size: 20px;font-weight: bold;}
-.info3 .body3 {position: relative;overflow: hidden;}
-.info3 .desc3 {position: relative;margin: 13px 0 0 90px;height: 75px;}
-.desc2 .ellipsis3 {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-.desc2 .jibun3 {font-size: 11px;color: #888;margin-top: -2px;}
-.info3 .img3 {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-.info3:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-.info3 .link3 {color: #5085BB;}
 </style>

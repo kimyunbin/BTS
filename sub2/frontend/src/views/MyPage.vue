@@ -183,16 +183,16 @@ export default {
       console.log(this.my_wish_road);
     },
     goWishList(){
-        this.$router.replace("/myinteresting");
+        this.$router.push("/myinteresting");
     },
     setDetailRoad(num){
       if(num<3){
         this.$store.dispatch("SET_SELECT_ROAD", this.my_road[num]).then(()=>{
-          this.$router.replace("/otherroad");
+          this.$router.push("/otherroad");
         });
       }else{
-        this.$store.dispatch("SET_SELECT_ROAD", this.my_wish_road[num-3]).then(()=>{
-          this.$router.replace("/otherroad");
+        this.$store.dispatch("SET_SELECT_WISH_ROAD", this.my_wish_road[num-3]).then(()=>{
+          this.$router.push("/otherroad2");
         });
       }
     },

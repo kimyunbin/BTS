@@ -88,8 +88,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="adr">{{item.address}}</div>
-          <div class="loc">📌 X: {{item.latitude}} ,Y: {{item.longitude}}</div>
+          <div class="adr"><b>{{item.address}}</b></div>
+          <div class="loc">📌 위도: {{item.latitude}} ,경도: {{item.longitude}}</div>
         </div>
       </div>
     </v-dialog>
