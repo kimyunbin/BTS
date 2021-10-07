@@ -1,6 +1,7 @@
-<img src="https://cdn.discordapp.com/attachments/881690721994809404/895284691177996368/bts.png" style="zoom:40%;" />
 
- 
+
+ <p align="center"><img src="README.assets/bts.png" width="400" height="200" /></p>
+
 
 
 
@@ -82,7 +83,7 @@ BTS는 빅데이터 기반 유저 맞춤형 여행지 추천 플랫폼입니다.
 
 > 1개만의 리뷰로도 빅데이터 기반 맞춤형 관광지를 추천해드립니다.
 
-- 사진 (리뷰쓰고나서 메인페이지 )
+- ![review](README.assets/review.gif)
 - 한국관광공사의 `국문 관광정보 데이터 ` 에 존재하는 관광지 리뷰를 카카오에서 크롤링
 - Cosine Similarity를 통한 유저간의 유사도 측정
 - 98명의 페르소나로 차원 축소 
@@ -103,7 +104,7 @@ BTS는 빅데이터 기반 유저 맞춤형 여행지 추천 플랫폼입니다.
 
 ## ❔ 서비스 아키텍쳐
 
-
+![image-20211007113705334](README.assets/image-20211007113705334.png)
 
 
 
