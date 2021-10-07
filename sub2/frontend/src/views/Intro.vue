@@ -169,7 +169,7 @@ import {
       
     },
     clear() {
-      this.$v.$reset();
+      //this.$v.$reset();
       this.member.username = "";
       this.member.password ="";
     },
