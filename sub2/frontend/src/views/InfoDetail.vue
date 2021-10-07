@@ -2,7 +2,6 @@
   <div>
     <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
       <h2><b>{{select_detail.title}}</b></h2>
-      {{select_detail}}
       <v-layout row justify-end data-aos="fade-right">
         <v-toolbar-title class="headline">
           <div @click="changeLike" style="display:inline-block">
@@ -48,7 +47,6 @@
     <v-layout col data-aos="fade-up">
       <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
         <div>
-          {{reviews}}
           <InfoReview
             v-for="(review,key) in reviews"
             :key = key
@@ -87,7 +85,6 @@ export default {
     ? this.initMap()
     : this.addKakaoMapScript();
     this.searchPlaces();
-    console.log('ffff')
   },
   components: {
     VueHorizontalList,
@@ -100,6 +97,8 @@ export default {
   },
   created() {
     this.place = this.select_detail.title;
+    this.$store.dispatch("GET_REVIEW", this.select_detail.id)
+
   },
   data() {
     return {
@@ -110,6 +109,36 @@ export default {
       infowindow : {},
       place: "강남",
       defaultimg:"https://i.ibb.co/q7dBcZ1/image.jpg"
+      // reviews:[
+      //   {
+      //     userid: "abc1234",
+      //     title: "의정부에서 부대찌개를 먹으려면 여기로",
+      //     contents:"맛있어용abcdqwewqewqedsgmdsalgmlsadgadgmsdfasfasfmasdlfgma",
+      //     write_date: "2020-07-20",
+      //     evaluate: 3,
+      //   },
+      //   {
+      //     userid: "def1235",
+      //     title: "부대찌개의 진리",
+      //     contents:"맛없어용",
+      //     write_date: "2021-05-10",
+      //     evaluate: 1,
+      //   },
+      //   {
+      //     userid: "qwe1234",
+      //     title: "나다싶으면 여기로 컴온",
+      //     contents:"맛있어용",
+      //     write_date: "2012-04-20",
+      //     evaluate: 4,
+      //   },
+      //   {
+      //     userid: "sgs123",
+      //     title: "존맛탱구리",
+      //     contents:"맛있어용",
+      //     write_date: "2020-07-20",
+      //     evaluate: 2,
+      //   },
+      // ]
     };
   },
 
@@ -166,7 +195,7 @@ export default {
     searchPlaces() {
       var keyword = this.place;
 
-      if (!keyword.replace(/^\s+|\s+$/g, '')) {
+      if (!keyword.push(/^\s+|\s+$/g, '')) {
         alert('장소를 입력해주세요!');
         return false;
       }

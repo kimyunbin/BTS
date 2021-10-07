@@ -6,7 +6,7 @@
 
       <v-flex xs12 sm12 md6 lg6 xl6>
         <h2 class="pb-4 mb-4">
-          <span>회원가입</span>
+          <span><b>회원가입</b></span>
           
         </h2>
 

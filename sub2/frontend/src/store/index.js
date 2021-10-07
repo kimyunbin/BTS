@@ -23,6 +23,7 @@ export default new Vuex.Store({
     select_detail:null, //선택 spot장소의 좌표 등 세부정보
     other_road: [], // 다른 사람들의 경로
     select_road: {}, // Home.vue에서 선택된 경로
+    select_wish_road: {}, // Home.vue에서 선택된 경로
     select_map: null, //svg에서 선택된 경로
     tour_detail: [],
     tour_image:[],
@@ -67,6 +68,9 @@ export default new Vuex.Store({
     },
     select_road(state) {
       return state.select_road;
+    },
+    select_wish_road(state) {
+      return state.select_wish_road;
     },
     select_budget(state) {index
       return state.budget;
@@ -155,6 +159,9 @@ export default new Vuex.Store({
     },
     SET_SELECT_ROAD(state, data) {
       state.select_road = data;
+    },
+    SET_SELECT_WISH_ROAD(state, data) {
+      state.select_wish_road = data;
     },
     CLEAR_OTHER_ROAD(state) {
       state.other_road = [];
@@ -279,6 +286,10 @@ export default new Vuex.Store({
     SET_SELECT_ROAD(context, payload) {
       this.select_road = {};
       context.commit("SET_SELECT_ROAD", payload);
+    },
+    SET_SELECT_WISH_ROAD(context, payload) {
+      this.select_wish_road = {};
+      context.commit("SET_SELECT_WISH_ROAD", payload);
     },
     CLEAR_OTHER_ROAD(context) {
       this.select_road = {};
