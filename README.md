@@ -108,9 +108,9 @@ BTS는 빅데이터 기반 유저 맞춤형 여행지 추천 플랫폼입니다.
 
 ## 🎞 최종산출물
 
-시연 영상
+- [시연 영상](https://www.youtube.com/watch?v=eiS_HoIL0Sg)
 
-발표영상 pdf 
+- [발표영상 pdf](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2bc126ca-53ed-4433-91b9-cc8aa6edcdcf/BTS.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211007%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211007T081357Z&X-Amz-Expires=86400&X-Amz-Signature=147648b71da1b1ca5d6bf6e595c675533eb9b85bbce3dc890d1a79c29370221c&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22BTS.pdf%22) 
 
 
 
@@ -261,7 +261,6 @@ $ python manage.py runserver
         <li>svds</li>
     </ul>
 </details>
-
 
 
 
