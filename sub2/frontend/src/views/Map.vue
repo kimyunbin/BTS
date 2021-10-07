@@ -166,7 +166,7 @@ export default {
             })
             
             .catch(() => {
-                this.$alert("경로이름을 입력해주세요!");
+                //this.$alert("경로이름을 입력해주세요!");
                 return;
             });
         },

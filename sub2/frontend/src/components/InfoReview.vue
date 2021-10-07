@@ -6,7 +6,7 @@
     </div>
     <div class="bottom">
       <div>
-        <p class="word"><b>{{review.content}}</b></p>
+        <p class="word_my"><b>{{review.content}}</b></p>
       </div>
       <h6>작성일: {{createtime}}</h6>
     </div>
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped>
-.word {
+.word_my {
   display: block;
   color: black;
   font-size: 20px;
