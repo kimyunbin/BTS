@@ -3,25 +3,21 @@
     
     <full-page ref="fullpage" :options="options">
       <div class="section">
-        
         <v-container grid-list-xl>
           <br><br><br>
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <v-img
-              lazy-src="https://picsum.photos/id/11/10/6"
-              aspect-ratio="0.5" height="700" contain
-              src="https://i.ibb.co/ZTgRrdG/image.png"
+              aspect-ratio="0.5" height="500" contain
+              src="https://i.ibb.co/wNgFZWS/Kakao-Talk-20211006-204201609.png"
             ></v-img>
-            <div>
-              <h1 data-aos="fade-left"><b>당신이 찾는</b></h1><br>
-              <h1 data-aos="fade-right"><b>당신이 만족하는</b></h1><br>
-              <h1 data-aos="fade-left"><b>당신을 위한 서비스</b></h1>
-            </div>
           </v-layout>
 
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+            <h1 data-aos="fade-down"><b>BTS에 오신 여러분을 환영합니다.</b></h1><br>
+          </v-layout>
+          
+          <v-layout row justify-center align-center wrap class="mt-3 pt-2">
             <div class="s1_arrow">
-              <div class="scroll-arrow"></div>
               <div class="scroll-arrow"></div>
               <div class="scroll-arrow"></div>
             </div>
@@ -34,8 +30,8 @@
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <v-img
               lazy-src="https://picsum.photos/id/11/10/6"
-              aspect-ratio="0.5" height="700" contain
-              src="https://i.ibb.co/whWcmfX/1.png"
+              aspect-ratio="0.5" height="600" contain
+              src="https://i.ibb.co/vqP8t8T/Kakao-Talk-20211006-204201609-01.png"
             ></v-img>
             
               
@@ -48,6 +44,31 @@
           <v-layout row justify-center align-center wrap class="mt-4 pt-2">
             <div class="s1_arrow">
               <div class="scroll-arrow"></div>
+              <div class="scroll-arrow"></div>
+            </div>
+          </v-layout>
+        </v-container>
+      </div>
+
+      <div class="section">
+        <v-container grid-list-xl>
+          
+          <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+            <v-img
+              lazy-src="https://picsum.photos/id/11/10/6"
+              aspect-ratio="0.5" height="600" contain
+              src="https://i.ibb.co/pyvBH41/Kakao-Talk-20211006-204201609-02.png"
+            ></v-img>
+            
+              
+          </v-layout>
+          <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+            <div>
+              <h1><b>자신에게 가장 맞는 지역을 선택하세요</b></h1>
+            </div>
+          </v-layout>
+          <v-layout row justify-center align-center wrap class="mt-4 pt-2">
+            <div class="s1_arrow">
               <div class="scroll-arrow"></div>
               <div class="scroll-arrow"></div>
             </div>
@@ -185,12 +206,12 @@ import {
 
 <style scoped>
 /* body{background:#000; text-align:center;} */
-.s1_arrow{display:inline-block; position:relative; top:28px; margin-left:-10px; text-align:center; animation:arrow_down 1.5s infinite;}
-.scroll-arrow {width:25px; height:25px; border-right: 3px solid blue; border-bottom: 3px solid blue;
+.s1_arrow{display:inline-block; position:relative; top:100px; margin-left:-10px; text-align:center; animation:arrow_down 1.5s infinite;}
+.scroll-arrow {width:45px; height:45px; border-right: 6px solid gray; border-bottom: 6px solid gray;
 transform: rotate(45deg); -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -o-transform: rotate(45deg);  -ms-transform: rotate(45deg);
 animation: arrow-wave 1s infinite; animation-direction: alternate;}
 .scroll-arrow:nth-child(1) {animation-delay: 0.1s;}
-.scroll-arrow:nth-child(2) {margin-top:6px; animation-delay: 0.2s;}
+.scroll-arrow:nth-child(2) {margin-top:8px; animation-delay: 0.2s;}
 .scroll-arrow:nth-child(3) {margin-top:6px; animation-delay: 0.3s;}
 @keyframes arrow-wave {
 0% {opacity: 0;}
@@ -198,7 +219,7 @@ animation: arrow-wave 1s infinite; animation-direction: alternate;}
 100% {opacity: 1;}
 }
 @keyframes arrow_down{
-0%{top:28px;}
+0%{top:8px;}
 50%{top:40px;}
 100%{top:28px;}
 }
@@ -267,5 +288,13 @@ body {
     transform: translate3d(0,5px,0);
   }
 }
-
+.back-ground{
+  height: 100vh;
+  width:100vh;
+  background-image:url("https://i.ibb.co/JrPR7X6/1.jpg");
+  background-repeat : no-repeat;
+  min-height: 100%;
+    background-position: center;
+  background-size: cover;
+}
 </style>
