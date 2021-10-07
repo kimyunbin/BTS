@@ -2,11 +2,11 @@
   <div>
     <br>
     <v-layout justify-center align-center wrap class="mt-4 pt-2" data-aos="fade-up">
-      <h1 data-aos="fade-up"><b>{{select_road.user.nickname}} 님의 여행 경로입니다.</b><v-btn large @click="back()" flat class="blue--text">
+      <h1 data-aos="fade-up"><b>{{select_wish_road.route.user.nickname}} 님의 여행 경로입니다.</b><v-btn large @click="back()" flat class="blue--text">
           <v-icon>arrow_back</v-icon>뒤로가기
       </v-btn></h1>
       <v-layout justify-end align-end wrap class="mt-4 pt-2" data-aos="fade-up">
-        <v-btn @click="storeMyRoad()" color="red" class = "white--text"><v-icon>favorite</v-icon></v-btn>
+        <!-- <v-btn @click="storeMyRoad()" color="red" class = "white--text"><v-icon>favorite</v-icon></v-btn> -->
       </v-layout>
     </v-layout>
     
@@ -26,11 +26,11 @@ export default {
       : this.addKakaoMapScript();
   },
   computed:{
-    ...mapGetters(["select_road","user_info"]),
+    ...mapGetters(["select_wish_road","user_info"]),
   },
   methods: {
     check(){
-      console.log(this.select_road);
+      console.log(this.select_wish_road);
     },
     back(){
       this.$router.go(-1);
@@ -48,13 +48,13 @@ export default {
       var lat = 0;
       var lng = 0;
     
-      for (var i = 0; i < this.select_road.spots.length; i++) {
-        lat +=  parseFloat(this.select_road.spots[i].touristspot.latitude);
-        lng +=  parseFloat(this.select_road.spots[i].touristspot.longitude);
+      for (var i = 0; i < this.select_wish_road.route.spots.length; i++) {
+        lat +=  parseFloat(this.select_wish_road.route.spots[i].touristspot.latitude);
+        lng +=  parseFloat(this.select_wish_road.route.spots[i].touristspot.longitude);
       
       }
-      lat /= this.select_road.spots.length;
-      lng /= this.select_road.spots.length;
+      lat /= this.select_wish_road.route.spots.length;
+      lng /= this.select_wish_road.route.spots.length;
       
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
@@ -66,19 +66,19 @@ export default {
 
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
     
-      for (var i = 0; i < this.select_road.spots.length; i++) {
+      for (var i = 0; i < this.select_wish_road.route.spots.length; i++) {
           
           // 마커 이미지의 이미지 크기 입니다
           var imageSize = new kakao.maps.Size(24, 35); 
           
           // 마커 이미지를 생성합니다    
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-          var latlng = new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude); 
+          var latlng = new kakao.maps.LatLng(this.select_wish_road.route.spots[i].touristspot.longitude,this.select_wish_road.route.spots[i].touristspot.latitude); 
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
               map: map, // 마커를 표시할 지도
               position: latlng, // 마커를 표시할 위치
-              title : this.select_road.spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              title : this.select_wish_road.route.spots[i].touristspot.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image : markerImage // 마커 이미지 
           });
       }
@@ -89,8 +89,8 @@ export default {
 
       var linePath = [];
             
-      for(var i = 0; i< this.select_road.spots.length; i++){
-        linePath.push( new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude));
+      for(var i = 0; i< this.select_wish_road.route.spots.length; i++){
+        linePath.push( new kakao.maps.LatLng(this.select_wish_road.route.spots[i].touristspot.longitude,this.select_wish_road.route.spots[i].touristspot.latitude));
       }
 
       // 지도에 표시할 선을 생성합니다
@@ -106,9 +106,9 @@ export default {
       polyline.setMap(map);  
     },
     displayInfo(map){
-      for (var i = 0; i < this.select_road.spots.length; i ++) {
+      for (var i = 0; i < this.select_wish_road.route.spots.length; i ++) {
     // 마커를 생성합니다
-        var latlng = new kakao.maps.LatLng(this.select_road.spots[i].touristspot.longitude,this.select_road.spots[i].touristspot.latitude); 
+        var latlng = new kakao.maps.LatLng(this.select_wish_road.route.spots[i].touristspot.longitude,this.select_wish_road.route.spots[i].touristspot.latitude); 
         var marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
             position:latlng // 마커의 위치
@@ -117,16 +117,16 @@ export default {
         // 마커에 표시할 인포윈도우를 생성합니다 
 
         var url ="";
-        if(this.select_road.spots[i].touristspot.img.length==0){
+        if(this.select_wish_road.route.spots[i].touristspot.img.length==0){
           url = "noimage.png";
         }else{
-          url = this.select_road.spots[i].touristspot.img[0].awsimages;
+          url = this.select_wish_road.route.spots[i].touristspot.img[0].awsimages;
         }
         var infowindow = new kakao.maps.InfoWindow({
             content: '<div class="wrap3">' + 
                             '    <div class="info3">' + 
                             '        <div class="title3">' + 
-                                            this.select_road.spots[i].touristspot.title      + 
+                                            this.select_wish_road.route.spots[i].touristspot.title      + 
                             
                             '        </div>' + 
                             '        <div class="body3">' +
@@ -135,7 +135,7 @@ export default {
                             '           </div>' + 
                             '            <div class="desc3">' + 
                             '                <div class="ellipsis3">'+
-                                            this.select_road.spots[i].touristspot.address+
+                                                this.select_wish_road.route.spots[i].touristspot.address+
                                             '</div>' + 
                             '            </div>' + 
                             '        </div>' + 
@@ -229,4 +229,6 @@ export default {
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 .info2 .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+
+
 </style>

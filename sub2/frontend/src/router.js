@@ -210,5 +210,11 @@ export default new Router({
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/OtherRoad.vue")
     },
+    {
+      path: "/otherroad2",
+      name: "otherroad2",
+      component: () =>
+        import( /* webpackChunkName: "about" */ "./views/OtherRoad2.vue")
+    },
   ]
 });
