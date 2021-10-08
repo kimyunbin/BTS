@@ -1,5 +1,4 @@
 
-
  <p align="center"><img src="README.assets/bts.png" width="400" height="200" /></p>
 
 
@@ -130,7 +129,7 @@ $ npm run serve
 $ cd Backend
 $ python -m venv venv
 $ source venv/Scripts/activate
-$ python manage.py requirements.txt
+$ pip install requirements.txt
 $ python manage.py loaddata init.json
 $ python manage.py makemigrations
 $ python manage.py migrate
