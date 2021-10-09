@@ -70,7 +70,7 @@ img{
   border-radius: 10px;
   overflow: hidden;
 }
-.card:hover .v-image__image{
+.card:hover img{
   transform: 0.5s;
   -webkit-transform: scale(1.2);
 }
