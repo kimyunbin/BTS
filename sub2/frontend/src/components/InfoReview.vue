@@ -76,7 +76,8 @@ export default {
 }
 
 .comment{
-  width: 90%;
+  width: 98%;
+  margin: 0%;
 }
 .top{
   width: 100%;

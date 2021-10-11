@@ -218,17 +218,25 @@ export default {
 </script>
 
 <style scoped>
-::-webkit-scrollbar { display: none; }
+/* ::-webkit-scrollbar { display: none; } */
 
 img{
   object-fit: cover;
 }
+
 
 .card{
   border-radius: 10px;
   overflow: hidden;
   z-index: 1;
   cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.card:hover {
+  border: 1px solid #a5b1c2;
+  background-color: #f1f2f6;
+  z-index: 500;
 }
 
 .skeleton {
@@ -363,10 +371,28 @@ img{
 }
 
 .modal-rv{
-  width: 50%;
+  width: 49%;
   height: 500px;
   margin-top: 3%;
   overflow: scroll;
+  overflow-x: hidden;
+  margin-right: 5px;
+}
+
+.modal-rv::-webkit-scrollbar {
+  width: 10px;
+  margin-right: 5px;
+}
+.modal-rv::-webkit-scrollbar-thumb {
+  background-color: #f1f2f6;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.modal-rv::-webkit-scrollbar-track {
+  background-color: #a5b1c2;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }
 
 .modal-content{
@@ -376,10 +402,13 @@ img{
   background-color: #f1f2f6;
 }
 .rv-c{
-  margin-top: 50px;
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  padding-top: 20px;
+  margin: 0%;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 98%;
 }
 
 </style>
