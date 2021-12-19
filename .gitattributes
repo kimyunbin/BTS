@@ -1,7 +1,4 @@
 *.exe
  filter=lfs diff=lfs merge=lfs -text
-data/dump.pkl filter=lfs diff=lfs merge=lfs -text
-sub2/backend/init.json filter=lfs diff=lfs merge=lfs -text
-data/data.json filter=lfs diff=lfs merge=lfs -text
 *.json filter=lfs diff=lfs merge=lfs -text
 *.pkl filter=lfs diff=lfs merge=lfs -text
