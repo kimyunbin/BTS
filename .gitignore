@@ -139,3 +139,5 @@ cython_debug/
 
 *.xlsx
 *.html
+*.json
+*.pkl
